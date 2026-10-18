@@ -8,7 +8,7 @@ const EX = {
   glicine: { floors: 3, bays: 4, arches: false, roof: 'pitched' }
 };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const eur = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const eur = new Intl.NumberFormat(document.documentElement.lang === 'en' ? 'en-GB' : 'it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 
 // facade illustration, drawn from each property's floors, bays, arches and roof
 function facade(p, wide) {

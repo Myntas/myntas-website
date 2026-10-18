@@ -21,10 +21,10 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Languages
 
-- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). Only the home page has an English version so far.
-- The IT/EN switcher is the `.lang` group at the right end of the header. Its EN link points to the page's English version, or to `/en/` while that does not exist yet. Below 420px it shows only the other language.
-- When you add or change copy on a page that has an English version, update both. The English home links to the Italian pages until they are translated.
-- Home pages carry `hreflang` alternates; add them to each new pair and add new English URLs to `sitemap.xml`.
+- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). The home page and AUREA have English versions so far (`en/index.html`, `en/aurea/index.html`).
+- The IT/EN switcher is the `.lang` group at the right end of the header. Its IT link points to the Italian page itself; the EN link points to the page's English version, or to `/en/` while that does not exist yet. Below 420px it shows only the other language.
+- When you add or change copy on a page that has an English version, update both. English pages link to the Italian pages that are not translated yet (Proprietari, privacy, cookie).
+- Translated pairs carry `hreflang` alternates; add them to each new pair and add new English URLs to `sitemap.xml`.
 
 ## Rules
 
