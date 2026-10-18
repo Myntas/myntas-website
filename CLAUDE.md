@@ -8,7 +8,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 - `public/index.html` home (scroll story, "AUREA in tre passi" with illustrative phone screens, "Perché tokenizzare" investor/owner switch with six cards around the token (its own `.wrap` after the solid AUREA block; the 3D token moves to the slot as the section enters the viewport), "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero with key points, animated dashboard preview in four steps, "La scheda immobile" (six cards), offer lifecycle timeline, "Primi passi" (profile, ID check, questionnaire, invest), "Per chi è AUREA", FAQ (`<details>`), early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
-- `public/proprietari/index.html` owners page and property form
+- `public/proprietari/index.html` owners page, built around the tokenization request form (`#ownerFormEl`, `kind: "owner"`): hero with key points, nine benefits, five-step process, request card with requirements and next steps, owners FAQ
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
 - `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
@@ -21,9 +21,9 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Languages
 
-- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). The home page and AUREA have English versions so far (`en/index.html`, `en/aurea/index.html`).
+- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). Home, AUREA and Proprietari have English versions (`en/index.html`, `en/aurea/index.html`, `en/proprietari/index.html`).
 - The IT/EN switcher is the `.lang` group at the right end of the header. Its IT link points to the Italian page itself; the EN link points to the page's English version, or to `/en/` while that does not exist yet. Below 420px it shows only the other language.
-- When you add or change copy on a page that has an English version, update both. English pages link to the Italian pages that are not translated yet (Proprietari, privacy, cookie).
+- When you add or change copy on a page that has an English version, update both. English pages link to the Italian pages that are not translated yet (privacy, cookie).
 - Translated pairs carry `hreflang` alternates; add them to each new pair and add new English URLs to `sitemap.xml`.
 
 ## Rules
