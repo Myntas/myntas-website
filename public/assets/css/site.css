@@ -32,6 +32,8 @@
   --line-on-dark: rgba(244, 241, 236, 0.16);
   --panel: rgba(247, 241, 229, 0.9);
   --shade: rgba(59, 45, 25, 0.42);
+  --glass: rgba(251, 248, 241, 0.74);
+  --glass-edge: rgba(163, 126, 45, 0.22);
   --f-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
   --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -53,17 +55,24 @@ body { background: var(--cream); color: var(--text); font-family: var(--f-body);
 button { font: inherit; color: inherit; }
 
 /* header */
-.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
-.brand { display: flex; align-items: center; gap: 0.6rem; color: var(--brown); text-decoration: none; }
+/* header: floating glass pill, sticky at the top */
+.site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; padding-block: 0.85rem; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.4rem 0.4rem 0.4rem 1rem; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--glass-edge);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 10px 30px rgba(59, 45, 25, 0.08), 0 1px 3px rgba(59, 45, 25, 0.06); }
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) { .top { background: var(--paper); } }
+.brand { display: flex; align-items: center; gap: 0.6rem; color: var(--brown); text-decoration: none; border-radius: 999px; }
 .brand svg { width: 34px; height: 34px; }
 .brand span { font-family: var(--f-display); font-size: 1.375rem; letter-spacing: 0.02em; }
-.nav { display: flex; align-items: center; gap: 1.5rem; font-size: var(--step--1); }
-.nav a { color: var(--text); text-decoration: none; padding-block: 0.25rem; border-bottom: 1px solid transparent; }
-.nav a:hover { color: var(--brown); }
-.nav a[aria-current="page"] { color: var(--brown); border-bottom-color: var(--gold); }
-.nav .lang { font-family: var(--f-mono); letter-spacing: 0.08em; }
-.nav .login { color: var(--cream); background: var(--gold-btn); padding: 0.45rem 0.9rem; border-radius: 2px; font-weight: 500; border: 0; }
-.nav .login:hover, .nav .login[aria-current="page"] { color: var(--cream); background: var(--gold-dark); }
+.nav { display: flex; align-items: center; gap: 0.25rem; font-size: var(--step--1); }
+.nav a { color: var(--text); text-decoration: none; padding: 0.5rem 0.9rem; border-radius: 999px; transition: background-color 0.2s, color 0.2s; }
+.nav a:hover { color: var(--brown); background: rgba(163, 126, 45, 0.1); }
+.nav a[aria-current="page"] { color: var(--brown); background: rgba(163, 126, 45, 0.16); }
+.nav .login { color: var(--cream); background: var(--gold-btn); padding: 0.55rem 1.15rem; font-weight: 500; margin-left: 0.35rem; }
+.nav .login:hover { color: var(--cream); background: var(--gold-dark); }
+.nav a:focus-visible, .brand:focus-visible { outline: 2px solid var(--brown); outline-offset: 2px; }
+[id] { scroll-margin-top: 6rem; }
 
 /* type */
 .eyebrow { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); }
@@ -255,7 +264,11 @@ footer .risk { max-width: 52rem; }
   .owner-form { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
 }
 @media (max-width: 760px) {
-  .nav { gap: 0.9rem; }
+  .nav { gap: 0.1rem; }
+  .nav a { padding: 0.5rem 0.7rem; }
+  .nav .login { padding: 0.55rem 0.95rem; }
+  .site-head { padding-block: 0.6rem; }
+  .top { padding-left: 0.6rem; }
   .nav .hide-s, .brand span { display: none; }
   .chapter { align-items: end; padding-block: 2rem; }
   .chapter .copy, .chapter.right .copy { margin-left: 0; background: var(--panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1.5rem 1.25rem; border: 1px solid var(--line); border-radius: 2px; }
@@ -276,7 +289,7 @@ footer .risk { max-width: 52rem; }
   .formgrid { grid-template-columns: minmax(0, 1fr); }
   .section { padding-block: 3.5rem; }
 }
-@media (prefers-reduced-motion: reduce) { #scene { display: none; } .btn, .card { transition: none; } }
+@media (prefers-reduced-motion: reduce) { #scene { display: none; } .btn, .card, .nav a { transition: none; } }
 
 /* site additions */
 .skip { position: absolute; left: -999px; top: 0; z-index: 100; background: var(--brown); color: var(--cream); padding: 0.6rem 1rem; }
