@@ -1,6 +1,7 @@
 // Myntas 3D stage: a frosted-glass token made from the logo, a palazzo of 55 blocks, and 55 small tokens.
 // Each page sets <body data-page="..."> and the stage follows that page's story as the visitor scrolls:
-//   home        token -> building -> 55 tokens -> one token (scroll story across the [data-chapter] sections)
+//   home        token -> building -> 55 tokens -> one token (scroll story across the [data-chapter] sections),
+//               then the token settles between the benefit cards and flips with the investor/owner switch
 //   aurea       investors: the building splits into tokens
 //   proprietari owners: the building is compressed into a single token
 import * as THREE from 'three';
@@ -144,6 +145,9 @@ async function init() {
     return K[K.length - 1];
   }
   const chapters = [...document.querySelectorAll('[data-chapter]')];
+  const perks = document.querySelector('.perks'), slot = perks && perks.querySelector('.flip-slot');
+  // the story's spin when the token reaches the benefits chapter, wound back to a front-facing angle so it lands face on
+  const FRONT = -0.3, S5 = 4.5 * Math.PI - 0.38, SPIN_FRONT = S5 - ((((S5 - FRONT) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
   function storyT() {
     const c = window.scrollY + window.innerHeight / 2;
     for (let i = 0; i < chapters.length; i++) {
@@ -168,9 +172,9 @@ async function init() {
 
   function targets() {
     const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, halfW = halfH * camera.aspect;
-    let T;
+    let T, t = 0;
     if (PAGE === 'home') {
-      const t = storyT(), k = sample(t);
+      t = storyT(); const k = sample(t);
       T = { x: k.x, y: k.y, s: k.s, build: ramp(t, 0.75, 1.45), split: ramp(t, 1.75, 2.4), gather: ramp(t, 2.7, 3.35),
         coin: clamp01(1 - ramp(t, 0.7, 1.15) + ramp(t, 3.0, 3.4)), spin: (t - 0.5) * Math.PI - 0.38, turn: -0.55 + (t - 1.5) * 0.5, sky: clamp01(t / 4.5) };
     } else {
@@ -181,6 +185,19 @@ async function init() {
       else Object.assign(T, { build: 1 - ramp(p, 0.12, 0.65), split: 0, gather: 0, coin: ramp(p, 0.4, 0.7) });
     }
     if (mobile) { T.x = 0; T.y = halfH * 0.5; T.s *= 0.55; }
+    T.flip = 0;
+    if (slot) {
+      // benefits chapter: follow .flip-slot on screen, face front, one full turn per switch
+      const f = ramp(t, 4.55, 5.05);
+      if (f > 0) {
+        const r = slot.getBoundingClientRect();
+        T.x = lerp(T.x, ((r.left + r.width / 2) / W * 2 - 1) * halfW, f);
+        T.y = lerp(T.y, (1 - (r.top + r.height / 2) / H * 2) * halfH, f);
+        T.s = lerp(T.s, (r.width / W) * halfW, f); // the token is 1.8 units wide at s = 1; fill ~90% of the slot
+        T.spin = lerp(T.spin, SPIN_FRONT, f);
+      }
+      if (perks.dataset.side === 'owner') T.flip = 2 * Math.PI;
+    }
     return T;
   }
 
@@ -205,7 +222,7 @@ async function init() {
     coin.visible = cs > 0.002;
     coin.position.set(P.x, P.y + Math.sin(time * 0.8) * 0.04, 0);
     coin.scale.setScalar(Math.max(cs, 0.0001));
-    coin.rotation.set(0.14 + Math.sin(time * 0.45) * 0.05 + py * 0.12, P.spin + Math.sin(time * 0.6) * 0.1 + px * 0.25, 0);
+    coin.rotation.set(0.14 + Math.sin(time * 0.45) * 0.05 + py * 0.12, P.spin + P.flip + Math.sin(time * 0.6) * 0.1 + px * 0.25, 0);
 
     stage.position.set(P.x, P.y, 0);
     stage.scale.setScalar(Math.max(P.s, 0.0001));
