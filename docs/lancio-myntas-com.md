@@ -7,30 +7,29 @@ Documento interno (non pubblicato: sta fuori da `public/`). Aggiornato al 18 ott
 ## 1. Collegare myntas.com al sito (Cloudflare)
 
 Il sito è il Worker **`myntas-website`** (indirizzo di test: `myntas-website.fragrant-waterfall-55f0.workers.dev`).
-Oggi `myntas.com` serve l'app Base44 (per esempio `myntas.com/Account`): quando il dominio passa al sito, l'app su quel dominio smette di funzionare. Spostala prima su un sottodominio.
+L'app Base44 non serve più: viene dismessa dopo la migrazione. I vecchi link `myntas.com/Account` portano già al modulo di accesso anticipato di AUREA (file `public/_redirects`).
 
-### Passo 0. Sposta l'app Base44 su un sottodominio
-1. Nelle impostazioni di Base44, aggiungi il dominio personalizzato **`app.myntas.com`** e segui le istruzioni DNS che ti dà (di solito un record CNAME).
-2. Crea quel record in Cloudflare (DNS → Records), verifica che `https://app.myntas.com` apra l'app.
-3. Avvisa gli utenti attuali del nuovo indirizzo. Se vuoi, aggiungo sul sito un reindirizzamento da `myntas.com/Account` a `app.myntas.com/Account`: dimmelo quando il sottodominio funziona.
+### Passo 1. Portare il dominio su Cloudflare
+Cloudflare deve gestire il DNS di myntas.com. Il dominio resta registrato dove l'hai comprato: si cambiano solo i "nameserver".
 
-### Passo 1. Il dominio deve essere gestito da Cloudflare
-- In Cloudflare, apri **Websites**: se `myntas.com` è già nell'elenco con stato **Active**, vai al passo 2.
-- Se non c'è: **Add a site** → `myntas.com` → piano Free → Cloudflare importa i record DNS esistenti. Controlla che ci siano tutti (soprattutto i record **MX** della posta e quelli di Base44), poi cambia i **nameserver** presso il registrar del dominio con i due indicati da Cloudflare. Il passaggio può richiedere da pochi minuti a 24 ore.
-- Importante: **non toccare i record MX e TXT della posta**, altrimenti info@myntas.com smette di ricevere.
+1. **Annota i record della posta.** Presso il registrar attuale (dove hai comprato myntas.com: Aruba, Register.it, GoDaddy, Namecheap, ecc.) apri la gestione DNS e fai uno screenshot di tutti i record, in particolare **MX** e **TXT** (SPF, DKIM, DMARC) e quelli usati da Google Workspace o Microsoft 365 per info@myntas.com.
+2. **Aggiungi il sito su Cloudflare.** Dashboard → **Add a domain** (o "Add a site") → scrivi `myntas.com` → piano **Free** → Continua.
+3. **Controlla i record importati.** Cloudflare legge i record esistenti. Confrontali con lo screenshot: devono esserci **tutti gli MX e i TXT**. Se ne manca qualcuno, aggiungilo a mano (DNS → Records → Add record). I record della posta devono avere la nuvola **grigia** ("DNS only").
+4. **Elimina i record di Base44.** Cancella i record A, AAAA o CNAME per `myntas.com` (nome `@`) e per `www` che puntano a Base44. Lascia intatti MX e TXT.
+5. **Disattiva DNSSEC presso il registrar** se è attivo (altrimenti il cambio di nameserver blocca il dominio). Lo riattiverai dopo da Cloudflare.
+6. **Cambia i nameserver.** Cloudflare ti mostra due nameserver (del tipo `nome.ns.cloudflare.com`). Presso il registrar, nella sezione "Nameserver" o "DNS" del dominio, sostituisci quelli attuali con i due di Cloudflare e salva.
+7. **Attendi l'attivazione.** Di solito da pochi minuti a qualche ora, al massimo 24-48 ore. Cloudflare ti manda un'email quando il dominio è **Active**.
+8. **Verifica la posta**: manda un'email a info@myntas.com e controlla che arrivi.
 
-### Passo 2. Libera myntas.com e www
-In **DNS → Records** elimina (o annota e poi elimina) i record **A, AAAA o CNAME** per `myntas.com` (nome `@`) e per `www` che oggi puntano a Base44. Cloudflare non permette di collegare il Worker se esiste già un record per lo stesso nome. Lascia intatti MX, TXT e il CNAME di `app`.
-
-### Passo 3. Collega il dominio al Worker
+### Passo 2. Collega il dominio al Worker
 1. **Workers & Pages** → **myntas-website** → **Settings** → **Domains & Routes** → **Add** → **Custom domain**.
 2. Scrivi `myntas.com` → **Add domain**. Cloudflare crea il record DNS e il certificato HTTPS da solo (qualche minuto).
 3. Ripeti con `www.myntas.com`.
-4. Facoltativo ma consigliato: **Rules → Redirect Rules** → "Redirect from WWW to root" (modello pronto), così `www.myntas.com` porta sempre a `myntas.com`.
+4. Consigliato: **Rules → Redirect Rules** → modello "Redirect from WWW to root", così `www.myntas.com` porta sempre a `myntas.com`.
 
-### Passo 4. Verifica
-- Apri `https://myntas.com`, `https://myntas.com/aurea/`, `https://myntas.com/en/` e una pagina inesistente (deve comparire la pagina 404 di Myntas).
-- Dimmelo: aggiungo il dominio anche in `wrangler.jsonc`, così ogni deploy automatico lo mantiene, e decidiamo insieme quando togliere il blocco ai motori di ricerca (vedi sezione 4).
+### Passo 3. Verifica
+- Apri `https://myntas.com`, `https://myntas.com/aurea/`, `https://myntas.com/en/`, `https://myntas.com/Account` (deve portare all'accesso anticipato) e una pagina inesistente (deve comparire la 404 di Myntas).
+- Dimmelo: aggiungo il dominio anche in `wrangler.jsonc`, così ogni deploy automatico lo mantiene. Il blocco ai motori di ricerca resta finché non chiudiamo la sezione 5.
 
 ---
 
@@ -86,10 +85,11 @@ Domanda di fondo per il legale: **qualifica giuridica dei token** (strumenti fin
 
 ## 4. Dati e materiali che servono da Myntas
 
-1. **Dati societari per il footer** (art. 2250 c.c. e art. 35 DPR 633/1972): P.IVA, numero REA e Camera di commercio, capitale sociale (e se interamente versato), eventuale "società unipersonale". Oggi il footer dice "P.IVA in attribuzione".
+1. ~~Dati societari per il footer~~ **Fatto**: P.IVA e C.F. 07577500486, REA FI-713175, capitale sociale 100,00 € i.v. (dalla visura del 25/09/2026), nel footer di ogni pagina e nell'informativa privacy.
 2. **Destinazione dei moduli** (`/api/lead`): Notion, email o entrambi. Senza endpoint, chi compila un modulo vede solo un messaggio con info@myntas.com.
 3. **Permessi scritti dei partner** mostrati in "Trusted by" (Lexify, altiqa, LTBA, blocksquare) e di Nova Ventures. Modello di richiesta qui sotto.
 4. **Logo Nova Ventures** in SVG o PNG grande.
+5. **Obbligo di pubblicazione per start-up innovative.** Myntas è iscritta nella sezione speciale delle start-up innovative (25/09/2026). L'art. 25, commi 11 e 12, del DL 179/2012 chiede di rendere disponibili **sul sito della società** e di aggiornare almeno ogni sei mesi: data e luogo di costituzione, nome e indirizzo del notaio; sede; oggetto sociale; descrizione dell'attività svolta, comprese le spese in ricerca e sviluppo; elenco dei soci (con trasparenza su fiduciarie e holding) e autocertificazione di veridicità; elenco delle società partecipate; titoli di studio ed esperienze professionali dei soci e del personale (escluse informazioni personali non pertinenti); relazioni con incubatori, investitori, università; ultimo bilancio depositato; elenco dei diritti di privativa. Posso creare una pagina dedicata (per esempio `/start-up-innovativa/`, linkata dal footer) con i dati della visura: serve il tuo via libera, perché riporta nomi dei soci e percorsi professionali. Il legale confermi l'elenco dei contenuti e la formulazione.
 
 ### Modello di email ai partner
 
@@ -108,7 +108,8 @@ Domanda di fondo per il legale: **qualifica giuridica dei token** (strumenti fin
 Finché questi punti non sono chiusi il sito resta con `noindex` e `robots.txt` in modalità staging, anche su myntas.com:
 
 - [ ] Approvazione del legale (sezione 3)
-- [ ] Dati societari nel footer (sezione 4.1)
+- [x] Dati societari nel footer (sezione 4.1)
 - [ ] `/api/lead` attivo (sezione 4.2)
 - [ ] Permessi dei partner (sezione 4.3)
-- [ ] App Base44 su `app.myntas.com`
+- [ ] Dominio collegato e posta verificata (sezione 1)
+- [ ] Pagina "Start-up innovativa" (sezione 4.5)
