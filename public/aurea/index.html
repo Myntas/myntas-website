@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AUREA · Il marketplace di Myntas</title>
+<meta name="description" content="Gli immobili italiani a reddito su AUREA: numeri, documenti e prenotazione dei token.">
+<link rel="canonical" href="https://myntas.com/aurea/">
+<!-- STAGING: remove this line (and the Disallow in robots.txt) at launch -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f1e5">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Myntas">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="AUREA · Il marketplace di Myntas">
+<meta property="og:description" content="Gli immobili italiani a reddito su AUREA: numeri, documenti e prenotazione dei token.">
+<meta property="og:url" content="https://myntas.com/aurea/">
+<meta property="og:image" content="https://myntas.com/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script type="importmap">{"imports":{"three":"/assets/vendor/three/three.module.min.js"}}</script>
+<script type="module" src="/assets/js/site.js"></script>
+<script type="module" src="/assets/js/scene.js"></script>
+<script type="module" src="/assets/js/aurea.js"></script>
+</head>
+<body data-page="aurea">
+<canvas id="scene" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Vai al contenuto</a>
+<div class="wrap">
+  <div class="inner">
+    <header class="top">
+      <a class="brand" href="/" aria-label="Myntas, home"><img src="/assets/img/logo.svg" alt="" width="34" height="34"><span>Myntas</span></a>
+      <nav class="nav" aria-label="Principale">
+        <a href="/aurea/" aria-current="page">AUREA</a>
+        <a href="/proprietari/">Proprietari</a>
+        <a class="hide-s" href="/#processo">Come funziona</a>
+        <a class="login" href="https://myntas.com/Account">Accedi</a>
+      </nav>
+    </header>
+  </div>
+</div>
+<main id="main">
+<div class="wrap">
+  <div class="inner">
+    <section class="chapter hero">
+      <div class="hero-inner">
+        <div class="fallback" aria-hidden="true"><img src="/assets/img/logo.svg" alt=""></div>
+        <div class="copy">
+          <div class="eyebrow">AUREA · Il marketplace di Myntas</div>
+          <h1>Un palazzo intero, <em>una quota alla volta.</em></h1>
+          <p>Scegli l'immobile, leggi i numeri e prenota i tuoi token. Ogni immobile ha il suo veicolo, i suoi documenti e i suoi canoni.</p>
+          <div class="stats" id="aureaStats"></div>
+          <div class="actions">
+            <button class="btn primary" type="button" data-scroll="listings">Vedi gli immobili</button>
+            <a class="btn ghost" href="https://myntas.com/Account">Accedi</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="wrap solid" id="listings">
+  <div class="inner section">
+    <div class="notice"><b>Immobili di esempio.</b> Nomi, numeri e rendimenti in questa pagina servono a mostrare il design. Prima della pubblicazione vanno sostituiti con le offerte reali e i relativi documenti.</div>
+    <div class="toolbar">
+      <div class="filters">
+        <div class="field"><span class="lbl">Città</span><div class="chips" id="cityChips" role="group" aria-label="Filtra per città"></div></div>
+      </div>
+      <div class="selects">
+        <div class="field"><label for="fType">Tipologia</label>
+          <select id="fType"><option value="">Tutte</option><option>Residenziale</option><option>Commerciale</option><option>Uso misto</option></select></div>
+        <div class="field"><label for="fStatus">Stato</label>
+          <select id="fStatus"><option value="">Tutti</option><option value="raccolta">In raccolta</option><option value="presto">Prossimamente</option><option value="chiuso">Completato</option></select></div>
+        <div class="field"><label for="fSort">Ordina</label>
+          <select id="fSort"><option value="stato">In evidenza</option><option value="yield">Rendimento stimato</option><option value="value">Valore immobile</option></select></div>
+      </div>
+    </div>
+    <div class="count" id="resultCount" aria-live="polite"></div>
+    <div class="grid" id="grid"></div>
+    <p class="small">I rendimenti indicati sono stime al netto dei costi dell'immobile e non sono garantiti. Investire in strumenti finanziari comporta rischi, inclusa la perdita del capitale investito. Leggi i documenti d'offerta prima di investire.</p>
+  </div>
+</div>
+</main>
+<div id="modalRoot"></div>
+<div class="band">
+  <div class="wrap">
+    <footer class="inner">
+      <div class="legal">Myntas S.r.l. · Viale Spartaco Lavagnini 13, 50129 Firenze · PEC myntas@pec.it · P.IVA in attribuzione</div>
+      <div class="links"><a href="/privacy/">Privacy</a><a href="/cookie/">Cookie</a><a href="mailto:info@myntas.com">info@myntas.com</a></div>
+      <div class="risk">Le informazioni su questo sito non costituiscono offerta di strumenti finanziari. Investire comporta rischi, inclusa la perdita del capitale investito.</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

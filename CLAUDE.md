@@ -1,0 +1,46 @@
+# Myntas website
+
+Static marketing site for Myntas S.r.l. (myntas.com). Plain HTML, CSS and JS, no build step.
+Cloudflare deploys the `public/` folder as-is from the `main` branch; other branches get preview URLs.
+Everything the website serves lives in `public/`; files outside it (this file, README, LICENSE) are never published.
+
+## Structure
+
+- `public/index.html` home (scroll story + "Trusted by" + "Powered by")
+- `public/aurea/index.html` AUREA marketplace (listings in `assets/js/aurea.js`)
+- `public/proprietari/index.html` owners page and property form
+- `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
+- `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
+- `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
+- `public/assets/js/site.js` scroll buttons and lead forms; `assets/js/aurea.js` marketplace
+- `public/assets/fonts` self-hosted Bodoni Moda, IBM Plex Sans, IBM Plex Mono (no requests to Google)
+- `public/assets/img` logo, skyline, partner logos, share image
+- `public/_headers` security headers (strict CSP) and cache rules; `robots.txt`; `sitemap.xml`
+
+The header and footer are repeated in every HTML page: change them in all pages together.
+
+## Rules
+
+- Copy is in Italian. No em dashes. Short, plain sentences.
+- Myntas operates in Italy only: never describe it as Swiss or global.
+- Never publish invented properties, yields or figures as real. Regulatory wording ("regolamentato", "strumento finanziario", etc.) needs counsel's sign-off before it goes live.
+- No third-party hosts: the CSP in `_headers` allows only the site itself. Fonts, scripts and images must be self-hosted. No tracking scripts without a cookie banner and consent.
+- If you change the inline import map in the page `<head>`, update its sha256 hash in `_headers`, or the 3D stops loading.
+- Brand colours: cream `#f7f1e5`, brown `#3b2d19`, text `#5b564c`, golds `#a37e2d`, `#b79144`, `#725920`, `#8a6a2b`.
+
+## Open items
+
+- Forms post JSON to `/api/lead`, which does not exist yet. Until it does, visitors see a message with info@myntas.com.
+- "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
+- AUREA shows example properties marked "Esempio".
+- The Nova Ventures mark in "Powered by" is a placeholder.
+
+## Launch checklist (before pointing myntas.com here)
+
+1. Replace AUREA examples with real offerings and documents, or switch the page to a waitlist with no figures.
+2. Privacy and cookie texts in `privacy/` and `cookie/`; P.IVA in the footer of every page.
+3. Counsel's sign-off on all regulatory wording.
+4. Written permission from each partner shown in "Trusted by"; real Nova Ventures logo.
+5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
+6. "Accedi" pointing at the app subdomain.
+7. Remove `<meta name="robots" content="noindex, nofollow">` from every page and replace `robots.txt` with the launch version noted inside it.
