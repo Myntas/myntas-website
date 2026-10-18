@@ -6,7 +6,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 ## Structure
 
-- `public/index.html` home (scroll story + "Trusted by" + "Powered by")
+- `public/index.html` home (scroll story + "Trusted by" + "Powered by"); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA marketplace (listings in `assets/js/aurea.js`)
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
@@ -19,9 +19,16 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 The header and footer are repeated in every HTML page: change them in all pages together.
 
+## Languages
+
+- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). Only the home page has an English version so far.
+- The IT/EN switcher is the `.lang` group at the right end of the header. Its EN link points to the page's English version, or to `/en/` while that does not exist yet. Below 420px it shows only the other language.
+- When you add or change copy on a page that has an English version, update both. The English home links to the Italian pages until they are translated.
+- Home pages carry `hreflang` alternates; add them to each new pair and add new English URLs to `sitemap.xml`.
+
 ## Rules
 
-- Copy is in Italian. No em dashes. Short, plain sentences.
+- Copy is in Italian (English on `/en/` pages). No em dashes. Short, plain sentences.
 - Myntas operates in Italy only: never describe it as Swiss or global.
 - Don't stress Italy or Italian in the copy, and say "immobile/immobili" rather than "edificio". Don't mention the vehicle (SPV, "veicolo") in marketing copy.
 - Never publish invented properties, yields or figures as real. Regulatory wording ("regolamentato", "strumento finanziario", etc.) needs counsel's sign-off before it goes live.
