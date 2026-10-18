@@ -53,30 +53,38 @@ for (const list of document.querySelectorAll('.switch[role="tablist"]')) {
   });
 }
 
-// email sign-ups: footer newsletter (every page) and new-offer alerts (home band). <form data-signup="kind">
+// email sign-ups: footer newsletter (every page), new-offer alerts (home band), AUREA early access. <form data-signup="kind">
+// Named fields other than the email and the consent box (name, profile) are sent along.
 const SIGNUP = {
-  it: { email: 'Inserisci un indirizzo email valido.', consent: 'Serve il consenso per iscriverti.',
+  it: { email: 'Inserisci un indirizzo email valido.', consent: 'Serve il consenso per iscriverti.', required: 'Compila i campi obbligatori (*).',
     newsletter: ['Iscrizione completata', 'Grazie. Ti scriveremo quando ci sono novità.'],
-    alerts: ['Fatto', 'Ti avviseremo quando apre una nuova offerta.'] },
-  en: { email: 'Enter a valid email address.', consent: 'Please tick the box to subscribe.',
+    alerts: ['Fatto', 'Ti avviseremo quando apre una nuova offerta.'],
+    'early-access': ['Richiesta ricevuta', 'Grazie. Ti scriveremo appena AUREA apre le prime offerte.'] },
+  en: { email: 'Enter a valid email address.', consent: 'Please tick the box to subscribe.', required: 'Fill in the required fields (*).',
     newsletter: ['You are subscribed', 'Thank you. We will write when there is news.'],
     alerts: ['Done', 'We will let you know when a new offering opens.'],
+    'early-access': ['Request received', 'Thank you. We will write as soon as AUREA opens its first offerings.'],
     fallback: `<div class="fallback-msg" role="status"><b>Online sign-up is not active yet.</b><span>Email us at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> and we will add you to the list.</span></div>` }
 };
+const SIGNUP_LABEL = { newsletter: 'newsletter', alerts: 'avvisi nuove offerte', 'early-access': 'accesso anticipato AUREA' };
 for (const form of document.querySelectorAll('form[data-signup]')) {
   const lang = document.documentElement.lang === 'en' ? 'en' : 'it', T = SIGNUP[lang], kind = form.dataset.signup;
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const input = form.querySelector('input[type="email"]'), email = input.value.trim();
     const err = form.querySelector('.count');
+    const extra = [...form.querySelectorAll('input[name], select[name]')].filter(el => el !== input && el.type !== 'checkbox');
+    const missing = extra.find(el => el.required && !el.value.trim());
+    if (missing) { err.textContent = T.required; missing.focus(); return; }
     if (!EMAIL_RE.test(email)) { err.textContent = T.email; input.focus(); return; }
     if (!form.querySelector('input[name="consent"]').checked) { err.textContent = T.consent; return; }
     err.textContent = '';
     form.querySelector('button[type="submit"]').disabled = true;
-    const ok = await submitLead(kind, { email, lang });
+    const data = Object.fromEntries(extra.map(el => [el.name, el.value.trim()]));
+    const ok = await submitLead(kind, { email, lang, ...data });
     form.innerHTML = ok
       ? `<div class="done-msg" role="status"><b>${T[kind][0]}</b><span>${T[kind][1]}</span></div>`
-      : T.fallback || fallbackHTML(`Iscrizione ${kind === 'alerts' ? 'avvisi nuove offerte' : 'newsletter'}: ${email}`);
+      : T.fallback || fallbackHTML(`Iscrizione ${SIGNUP_LABEL[kind] || kind}: ${email}${data.name ? ', ' + data.name : ''}${data.profile ? ' (' + data.profile + ')' : ''}`);
   });
 }
 
