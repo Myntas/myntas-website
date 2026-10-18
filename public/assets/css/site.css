@@ -151,10 +151,8 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .foot-card a { color: var(--text); text-decoration: none; }
 .foot-card a:hover { color: var(--brown); text-decoration: underline; text-underline-offset: 0.2em; }
 .foot-brand { display: grid; align-content: start; justify-items: start; gap: 1.1rem; }
-.foot-brand .brand { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
-.foot-brand .brand img { width: 64px; height: 64px; }
-.foot-brand .brand span { font-size: 1.75rem; }
-.foot-brand .brand:hover { text-decoration: none; }
+.foot-logo { display: block; border-radius: 4px; }
+.foot-logo img { display: block; width: 210px; height: auto; margin-top: -0.35rem; }
 .foot-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 .foot-news p { font-size: var(--step-0); margin-bottom: 1.1rem; }
 .news-row { display: flex; gap: 0.6rem; }
@@ -185,10 +183,7 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 @keyframes slide { to { transform: translateX(-50%); } }
 .powered { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 2rem; }
 .powered .lbl { font-family: var(--f-mono); font-size: var(--step--2); letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
-.nova { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--brown); text-decoration: none; }
-.nova svg { width: 30px; height: 30px; }
-.nova b { font-family: var(--f-body); font-weight: 600; font-size: 1.25rem; letter-spacing: 0.04em; }
-.nova span { font-weight: 400; color: var(--gold-dark); }
+.nova { display: block; width: 121px; height: auto; }
 @media (prefers-reduced-motion: reduce) { .marquee .track { animation: none; } .marquee { -webkit-mask-image: none; mask-image: none; } .marquee .track ul + ul { display: none; } .marquee ul { flex-wrap: wrap; justify-content: center; gap: 2rem 3rem; } }
 @media (max-width: 760px) { .marquee ul { gap: 3rem; padding: 0 1.5rem; } .marquee li { height: 44px; } .marquee img { transform: scale(0.8); } }
 

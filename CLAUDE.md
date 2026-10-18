@@ -14,7 +14,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
 - `public/assets/js/site.js` scroll buttons and lead forms; `assets/js/aurea.js` marketplace
 - `public/assets/fonts` self-hosted Bodoni Moda, IBM Plex Sans, IBM Plex Mono (no requests to Google)
-- `public/assets/img` logo, skyline, partner logos, share image
+- `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), skyline, partner logos, share image
 - `public/_headers` security headers (strict CSP) and cache rules; `robots.txt`; `sitemap.xml`
 
 The header and footer are repeated in every HTML page: change them in all pages together. The footer is a rounded card with brand, quick links, newsletter sign-up, then the legal lines and risk notice.
@@ -41,14 +41,14 @@ The header and footer are repeated in every HTML page: change them in all pages 
 - Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
 - AUREA shows example properties marked "Esempio".
-- The Nova Ventures mark in "Powered by" is a placeholder.
+- The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
 ## Launch checklist (before pointing myntas.com here)
 
 1. Replace AUREA examples with real offerings and documents, or switch the page to a waitlist with no figures.
 2. Privacy and cookie texts in `privacy/` and `cookie/`; P.IVA in the footer of every page.
 3. Counsel's sign-off on all regulatory wording.
-4. Written permission from each partner shown in "Trusted by"; real Nova Ventures logo.
+4. Written permission from each partner shown in "Trusted by"; high-resolution Nova Ventures logo.
 5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
 6. "Accedi" pointing at the app subdomain.
 7. Remove `<meta name="robots" content="noindex, nofollow">` from every page and replace `robots.txt` with the launch version noted inside it.
