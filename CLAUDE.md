@@ -47,7 +47,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 ## Launch checklist (before pointing myntas.com here)
 
 1. AUREA is now an intro + early-access page. Real offerings, with their documents, go live only on the AUREA app.
-2. Privacy and cookie drafts are live: counsel to confirm (see docs/lancio-myntas-com.md). Company data is in every footer (P.IVA/C.F. 07577500486, REA FI-713175, capitale 100,00 € i.v.). Start-up innovativa disclosure page (art. 25 DL 179/2012) still to publish.
+2. Privacy and cookie drafts are live: counsel to confirm (see docs/lancio-myntas-com.md). Every footer shows "© 2026 Myntas S.r.l. · P.IVA 07577500486 · Dati societari" (the VAT number must stay on the site, art. 35 DPR 633/72); the full company data (address, REA FI-713175, capitale 100,00 € i.v., PEC) is in the privacy notice, section 1 (`#dati-societari`). Start-up innovativa disclosure page (art. 25 DL 179/2012) still to publish.
 3. Counsel's sign-off on all regulatory wording.
 4. "Trusted by" is removed; written permission from Nova Ventures ("Powered by") and its high-resolution logo.
 5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
