@@ -701,10 +701,9 @@ main a:not(.btn):hover { color: var(--brown); }
 @keyframes m-hint { 50% { translate: 0 5px; } }
 @media (prefers-reduced-motion: reduce) { .m-intro { display: none !important; } }
 
-/* home, after the footer: a glass jar of 55 tokens that the pointer pushes around (jar.js) */
-.jar-sec { display: grid; justify-items: center; gap: 0.25rem; padding-block: 1rem 2.5rem; }
-#jar { display: block; width: 100%; max-width: 34rem; height: 27rem; touch-action: pan-y; cursor: grab; }
-.jar-hint { margin: 0; font-size: var(--step--1); letter-spacing: 0.06em; color: var(--muted); text-align: center; }
-.jar-hint .h-touch { display: none; }
-@media (hover: none) { .jar-hint .h-mouse { display: none; } .jar-hint .h-touch { display: inline; } }
-@media (max-width: 760px) { #jar { height: 22rem; } }
+/* home, after the footer: 55 glass tokens heaped on the floor, pushed around by the pointer (pile.js) */
+.pile-sec { display: grid; gap: 0.25rem; padding-block: 0.5rem 1.5rem; }
+#pile { display: block; width: 100%; height: 18rem; touch-action: pan-y; cursor: grab; }
+.pile-hint { justify-self: center; margin: 0; font-size: var(--step--1); letter-spacing: 0.06em; color: var(--muted); text-align: center; }
+.pile-hint .h-touch { display: none; }
+@media (hover: none) { .pile-hint .h-mouse { display: none; } .pile-hint .h-touch { display: inline; } }
