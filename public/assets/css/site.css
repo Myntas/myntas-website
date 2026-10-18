@@ -504,7 +504,7 @@ main a:not(.btn):hover { color: var(--brown); }
   .cycle::after, .cycle li, .cycle li::before { transition: none; }
 }
 
-/* AUREA logo: lowercase "aurea" wordmark only, Merriweather Bold outlines like the "myntas" wordmark (assets/img/aurea-logo.svg) */
+/* AUREA logo: lowercase "aurea" wordmark only, Merriweather Bold outlines like the "myntas" wordmark (assets/img/aurea-wordmark.svg) */
 .aurea-logo { display: block; height: auto; }
 .aurea-brand { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 .aurea-brand .soon { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--paper); }
