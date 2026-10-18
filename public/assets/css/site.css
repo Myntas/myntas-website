@@ -698,3 +698,17 @@ main a:not(.btn):hover { color: var(--brown); }
   .fp-tabs { gap: 0.2rem; }
 }
 @media (prefers-reduced-motion: reduce) { .fphone, .fp-pill, .fp-line, .fp-area, .fp-dot, .fp-a .fp-btn { animation: none; } }
+
+/* home: small titles (eyebrows) in pills, for legibility; dark variant on the brown band */
+[data-page="home"] .eyebrow { justify-self: start; align-self: start; display: inline-block; width: fit-content; padding: 0.42rem 0.95rem; border-radius: 999px; background: var(--paper); border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 6px 16px rgba(59, 45, 25, 0.06); line-height: 1.3; }
+[data-page="home"] .sec-head .eyebrow, [data-page="home"] .perks-head .eyebrow, [data-page="home"] .trust .eyebrow { justify-self: center; }
+[data-page="home"] .band .eyebrow { background: rgba(247, 241, 229, 0.08); border-color: rgba(215, 186, 120, 0.4); box-shadow: none; }
+
+/* home hero: lead sentence, then the two audiences side by side */
+.hero-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; max-width: 34rem; }
+.hero-split div { display: grid; gap: 0.3rem; align-content: start; padding: 0.9rem 1rem; border-radius: 1rem; background: var(--glass); border: 1px solid var(--glass-edge); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.hero-split b { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-dark); }
+.hero-split span { font-size: 0.9375rem; line-height: 1.5; color: var(--text); }
+@media (max-width: 520px) { .hero-split { grid-template-columns: minmax(0, 1fr); } }
+/* "Powered by" stays distinct from the "Trusted by" pill: solid gold */
+.powered .lbl { color: var(--cream); background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-color: transparent; box-shadow: 0 10px 24px rgba(114, 89, 32, 0.25); }
