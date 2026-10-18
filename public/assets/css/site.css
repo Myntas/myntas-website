@@ -131,18 +131,29 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .band .btn.ghost { color: var(--cream); border-color: var(--gold-light); }
 .band .btn.ghost:hover { background: rgba(183, 145, 68, 0.18); }
 .band .btn:focus-visible, .band a:focus-visible { outline-color: var(--cream); }
-/* footer: rounded glass card with brand, quick links and newsletter; legal lines under a rule */
+/* footer: dark rounded card in four sections (brand with contact button, contacts, quick links, newsletter) divided by
+   thin rules, then the legal lines across the bottom */
 .site-foot { padding-block: 3rem 2.5rem; }
-.foot-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.8fr) minmax(0, 1.3fr); gap: 2.5rem 3rem; padding: 2.75rem 3rem 2rem; border-radius: 1.5rem;
-  background: var(--paper); border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px rgba(59, 45, 25, 0.07); color: var(--text); }
-.foot-card h2 { font-size: 1.5rem; color: var(--gold-dark); margin-bottom: 1.1rem; }
-.foot-card a { color: var(--text); text-decoration: none; }
-.foot-card a:hover { color: var(--brown); text-decoration: underline; text-underline-offset: 0.2em; }
+.foot-card { --fl: rgba(247, 241, 229, 0.12); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) minmax(0, 0.75fr) minmax(0, 1.35fr); overflow: hidden; border-radius: 1.5rem;
+  background: var(--brown); border: 1px solid rgba(215, 186, 120, 0.25); box-shadow: 0 24px 60px rgba(59, 45, 25, 0.22); color: rgba(247, 241, 229, 0.74); }
+.foot-card > * { padding: 2.5rem 2rem; }
+.foot-card > * + * { border-left: 1px solid var(--fl); }
+.foot-card h2 { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.25rem; }
+.foot-card a { color: var(--cream); text-decoration: none; }
+.foot-card a:hover { color: var(--gold-light); text-decoration: underline; text-underline-offset: 0.2em; }
 .foot-brand { display: grid; align-content: start; justify-items: start; gap: 1.1rem; }
+.foot-brand p { margin: 0; font-size: 0.9375rem; color: rgba(247, 241, 229, 0.74); max-width: 18rem; }
 .foot-logo { display: block; border-radius: 4px; }
-.foot-logo img { display: block; width: 210px; height: auto; margin-top: -0.35rem; }
+.foot-logo img { display: block; width: 190px; height: auto; margin-top: -0.35rem; }
+.foot-card .foot-cta { display: inline-flex; align-items: center; padding: 0.75rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: 0.9375rem; color: var(--brown); background: linear-gradient(135deg, var(--gold-light), var(--gold)); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
+.foot-card .foot-cta:hover { color: var(--brown); text-decoration: none; background: var(--cream); }
+.foot-contact address { font-style: normal; display: grid; gap: 0.55rem; line-height: 1.5; }
+.foot-contact address span:first-of-type { color: var(--cream); font-weight: 600; margin-top: 0.4rem; }
 .foot-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
-.foot-news p { font-size: var(--step-0); margin-bottom: 1.1rem; }
+.foot-news p { font-size: 0.9375rem; margin-bottom: 1.1rem; color: rgba(247, 241, 229, 0.74); }
+.foot-card .news-row input { color: var(--cream); background: rgba(247, 241, 229, 0.08); border-color: rgba(247, 241, 229, 0.22); }
+.foot-card .news-row input::placeholder { color: rgba(247, 241, 229, 0.5); }
+.foot-card .check { color: rgba(247, 241, 229, 0.7); }
 .news-row { display: flex; gap: 0.6rem; }
 .news-row input { flex: 1; min-width: 0; width: 0; font: inherit; color: var(--brown); background: var(--cream); border: 1px solid var(--line-strong); border-radius: 999px; padding: 0.8rem 1.15rem; }
 .news-go { flex: none; display: grid; place-items: center; width: 3.25rem; border: 0; border-radius: 999px; background: linear-gradient(135deg, var(--gold-light), var(--gold-btn)); color: var(--cream); cursor: pointer; box-shadow: 0 4px 14px rgba(114, 89, 32, 0.22); }
@@ -152,12 +163,12 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .foot-news .check { margin-top: 0.85rem; }
 .foot-news .count { margin-top: 0.4rem; }
 .foot-news .check a { text-decoration: underline; text-underline-offset: 0.15em; }
-.foot-bottom { grid-column: 1 / -1; display: grid; justify-items: center; gap: 0.6rem; text-align: center; border-top: 1px solid var(--line); padding-top: 1.5rem; font-size: var(--step--1); color: var(--muted); }
+.foot-card > .foot-bottom { grid-column: 1 / -1; display: grid; justify-items: center; gap: 0.6rem; text-align: center; border-left: 0; border-top: 1px solid var(--fl); padding: 1.5rem 2rem 1.75rem; font-size: var(--step--1); color: rgba(247, 241, 229, 0.56); background: rgba(0, 0, 0, 0.12); }
 .foot-bottom .legal { font-family: var(--f-mono); letter-spacing: 0.02em; }
 .foot-bottom .legal a { color: inherit; text-underline-offset: 0.15em; }
 .foot-bottom .risk { max-width: 52rem; }
 .foot-bottom .links { display: flex; gap: 1.25rem; }
-.foot-bottom a { color: var(--muted); }
+.foot-card .foot-bottom a { color: rgba(247, 241, 229, 0.75); }
 
 /* powered by */
 .trust { padding-block: 3.5rem; display: grid; gap: 2rem; }
@@ -266,11 +277,19 @@ main a:not(.btn):hover { color: var(--brown); }
   .bcard, .bcard:nth-child(n+4) { grid-column: 1; grid-row: auto; padding: 1.1rem 1.2rem; }
 }
 @media (prefers-reduced-motion: reduce) { .switch::before, .switch button, .flip-slot img { transition: none; } .bcard { animation: none; } }
-@media (max-width: 860px) {
-  .foot-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 2.25rem 1.75rem 1.75rem; }
-  .foot-news { grid-column: 1 / -1; }
+@media (max-width: 960px) {
+  .foot-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .foot-card > * { padding: 2rem 1.75rem; }
+  .foot-card > * + * { border-left: 0; }
+  .foot-card > :nth-child(even) { border-left: 1px solid var(--fl); }
+  .foot-card > :nth-child(n+3) { border-top: 1px solid var(--fl); }
 }
-@media (max-width: 520px) { .foot-card { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding: 2rem 1.25rem 1.5rem; border-radius: 1.25rem; } }
+@media (max-width: 560px) {
+  .foot-card { grid-template-columns: minmax(0, 1fr); border-radius: 1.25rem; }
+  .foot-card > * { padding: 1.75rem 1.4rem; }
+  .foot-card > :nth-child(even) { border-left: 0; }
+  .foot-card > * + * { border-top: 1px solid var(--fl); }
+}
 
 /* button tap pulse (AUREA phones) */
 @keyframes tap { 0%, 55% { box-shadow: 0 0 0 0 rgba(183, 145, 68, 0.55); transform: scale(1); } 62% { transform: scale(0.96); } 70% { transform: scale(1); } 100% { box-shadow: 0 0 0 14px rgba(183, 145, 68, 0); } }
@@ -704,6 +723,4 @@ main a:not(.btn):hover { color: var(--brown); }
 /* home, after the footer: 55 glass tokens heaped on the floor, pushed around by the pointer (pile.js) */
 .pile-sec { display: grid; gap: 0.25rem; padding-block: 0.5rem 1.5rem; }
 #pile { display: block; width: 100%; height: 18rem; touch-action: pan-y; cursor: grab; }
-.pile-hint { justify-self: center; margin: 0; font-size: var(--step--1); letter-spacing: 0.06em; color: var(--muted); text-align: center; }
-.pile-hint .h-touch { display: none; }
-@media (hover: none) { .pile-hint .h-mouse { display: none; } .pile-hint .h-touch { display: inline; } }
+@media (hover: none) { 
