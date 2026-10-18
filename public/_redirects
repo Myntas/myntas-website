@@ -1,3 +1,37 @@
-# Old links to the retired Base44 app land on the AUREA early-access form.
+# Old links to the retired Base44 app (myntas.com/<Page> now lands here with the same path).
+# Both spellings, since paths are case sensitive.
+/Home / 301
+/home / 301
+/Partners /proprietari/ 301
+/partners /proprietari/ 301
+/FAQ /aurea/#faq 301
+/faq /aurea/#faq 301
+/Announcements / 301
+/announcements / 301
+/KnowledgeHub / 301
+/knowledgehub / 301
+/Governance / 301
+/governance / 301
+/Careers / 301
+/careers / 301
+# App areas (account, trading, wallet) land on the AUREA early-access form.
 /Account /aurea/#accesso 301
 /account /aurea/#accesso 301
+/MyntasTrade /aurea/#accesso 301
+/myntastrade /aurea/#accesso 301
+/Portfolio /aurea/#accesso 301
+/portfolio /aurea/#accesso 301
+/Wallet /aurea/#accesso 301
+/wallet /aurea/#accesso 301
+/Transactions /aurea/#accesso 301
+/transactions /aurea/#accesso 301
+/IncomePayouts /aurea/#accesso 301
+/incomepayouts /aurea/#accesso 301
+/InvestorProfile /aurea/#accesso 301
+/investorprofile /aurea/#accesso 301
+/Documents /aurea/#accesso 301
+/documents /aurea/#accesso 301
+/Settings /aurea/#accesso 301
+/settings /aurea/#accesso 301
+/OAuthConsent /aurea/#accesso 301
+/oauthconsent /aurea/#accesso 301
