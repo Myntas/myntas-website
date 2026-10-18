@@ -40,7 +40,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 - Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
-- AUREA shows example properties marked "Esempio".
+- AUREA shows example properties marked "Esempio". When the AUREA page is redone, use these invented names for the examples (not real cities or addresses): Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci. "Residenza Aurora" is the example in the home page phone screens.
 - The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
 ## Launch checklist (before pointing myntas.com here)
