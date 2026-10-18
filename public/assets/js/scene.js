@@ -147,6 +147,7 @@ async function init() {
     const r = 0.25 * Math.sqrt(i + 0.6), a = i * GOLD_ANGLE;
     spreadPos.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, Math.sin(i * 1.7) * 0.25));
   }
+  const spreadNarrow = spreadPos.map(v => v.clone().multiplyScalar(0.62)); // phones: the 55 tokens stay inside the screen width
   const stage = new THREE.Group();
   stage.add(tokens, ...pieces.map(p => p.g));
   scene.add(stage);
@@ -209,7 +210,7 @@ async function init() {
       T = { x: lerp(1.7, halfW * 0.8, away), y: lerp(0, halfH * 0.66, away), s: lerp(1, 0.3, away), spin: p * Math.PI - 0.38, turn: -0.55 + p * 0.6, sky: clamp01(p / 2) };
       Object.assign(T, { build: 1 - ramp(p, 0.12, 0.65), split: 0, gather: 0, coin: ramp(p, 0.4, 0.7) });
     }
-    if (mobile) { T.x = 0; T.y = halfH * 0.5; T.s *= 0.55; }
+    if (mobile) { T.x = 0; T.y = halfH * 0.52; T.s *= 0.48; }
     T.flip = 0;
     aim = false;
     if (slot) {
@@ -260,6 +261,7 @@ async function init() {
 
     const active = build > 0.001 && gather < 0.999 && P.s > 0.01;
     tokens.visible = active && split > 0.001;
+    const SP = mobile ? spreadNarrow : spreadPos;
     for (let i = 0; i < N; i++) {
       const pc = pieces[i];
       const bi = ease(build * 1.9 - pc.row * 0.15);                              // floors rise from the ground up
@@ -268,7 +270,7 @@ async function init() {
       const k = active ? bi * (1 - ease(si * 1.3)) : 0;
       pc.g.visible = k > 0.002;
       if (pc.g.visible) {
-        tmp.copy(pc.home); tmp.y -= (1 - bi) * 0.5; tmp.lerp(spreadPos[i], si);
+        tmp.copy(pc.home); tmp.y -= (1 - bi) * 0.5; tmp.lerp(SP[i], si);
         pc.g.position.copy(tmp);
         pc.g.rotation.set(si * 0.9 * (i % 2 ? 1 : -1), si * 1.4, 0);
         pc.g.scale.setScalar(pc.scale * k);
@@ -277,7 +279,7 @@ async function init() {
         const ts = 0.125 * si * (1 - gi * 0.85);
         if (ts < 0.002) tokens.setMatrixAt(i, ZERO);
         else {
-          v4.copy(pc.home).lerp(spreadPos[i], si).multiplyScalar(1 - gi);
+          v4.copy(pc.home).lerp(SP[i], si).multiplyScalar(1 - gi);
           e4.set(0.2, P.spin + i * 0.61 + time * 0.4, 0); q4.setFromEuler(e4); sc4.setScalar(ts);
           m4.compose(v4, q4, sc4); tokens.setMatrixAt(i, m4);
         }
