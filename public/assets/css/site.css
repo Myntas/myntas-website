@@ -71,6 +71,10 @@ button { font: inherit; color: inherit; }
 .nav a[aria-current="page"] { color: var(--brown); background: rgba(163, 126, 45, 0.16); }
 .nav .login { color: var(--cream); background: var(--gold-btn); padding: 0.55rem 1.15rem; font-weight: 500; margin-left: 0.35rem; }
 .nav .login:hover { color: var(--cream); background: var(--gold-dark); }
+/* language switcher: IT/EN segment at the right end of the pill */
+.nav .lang { display: flex; gap: 0.1rem; margin-left: 0.35rem; padding: 0.15rem; border: 1px solid var(--line); border-radius: 999px; font-family: var(--f-mono); letter-spacing: 0.06em; }
+.nav .lang a { padding: 0.35rem 0.55rem; }
+.nav .lang a[aria-current="true"] { color: var(--brown); background: rgba(163, 126, 45, 0.16); }
 .nav a:focus-visible, .brand:focus-visible { outline: 2px solid var(--brown); outline-offset: 2px; }
 [id] { scroll-margin-top: 6rem; }
 
@@ -267,6 +271,8 @@ footer .risk { max-width: 52rem; }
   .nav { gap: 0.1rem; }
   .nav a { padding: 0.5rem 0.7rem; }
   .nav .login { padding: 0.55rem 0.95rem; }
+  .nav .lang { margin-left: 0.2rem; }
+  .nav .lang a { padding: 0.35rem 0.4rem; }
   .site-head { padding-block: 0.6rem; }
   .top { padding-left: 0.6rem; }
   .nav .hide-s, .brand span { display: none; }
@@ -301,3 +307,16 @@ footer .risk { max-width: 52rem; }
 .fallback-msg b { color: var(--brown); }
 main a:not(.btn) { color: var(--gold-dark); text-underline-offset: 0.15em; }
 main a:not(.btn):hover { color: var(--brown); }
+/* small phones: the switcher shows only the other language, so the pill still fits */
+@media (max-width: 420px) {
+  .top { gap: 0.5rem; padding-left: 0.4rem; }
+  .nav a { padding: 0.5rem 0.5rem; }
+  .nav .login { padding: 0.55rem 0.8rem; margin-left: 0.15rem; }
+  .nav .lang { margin-left: 0.1rem; padding: 0; border: 0; }
+  .nav .lang a { padding: 0.5rem 0.45rem; }
+  .nav .lang a[aria-current="true"] { display: none; }
+}
+@media (max-width: 350px) {
+  .nav a, .nav .lang a { padding: 0.5rem 0.3rem; }
+  .nav .login { padding: 0.55rem 0.6rem; }
+}
