@@ -9,7 +9,8 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/index.html` home (scroll story, "AUREA in tre passi" with illustrative phone screens, "Perché tokenizzare" investor/owner switch with six cards around the token (its own `.wrap` after the solid AUREA block; the 3D token moves to the slot as the section enters the viewport), "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA intro page ("in arrivo"): hero with key points and two floating phones in HTML/CSS (listing and wallet, pills "Investi con solo 100 €" / "Basta un click"; no 3D on this page), animated dashboard preview in four steps, "La scheda immobile" (six cards), offer lifecycle timeline, "Primi passi" (profile, ID check, questionnaire, invest), "Per chi è AUREA", FAQ (`<details>`), early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
 - `public/proprietari/index.html` owners page, built around the tokenization request form (`#ownerFormEl`, `kind: "owner"`): hero with key points, nine benefits, five-step process, request card with requirements and next steps, owners FAQ
-- `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
+- `public/privacy/`, `cookie/` (and `en/privacy/`, `en/cookie/`) privacy notice and cookie policy, published as provisional drafts under legal review; `404.html`
+- `docs/lancio-myntas-com.md` (not published) domain hookup steps, legal review dossier, missing company data, partner permission template
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
 - `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`) on the home and Proprietari pages; it reads `<body data-page>`
 - `public/assets/js/site.js` scroll buttons, home switch, sign-up and lead forms; `assets/js/aurea.js` AUREA preview animations
@@ -21,9 +22,9 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Languages
 
-- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). Home, AUREA and Proprietari have English versions (`en/index.html`, `en/aurea/index.html`, `en/proprietari/index.html`).
+- Italian is the main language. English pages live under `public/en/` with the same path (`/aurea/` → `/en/aurea/`). Every page except 404 has an English version (`en/index.html`, `en/aurea/`, `en/proprietari/`, `en/privacy/`, `en/cookie/`).
 - The IT/EN switcher is the `.lang` group at the right end of the header. Its IT link points to the Italian page itself; the EN link points to the page's English version, or to `/en/` while that does not exist yet. Below 420px it shows only the other language.
-- When you add or change copy on a page that has an English version, update both. English pages link to the Italian pages that are not translated yet (privacy, cookie).
+- When you add or change copy on a page that has an English version, update both. Every page has an English version; English forms and footers link to `/en/privacy/` and `/en/cookie/`.
 - Translated pairs carry `hreflang` alternates; add them to each new pair and add new English URLs to `sitemap.xml`.
 
 ## Rules
@@ -46,7 +47,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 ## Launch checklist (before pointing myntas.com here)
 
 1. AUREA is now an intro + early-access page. Real offerings, with their documents, go live only on the AUREA app.
-2. Privacy and cookie texts in `privacy/` and `cookie/`; P.IVA in the footer of every page.
+2. Privacy and cookie drafts are live: counsel to confirm (see docs/lancio-myntas-com.md). P.IVA, REA and share capital in the footer of every page.
 3. Counsel's sign-off on all regulatory wording.
 4. Written permission from each partner shown in "Trusted by"; high-resolution Nova Ventures logo.
 5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
