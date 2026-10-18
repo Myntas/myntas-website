@@ -85,14 +85,31 @@
 </div>
 </main>
 <div id="modalRoot"></div>
-<div class="band">
-  <div class="wrap">
-    <footer class="inner">
-      <div class="legal">Myntas S.r.l. · Viale Spartaco Lavagnini 13, 50129 Firenze · PEC myntas@pec.it · P.IVA in attribuzione</div>
-      <div class="links"><a href="/privacy/">Privacy</a><a href="/cookie/">Cookie</a><a href="mailto:info@myntas.com">info@myntas.com</a></div>
+<div class="wrap solid site-foot">
+  <footer class="inner foot-card">
+    <div class="foot-brand">
+      <a class="brand" href="/" aria-label="Myntas, home"><img src="/assets/img/logo.svg" alt="" width="64" height="64"><span>Myntas</span></a>
+      <a href="mailto:info@myntas.com">info@myntas.com</a>
+    </div>
+    <nav class="foot-links" aria-labelledby="footLinksT">
+      <h2 id="footLinksT">Link rapidi</h2>
+      <ul><li><a href="/">Home</a></li><li><a href="/aurea/">AUREA</a></li><li><a href="/proprietari/">Proprietari</a></li><li><a href="/#processo">Come funziona</a></li><li><a href="https://myntas.com/Account">Accedi</a></li></ul>
+    </nav>
+    <div class="foot-news">
+      <h2 id="newsT">Resta aggiornato</h2>
+      <p>Iscriviti alla newsletter per ricevere le nuove offerte e le novità di Myntas.</p>
+      <form id="newsForm" aria-labelledby="newsT" novalidate>
+        <div class="news-row"><input type="email" id="newsEmail" name="email" placeholder="La tua email" aria-label="Email" autocomplete="email" required><button type="submit" class="news-go" aria-label="Iscriviti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+        <label class="check"><input type="checkbox" id="newsConsent" required> <span>Acconsento a ricevere email da Myntas S.r.l., secondo l'<a href="/privacy/">informativa privacy</a>.</span></label>
+        <div class="count" id="newsErr" aria-live="polite"></div>
+      </form>
+    </div>
+    <div class="foot-bottom">
+      <div class="legal">© 2026 Myntas S.r.l. · Viale Spartaco Lavagnini 13, 50129 Firenze · PEC myntas@pec.it · P.IVA in attribuzione</div>
       <div class="risk">Le informazioni su questo sito non costituiscono offerta di strumenti finanziari. Investire comporta rischi, inclusa la perdita del capitale investito.</div>
-    </footer>
-  </div>
+      <div class="links"><a href="/privacy/">Privacy</a><a href="/cookie/">Cookie</a></div>
+    </div>
+  </footer>
 </div>
 </body>
 </html>
