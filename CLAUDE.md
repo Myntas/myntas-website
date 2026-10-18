@@ -6,7 +6,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 ## Structure
 
-- `public/index.html` home (scroll story, "Vantaggi" investor/owner switch with six cards around the token, "Trusted by", "Powered by"); `public/en/index.html` its English version
+- `public/index.html` home (scroll story, "Perché tokenizzare" investor/owner switch with six cards around the token, "Trusted by", "Powered by"); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA marketplace (listings in `assets/js/aurea.js`)
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
