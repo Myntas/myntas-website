@@ -14,7 +14,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
 - `public/assets/js/site.js` scroll buttons, home switch, sign-up and lead forms; `assets/js/aurea.js` AUREA preview animations
 - `public/assets/fonts` self-hosted Montserrat (variable, OFL; every text on the site uses it: `--f-display`, `--f-body`, `--f-mono` all point to it, headings at `--w-display`). No requests to Google
-- `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), AUREA logo (`aurea-logo.svg`, mark + wordmark drawn as outlines from Bodoni Moda; `aurea-mark.svg` mark only; gold `#d0b677` like the Myntas logo), skyline, partner logos, share image
+- `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), AUREA logo (`aurea-logo.svg`: lowercase "aurea" wordmark only, Merriweather Bold as outlines to match the "myntas" wordmark, gold `#d0b677`), skyline, partner logos, share image
 - `public/_headers` security headers (strict CSP) and cache rules; `robots.txt`; `sitemap.xml`
 
 The header and footer are repeated in every HTML page: change them in all pages together. The footer is a rounded card with brand, quick links, newsletter sign-up, then the legal lines and risk notice.

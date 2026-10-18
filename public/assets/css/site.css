@@ -528,16 +528,16 @@ main a:not(.btn):hover { color: var(--brown); }
   .cycle::after, .cycle li, .cycle li::before { transition: none; }
 }
 
-/* AUREA logo (mark + wordmark, assets/img/aurea-logo.svg) */
+/* AUREA logo: lowercase "aurea" wordmark only, Merriweather Bold outlines like the "myntas" wordmark (assets/img/aurea-logo.svg) */
 .aurea-logo { display: block; height: auto; }
 .aurea-brand { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 .aurea-brand .soon { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--paper); }
 .dash-url img { display: inline-block; vertical-align: middle; }
-.how-head .aurea-logo { width: 143px; }
+.how-head .aurea-logo { width: 133px; }
 
 /* early access: larger, higher-contrast labels and fields */
 .early-card { align-items: center; }
-.early-card .aurea-logo { width: 116px; margin-bottom: 1.25rem; }
+.early-card .aurea-logo { width: 107px; margin-bottom: 1.25rem; }
 .early-card p { color: rgba(247, 241, 229, 0.88); }
 .early-list { color: var(--cream); font-size: 1rem; }
 .early-list svg { width: 1rem; height: 1rem; padding: 0.2rem; border-radius: 50%; background: rgba(183, 145, 68, 0.2); margin-top: 0.2rem; box-sizing: content-box; }
