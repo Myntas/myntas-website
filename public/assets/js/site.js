@@ -53,6 +53,14 @@ for (const list of document.querySelectorAll('.switch[role="tablist"]')) {
   });
 }
 
+// home on phones: the "Scorri" hint at the start of the 3D intro goes away once the visitor scrolls
+const hint = document.querySelector('.m-hint');
+if (hint) {
+  const onScroll = () => { hint.classList.toggle('gone', window.scrollY > 40); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
 // home AUREA phones: the CSS chart animation waits until the section is on screen
 const showcase = document.querySelector('.showcase');
 if (showcase) {
