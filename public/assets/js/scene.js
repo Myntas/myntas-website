@@ -23,7 +23,7 @@ async function init() {
   const canvas = document.getElementById('scene');
   if (!canvas) return;
   let renderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { return; }
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { noScene(); return; }
 
   const [skyImg, svgText] = await Promise.all([
     loadImage('/assets/img/skyline.jpg'),
@@ -265,4 +265,6 @@ async function init() {
   requestAnimationFrame(frame);
 }
 
-if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => console.error(e));
+// no WebGL or a failed start: show the flat logo straight away instead of waiting for the CSS timeout
+function noScene() { document.documentElement.classList.add('no3d'); }
+if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => { noScene(); console.error(e); });

@@ -39,7 +39,8 @@
 }
 html { background: var(--cream); }
 body { background: var(--cream); color: var(--text); font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-#scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; }
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; opacity: 0; transition: opacity 0.7s ease; }
+.webgl #scene { opacity: 1; }
 .wrap { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .inner { max-width: 72rem; margin-inline: auto; }
 .solid { background: var(--cream); }
@@ -96,7 +97,13 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 
 .fallback { position: absolute; right: 6%; top: 50%; width: min(38vw, 420px); aspect-ratio: 1; max-width: 100%; transform: translateY(-50%); color: var(--gold); pointer-events: none; }
 .fallback svg { width: 100%; height: 100%; }
-.webgl .fallback { display: none; }
+/* the flat logo is only a fallback: it fades in if the 3D has not started after 3 s (or at once with .no3d / reduced motion).
+   With 3D running it stays hidden but keeps its box, so the layout does not jump on phones. */
+.fallback img { opacity: 0; animation: fb-in 0.5s 3s forwards; }
+.webgl .fallback { visibility: hidden; }
+.webgl .fallback img { animation: none; }
+.no3d .fallback img { opacity: 1; animation: none; }
+@keyframes fb-in { to { opacity: 1; } }
 .hero-inner { position: relative; }
 
 /* process steps */
@@ -204,7 +211,7 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
   .split > div + div { border-top: 1px solid var(--line-on-dark); }
   .formgrid { grid-template-columns: minmax(0, 1fr); }
 }
-@media (prefers-reduced-motion: reduce) { #scene { display: none; } .btn, .nav a { transition: none; } }
+@media (prefers-reduced-motion: reduce) { #scene { display: none; } .btn, .nav a { transition: none; } .fallback img { opacity: 1; animation: none; } }
 
 /* site additions */
 .skip { position: absolute; left: -999px; top: 0; z-index: 100; background: var(--brown); color: var(--cream); padding: 0.6rem 1rem; }

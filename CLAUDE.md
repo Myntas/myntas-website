@@ -1,7 +1,7 @@
 # Myntas website
 
 Static marketing site for Myntas S.r.l. (myntas.com). Plain HTML, CSS and JS, no build step.
-Hosted on Cloudflare in two ways from the same repo: a Worker with static assets (`wrangler.jsonc`, test address `myntas-website.fragrant-waterfall-55f0.workers.dev`) and a Cloudflare Pages project (build output `public`, no build command) that serves **www.myntas.com**. Every push to `main` deploys both; other branches get preview URLs. The canonical address is `https://www.myntas.com/` (canonicals, hreflang, og:url, sitemap). `myntas.com` without www is redirected to www by the Hostinger Business hosting (hPanel → Websites → Redirects). DNS and email stay on Hostinger; the domain is registered at GoDaddy in an account Myntas no longer controls (recovery pending).
+Hosted on Cloudflare in two ways from the same repo: a Worker with static assets (`wrangler.jsonc`) and a Cloudflare Pages project `myntas` (build output `public`, no build command, `myntas.pages.dev`) that serves **www.myntas.com**. Every push to `main` deploys both; other branches get preview URLs. The canonical address is `https://www.myntas.com/` (canonicals, hreflang, og:url, sitemap). `myntas.com` without www is redirected to www by the Hostinger Business hosting (hPanel → Websites → Redirects). DNS and email stay on Hostinger; the domain is registered at GoDaddy in an account Myntas no longer controls (recovery pending).
 Everything the website serves lives in `public/`; files outside it (this file, README, LICENSE) are never published.
 
 ## Structure
@@ -12,7 +12,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/privacy/`, `cookie/` (and `en/privacy/`, `en/cookie/`) privacy notice and cookie policy, published as provisional drafts under legal review; `404.html`
 - `docs/lancio-myntas-com.md` (not published) domain hookup steps, legal review dossier, missing company data, partner permission template
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
-- `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`) on the home and Proprietari pages; it reads `<body data-page>`
+- `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`) on the home and Proprietari pages; it reads `<body data-page>`. Loading: those pages modulepreload three.js and its addons and preload the skyline; `#scene` fades in when the first frame renders (`html.webgl`). The flat `.fallback` logo stays invisible and only fades in after 3 s without 3D, or at once with `html.no3d` (WebGL failed) or reduced motion; with 3D it keeps its box so phones don't jump
 - `public/assets/js/site.js` scroll buttons, home switch, sign-up and lead forms; `assets/js/aurea.js` AUREA preview animations
 - `public/assets/fonts` self-hosted Montserrat (variable, OFL; every text on the site uses it: `--f-display`, `--f-body`, `--f-mono` all point to it, headings at `--w-display`). No requests to Google
 - `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), AUREA logo (`aurea-wordmark.svg`: lowercase "aurea" wordmark only, Merriweather Bold as outlines to match the "myntas" wordmark, gold `#d0b677`; renamed from aurea-logo.svg so cached copies of the old circle logo are not reused. Images are cached for 7 days: give a changed image a new file name), skyline, partner logos, share image
