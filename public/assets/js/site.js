@@ -88,25 +88,32 @@ for (const form of document.querySelectorAll('form[data-signup]')) {
   });
 }
 
-// owner proposal form (/proprietari/)
+// owner tokenization request (/proprietari/ and /en/proprietari/)
 const owner = document.getElementById('ownerFormEl');
 if (owner) {
+  const en = document.documentElement.lang === 'en';
+  const M = en
+    ? { required: 'Fill in the required fields (*).', email: 'Enter a valid email address.', consent: 'We need your consent to contact you.', sending: 'Sending…',
+        done: ['Request sent', 'Thank you. The team will review the details and reply with an initial assessment.'],
+        fallback: `<div class="fallback-msg" role="status"><b>Online sending is not active yet.</b><span>Email us at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> with the details of your property.</span></div>` }
+    : { required: 'Compila i campi obbligatori (*).', email: 'Inserisci un indirizzo email valido.', consent: 'Serve il consenso per poterti ricontattare.', sending: 'Invio in corso…',
+        done: ['Richiesta inviata', 'Grazie. Il team valuta i dati e ti risponde con una prima valutazione.'] };
   owner.addEventListener('submit', async e => {
     e.preventDefault();
     const val = id => document.getElementById(id).value.trim();
     const err = document.getElementById('ownerErr');
-    const req = ['oName', 'oEmail', 'oType', 'oCity', 'oValue', 'oLet'];
+    const req = ['oName', 'oEmail', 'oType', 'oCity', 'oValue', 'oLet', 'oShare'];
     const miss = req.filter(id => !val(id));
-    if (miss.length) { err.textContent = 'Compila i campi obbligatori (*).'; document.getElementById(miss[0]).focus(); return; }
-    if (!EMAIL_RE.test(val('oEmail'))) { err.textContent = 'Inserisci un indirizzo email valido.'; document.getElementById('oEmail').focus(); return; }
-    if (!document.getElementById('oConsent').checked) { err.textContent = 'Serve il consenso per poterti ricontattare.'; return; }
+    if (miss.length) { err.textContent = M.required; document.getElementById(miss[0]).focus(); return; }
+    if (!EMAIL_RE.test(val('oEmail'))) { err.textContent = M.email; document.getElementById('oEmail').focus(); return; }
+    if (!document.getElementById('oConsent').checked) { err.textContent = M.consent; return; }
     err.textContent = '';
     const btn = owner.querySelector('button[type="submit"]');
-    btn.disabled = true; btn.textContent = 'Invio in corso…';
-    const data = { name: val('oName'), company: val('oCompany'), email: val('oEmail'), phone: val('oPhone'), type: val('oType'), city: val('oCity'), value: val('oValue'), let: val('oLet'), description: val('oDesc') };
+    btn.disabled = true; btn.textContent = M.sending;
+    const data = { name: val('oName'), company: val('oCompany'), email: val('oEmail'), phone: val('oPhone'), type: val('oType'), city: val('oCity'), value: val('oValue'), let: val('oLet'), share: val('oShare'), description: val('oDesc'), lang: en ? 'en' : 'it' };
     const ok = await submitLead('owner', data);
     owner.innerHTML = ok
-      ? `<div class="done-msg" role="status"><b>Proposta inviata</b><span>Grazie. Il team valuta i dati e ti risponde con una prima valutazione.</span></div>`
-      : fallbackHTML(`Proposta immobile: ${data.type}, ${data.city}, valore ${data.value}, locato: ${data.let}.`);
+      ? `<div class="done-msg" role="status"><b>${M.done[0]}</b><span>${M.done[1]}</span></div>`
+      : M.fallback || fallbackHTML(`Richiesta di tokenizzazione: ${data.type}, ${data.city}, valore ${data.value}, locato: ${data.let}, quota: ${data.share}.`);
   });
 }

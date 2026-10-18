@@ -107,14 +107,8 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .step b { font-family: var(--f-display); font-weight: var(--w-display); font-size: 1.375rem; color: var(--brown); }
 .step i { font-family: var(--f-mono); font-style: normal; font-size: var(--step--1); color: var(--gold-dark); letter-spacing: 0.1em; }
 .step span { color: var(--text); font-size: 0.9375rem; line-height: 1.5; }
-.steps.five { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: none; }
-.steps.five .step { border-right: 1px solid var(--line); padding: 1.25rem 1rem 1.25rem 0; }
-.steps.five .step + .step { padding-left: 1rem; }
-.steps.five .step:last-child { border-right: 0; }
 
 /* section heads on solid areas */
-.section { padding-block: 5rem; display: grid; gap: 2rem; }
-.section-head { display: grid; gap: 0.75rem; max-width: 40rem; }
 
 /* dark band */
 .band { position: relative; z-index: 1; background: var(--brown); color: var(--cream); }
@@ -186,26 +180,9 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .done-msg { display: grid; gap: 0.6rem; padding: 1rem; border: 1px solid var(--ok); border-radius: 2px; background: rgba(79, 107, 58, 0.06); }
 .done-msg b { color: var(--ok); }
 
-/* owners */
-.benefits { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.benefits div { display: grid; gap: 0.2rem; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
-.benefits b { font-family: var(--f-display); font-weight: var(--w-display); font-size: 1.25rem; color: var(--brown); }
-.benefits span { font-size: 0.9375rem; color: var(--text); }
 .formgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.25rem; }
 .formgrid .full { grid-column: 1 / -1; }
-.owner-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 3rem; align-items: start; }
-.owner-form form { background: var(--paper); border: 1px solid var(--line); padding: 1.75rem; border-radius: 2px; display: grid; gap: 1.25rem; }
-.reqs { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
-.reqs li { display: flex; gap: 0.6rem; font-size: 0.9375rem; }
-.reqs li::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; margin-top: 0.55rem; background: var(--gold); transform: rotate(45deg); }
 
-
-@media (max-width: 1000px) {
-  .steps.five { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .steps.five .step { border-right: 0; padding: 1rem 0; }
-  .steps.five .step + .step { padding-left: 0; }
-  .owner-form { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-}
 @media (max-width: 760px) {
   .nav { gap: 0.1rem; }
   .nav a { padding: 0.5rem 0.7rem; }
@@ -227,7 +204,6 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
   .split > div, .split > div + div { padding: 2.5rem 0 2rem; border-left: 0; }
   .split > div + div { border-top: 1px solid var(--line-on-dark); }
   .formgrid { grid-template-columns: minmax(0, 1fr); }
-  .section { padding-block: 3.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { #scene { display: none; } .btn, .nav a { transition: none; } }
 
@@ -612,3 +588,39 @@ main a:not(.btn):hover { color: var(--brown); }
   .info-sec, .start-sec, .who-sec, .faq-sec { padding-block: 3.25rem; }
 }
 @media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+/* owners page: five-step process, tokenization request card */
+.start.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.owner-sec { padding-block: 4.5rem; }
+.owner-card { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 3rem; padding: 3rem; border-radius: 1.5rem; background: var(--brown); color: var(--cream); box-shadow: 0 30px 70px rgba(59, 45, 25, 0.18); }
+.owner-txt { display: grid; gap: 1rem; align-content: start; }
+.owner-txt .eyebrow { color: var(--gold-light); }
+.owner-txt h2 { color: var(--cream); }
+.owner-txt h2 em { color: var(--gold-light); }
+.owner-txt p { color: rgba(247, 241, 229, 0.88); font-size: var(--step-0); }
+.owner-txt h3 { color: var(--gold-light); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.75rem; }
+.owner-txt .early-list { margin: 0; }
+.owner-txt .small { color: rgba(247, 241, 229, 0.62); margin-top: 0.5rem; }
+.next-list { margin: 0; padding: 0; list-style: none; counter-reset: nx; display: grid; gap: 0.6rem; }
+.next-list li { counter-increment: nx; display: flex; gap: 0.7rem; align-items: flex-start; font-size: 0.9375rem; color: var(--cream); }
+.next-list li::before { content: counter(nx); flex: none; display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 50%; background: rgba(183, 145, 68, 0.25); color: var(--gold-light); font-size: 0.75rem; font-weight: 700; }
+.lead-form { display: grid; gap: 1.1rem; align-content: start; padding: 2rem; border-radius: 1.25rem; background: var(--paper); color: var(--text); }
+.lead-form .field { gap: 0.45rem; }
+.lead-form .field label { font-family: var(--f-body); font-size: 0.9375rem; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--brown); }
+.lead-form .field input, .lead-form .field select, .lead-form .field textarea { font-size: 1rem; padding: 0.85rem 1rem; border-radius: 0.75rem; border: 1px solid var(--line-strong); background: #fffdf8; color: var(--brown); transition: border-color 0.2s, box-shadow 0.2s; }
+.lead-form .field input::placeholder, .lead-form .field textarea::placeholder { color: #9a9284; }
+.lead-form .field input:focus, .lead-form .field select:focus, .lead-form .field textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(163, 126, 45, 0.18); }
+.lead-form .check { font-size: 0.875rem; line-height: 1.5; }
+.lead-form .check input { width: 1.1rem; height: 1.1rem; flex: none; margin-top: 0.15rem; }
+.lead-form .count { font-family: var(--f-body); font-size: 0.875rem; font-weight: 600; color: #8a3324; }
+.lead-form .count:empty { display: none; }
+.lead-form .btn { justify-self: stretch; padding-block: 0.95rem; font-size: 1rem; border-radius: 999px; }
+@media (max-width: 1000px) {
+  .start.five { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .start.five li::after { display: none; }
+  .owner-card { grid-template-columns: minmax(0, 1fr); gap: 2rem; padding: 2rem 1.5rem; }
+}
+@media (max-width: 560px) {
+  .start.five { grid-template-columns: minmax(0, 1fr); }
+  .lead-form { padding: 1.25rem; }
+}
