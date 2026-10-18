@@ -1,4 +1,4 @@
-// Myntas 3D stage: a frosted-glass token made from the logo, a palazzo of 55 blocks, and 55 small tokens.
+// Myntas 3D stage: a frosted-glass token made from the logo, a palazzo of 55 pieces drawn like the AUREA facades, and 55 small tokens.
 // Each page sets <body data-page="..."> and the stage follows that page's story as the visitor scrolls:
 //   home        token -> building -> 55 tokens -> one token (scroll story across the [data-chapter] sections),
 //               then the token settles between the benefit cards and flips with the investor/owner switch
@@ -7,7 +7,6 @@ import * as THREE from 'three';
 import { SVGLoader } from '/assets/vendor/three/addons/SVGLoader.js';
 import { RoomEnvironment } from '/assets/vendor/three/addons/RoomEnvironment.js';
 import { mergeGeometries } from '/assets/vendor/three/addons/BufferGeometryUtils.js';
-import { RoundedBoxGeometry } from '/assets/vendor/three/addons/RoundedBoxGeometry.js';
 
 const PAGE = document.body.dataset.page;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -98,22 +97,49 @@ async function init() {
   coin.add(new THREE.Mesh(tokenGeo(true), glass));
   scene.add(coin);
 
-  // the palazzo: 55 units (5 floors x 5 bays x 2 deep, plus a 5-block gold cornice). 55 is a Fibonacci number, like the mark.
-  const N = 55, CELL = 0.36;
-  const slots = [], rows = [], kinds = [];
-  for (let r = 0; r < 5; r++) for (let z = 0; z < 2; z++) for (let c = 0; c < 5; c++) {
-    slots.push(new THREE.Vector3((c - 2) * CELL, (r - 2.6) * CELL, (z - 0.5) * CELL));
-    rows.push(r);
-    const opening = (z === 1 && r >= 1 && (c === 1 || c === 3)) || (z === 1 && r === 0 && c === 2);
-    kinds.push(opening ? 'opening' : 'stone');
+  // the palazzo, drawn like the AUREA facades: 5 floors x 11 modules (6 piers + 5 bays) = 55 pieces. 55 is a Fibonacci number, like the mark.
+  // Recessed windows with gold shutters, a balcony on the first floor, arches on the ground floor, a gold cornice.
+  // Stone and bands skip tone mapping and are darkened for the lights, so the front reads as the AUREA drawings' #dcc9a6 / #c9b48c.
+  const N = 55;
+  const mat = (color, roughness, metalness, toneMapped = true) => new THREE.MeshStandardMaterial({ color, roughness, metalness, toneMapped });
+  const mStone = mat(0xbcb29d, 0.85, 0.02, false), mBand = mat(0xac9f85, 0.85, 0.02, false);
+  const mDark = mat(0x4a3820, 0.45, 0.02), mGold = mat(0xb79144, 0.45, 0.3), mBalcony = mat(0x725920, 0.6, 0.2);
+  const pieces = [];
+  {
+    const PIER = 0.13, BAY = 0.27, FL = 0.36, D = 0.42, FW = 6 * PIER + 5 * BAY, FH = 5 * FL, BS = 0.85;
+    const box = (w, h, d, m, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y, z); return o; };
+    const wall = (w, hole) => {
+      const sh = new THREE.Shape();
+      sh.moveTo(-w / 2, -FL / 2); sh.lineTo(w / 2, -FL / 2); sh.lineTo(w / 2, FL / 2); sh.lineTo(-w / 2, FL / 2); sh.lineTo(-w / 2, -FL / 2);
+      sh.holes.push(hole);
+      const g = new THREE.ExtrudeGeometry(sh, { depth: D, bevelEnabled: false, curveSegments: 14 });
+      g.translate(0, 0, -D / 2);
+      return new THREE.Mesh(g, mStone);
+    };
+    for (let r = 0; r < 5; r++) {
+      let x = -FW / 2;
+      for (let c = 0; c < 11; c++) {
+        const pier = c % 2 === 0, w = pier ? PIER : BAY, g = new THREE.Group();
+        if (pier) g.add(box(w, FL, D, mStone));
+        else if (r === 0) { // arched opening
+          const ar = 0.08, yb = -FL / 2 + 0.05, yt = yb + 0.17, hole = new THREE.Path();
+          hole.moveTo(-ar, yb); hole.lineTo(ar, yb); hole.lineTo(ar, yt); hole.absarc(0, yt, ar, 0, Math.PI, false); hole.lineTo(-ar, yb);
+          g.add(wall(w, hole), box(0.16, 0.25, 0.02, mDark, 0, yb + 0.125, D / 2 - 0.07), box(0.03, 0.035, 0.02, mGold, 0, yt + ar + 0.012, D / 2 + 0.008));
+        } else { // window with shutters, lintel and sill (a balcony on the first floor)
+          const ww = 0.14, wh = 0.2, wy = 0.015, hole = new THREE.Path();
+          hole.moveTo(-ww / 2, wy - wh / 2); hole.lineTo(ww / 2, wy - wh / 2); hole.lineTo(ww / 2, wy + wh / 2); hole.lineTo(-ww / 2, wy + wh / 2); hole.lineTo(-ww / 2, wy - wh / 2);
+          g.add(wall(w, hole), box(ww, wh, 0.02, mDark, 0, wy, D / 2 - 0.06), box(0.17, 0.016, 0.02, mBand, 0, wy + wh / 2 + 0.008, D / 2 + 0.01));
+          for (const sx of [-1, 1]) g.add(box(0.042, wh, 0.018, mGold, sx * (ww / 2 + 0.025), wy, D / 2 + 0.009));
+          g.add(r === 1 ? box(0.21, 0.022, 0.09, mBalcony, 0, wy - wh / 2 - 0.011, D / 2 + 0.045) : box(0.17, 0.018, 0.03, mBand, 0, wy - wh / 2 - 0.009, D / 2 + 0.015));
+        }
+        g.add(r === 0 ? box(w, 0.05, D + 0.03, mBand, 0, -FL / 2 + 0.025) : box(w, 0.022, D + 0.025, mBand, 0, -FL / 2 + 0.011));
+        if (r === 4) { const ext = c === 0 || c === 10 ? 0.05 : 0; g.add(box(w + ext, 0.1, D + 0.1, mGold, c === 0 ? -ext / 2 : ext / 2, FL / 2 + 0.05)); }
+        g.visible = false;
+        pieces.push({ g, row: r, col: c, home: new THREE.Vector3(x + w / 2, -FH / 2 + r * FL + FL / 2 - 0.05, 0).multiplyScalar(BS), scale: BS });
+        x += w;
+      }
+    }
   }
-  for (let c = 0; c < 5; c++) { slots.push(new THREE.Vector3((c - 2) * CELL, 2.4 * CELL, 0)); rows.push(5); kinds.push('cornice'); }
-  const blocks = new THREE.InstancedMesh(
-    new RoundedBoxGeometry(CELL * 0.96, CELL * 0.96, CELL * 0.96, 2, 0.025),
-    new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.05, roughness: 0.75 }), N);
-  const cStone = [new THREE.Color(0xd6c3a0), new THREE.Color(0xcdb68f), new THREE.Color(0xdccbaa)];
-  const cOpening = new THREE.Color(0x4a3820), cCornice = new THREE.Color(0xb79144);
-  for (let i = 0; i < N; i++) blocks.setColorAt(i, kinds[i] === 'opening' ? cOpening : kinds[i] === 'cornice' ? cCornice : cStone[i % 3]);
   const tokens = new THREE.InstancedMesh(tokenGeo(false), glass, N);
   const GOLD_ANGLE = Math.PI * (3 - Math.sqrt(5));
   const spreadPos = [];
@@ -122,9 +148,9 @@ async function init() {
     spreadPos.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, Math.sin(i * 1.7) * 0.25));
   }
   const stage = new THREE.Group();
-  stage.add(blocks, tokens);
+  stage.add(tokens, ...pieces.map(p => p.g));
   scene.add(stage);
-  blocks.frustumCulled = false; tokens.frustumCulled = false;
+  tokens.frustumCulled = false;
 
   // ---- per-page targets
   const clamp01 = v => Math.min(1, Math.max(0, v));
@@ -234,36 +260,31 @@ async function init() {
     stage.rotation.set((0.12 + py * 0.08) * (1 - split), (P.turn + px * 0.2) * (1 - split), 0);
 
     const active = build > 0.001 && gather < 0.999 && P.s > 0.01;
-    blocks.visible = active && split < 0.999;
     tokens.visible = active && split > 0.001;
-    if (blocks.visible || tokens.visible) {
-      for (let i = 0; i < N; i++) {
-        const slot = slots[i];
-        const bi = ease(build * 1.9 - rows[i] * 0.15);       // blocks rise from the ground floor up
-        const si = ease(split * 1.7 - (5 - rows[i]) * 0.12); // the top comes apart first
-        const gi = ease(gather * 1.6 - (i / N) * 0.6);       // outer tokens travel last
-        if (blocks.visible) {
-          const bs = bi * (1 - si);
-          if (bs < 0.002) blocks.setMatrixAt(i, ZERO);
-          else {
-            tmp.copy(slot).multiplyScalar(bi); q4.identity(); sc4.setScalar(bs);
-            if (kinds[i] === 'opening') { tmp.z -= 0.06 * bi; sc4.set(bs * 0.66, bs * 0.72, bs * 0.62); } // recessed windows and door
-            m4.compose(tmp, q4, sc4); blocks.setMatrixAt(i, m4);
-          }
-        }
-        if (tokens.visible) {
-          const ts = 0.125 * si * (1 - gi * 0.85);
-          if (ts < 0.002) tokens.setMatrixAt(i, ZERO);
-          else {
-            v4.copy(slot).lerp(spreadPos[i], si).multiplyScalar(1 - gi);
-            e4.set(0.2, P.spin + i * 0.61 + time * 0.4, 0); q4.setFromEuler(e4); sc4.setScalar(ts);
-            m4.compose(v4, q4, sc4); tokens.setMatrixAt(i, m4);
-          }
+    for (let i = 0; i < N; i++) {
+      const pc = pieces[i];
+      const bi = ease(build * 1.9 - pc.row * 0.15);                              // floors rise from the ground up
+      const si = ease(split * 1.7 - (4 - pc.row) * 0.12 - (pc.col / 10) * 0.08); // the top comes apart first
+      const gi = ease(gather * 1.6 - (i / N) * 0.6);                             // outer tokens travel last
+      const k = active ? bi * (1 - ease(si * 1.3)) : 0;
+      pc.g.visible = k > 0.002;
+      if (pc.g.visible) {
+        tmp.copy(pc.home); tmp.y -= (1 - bi) * 0.5; tmp.lerp(spreadPos[i], si);
+        pc.g.position.copy(tmp);
+        pc.g.rotation.set(si * 0.9 * (i % 2 ? 1 : -1), si * 1.4, 0);
+        pc.g.scale.setScalar(pc.scale * k);
+      }
+      if (tokens.visible) {
+        const ts = 0.125 * si * (1 - gi * 0.85);
+        if (ts < 0.002) tokens.setMatrixAt(i, ZERO);
+        else {
+          v4.copy(pc.home).lerp(spreadPos[i], si).multiplyScalar(1 - gi);
+          e4.set(0.2, P.spin + i * 0.61 + time * 0.4, 0); q4.setFromEuler(e4); sc4.setScalar(ts);
+          m4.compose(v4, q4, sc4); tokens.setMatrixAt(i, m4);
         }
       }
-      blocks.instanceMatrix.needsUpdate = true;
-      tokens.instanceMatrix.needsUpdate = true;
     }
+    if (tokens.visible) tokens.instanceMatrix.needsUpdate = true;
     renderer.render(scene, camera);
     if (first) { first = false; document.documentElement.classList.add('webgl'); }
     requestAnimationFrame(frame);
