@@ -1,0 +1,7 @@
+# STAGING: keeps the test address out of search engines.
+# At launch replace with:
+#   User-agent: *
+#   Allow: /
+#   Sitemap: https://myntas.com/sitemap.xml
+User-agent: *
+Disallow: /
