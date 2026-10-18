@@ -104,7 +104,6 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--brown); outline-offset: 2px; }
 .figure { font-family: var(--f-mono); font-size: var(--step--1); color: var(--brown); border-top: 1px solid var(--line); padding-top: 1rem; display: grid; gap: 0.35rem; font-variant-numeric: tabular-nums; }
 .figure small { color: var(--text); font-size: inherit; letter-spacing: 0.06em; text-transform: uppercase; }
-.fib { letter-spacing: 0.12em; color: var(--gold-dark); }
 .stats { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-family: var(--f-mono); font-size: var(--step--1); color: var(--brown); border-top: 1px solid var(--line); padding-top: 1rem; }
 .stats b { font-weight: 500; color: var(--gold-dark); }
 
