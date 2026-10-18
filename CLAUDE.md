@@ -6,7 +6,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 ## Structure
 
-- `public/index.html` home (scroll story, "Perché tokenizzare" investor/owner switch with six cards around the token, "Trusted by", "Powered by"); `public/en/index.html` its English version
+- `public/index.html` home (scroll story, "Perché tokenizzare" investor/owner switch with six cards around the token, "AUREA in tre passi" with illustrative phone screens, "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA marketplace (listings in `assets/js/aurea.js`)
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
@@ -38,7 +38,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Open items
 
-- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter with `kind: "newsletter"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
+- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
 - AUREA shows example properties marked "Esempio".
 - The Nova Ventures mark in "Powered by" is a placeholder.

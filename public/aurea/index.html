@@ -98,9 +98,9 @@
     <div class="foot-news">
       <h2 id="newsT">Resta aggiornato</h2>
       <p>Iscriviti alla newsletter per ricevere le nuove offerte e le novità di Myntas.</p>
-      <form id="newsForm" aria-labelledby="newsT" novalidate>
+      <form id="newsForm" data-signup="newsletter" aria-labelledby="newsT" novalidate>
         <div class="news-row"><input type="email" id="newsEmail" name="email" placeholder="La tua email" aria-label="Email" autocomplete="email" required><button type="submit" class="news-go" aria-label="Iscriviti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
-        <label class="check"><input type="checkbox" id="newsConsent" required> <span>Acconsento a ricevere email da Myntas S.r.l., secondo l'<a href="/privacy/">informativa privacy</a>.</span></label>
+        <label class="check"><input type="checkbox" id="newsConsent" name="consent" required> <span>Acconsento a ricevere email da Myntas S.r.l., secondo l'<a href="/privacy/">informativa privacy</a>.</span></label>
         <div class="count" id="newsErr" aria-live="polite"></div>
       </form>
     </div>
