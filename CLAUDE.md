@@ -7,12 +7,12 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 ## Structure
 
 - `public/index.html` home (scroll story, "Perché tokenizzare" investor/owner switch with six cards around the token, "AUREA in tre passi" with illustrative phone screens, "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
-- `public/aurea/index.html` AUREA marketplace (listings in `assets/js/aurea.js`)
+- `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero, animated dashboard preview in four steps, offer lifecycle timeline, early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
 - `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
-- `public/assets/js/site.js` scroll buttons and lead forms; `assets/js/aurea.js` marketplace
+- `public/assets/js/site.js` scroll buttons, home switch, sign-up and lead forms; `assets/js/aurea.js` AUREA preview animations
 - `public/assets/fonts` self-hosted Bodoni Moda, IBM Plex Sans, IBM Plex Mono (no requests to Google)
 - `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), skyline, partner logos, share image
 - `public/_headers` security headers (strict CSP) and cache rules; `robots.txt`; `sitemap.xml`
@@ -38,14 +38,14 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Open items
 
-- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
+- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
-- AUREA shows example properties marked "Esempio". When the AUREA page is redone, use these invented names for the examples (not real cities or addresses): Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci. "Residenza Aurora" is the example in the home page phone screens.
+- AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase of the lifecycle needs counsel to confirm.
 - The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
 ## Launch checklist (before pointing myntas.com here)
 
-1. Replace AUREA examples with real offerings and documents, or switch the page to a waitlist with no figures.
+1. AUREA is now an intro + early-access page. Real offerings, with their documents, go live only on the AUREA app.
 2. Privacy and cookie texts in `privacy/` and `cookie/`; P.IVA in the footer of every page.
 3. Counsel's sign-off on all regulatory wording.
 4. Written permission from each partner shown in "Trusted by"; high-resolution Nova Ventures logo.

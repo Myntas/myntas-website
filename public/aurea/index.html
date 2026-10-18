@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AUREA · Il marketplace di Myntas</title>
-<meta name="description" content="Gli immobili italiani a reddito su AUREA: numeri, documenti e prenotazione dei token.">
+<title>AUREA · In arrivo su Myntas</title>
+<meta name="description" content="Scopri come funzionerà AUREA, la piattaforma di Myntas per investire in immobili a reddito, e richiedi l'accesso anticipato.">
 <link rel="canonical" href="https://myntas.com/aurea/">
 <!-- STAGING: remove this line (and the Disallow in robots.txt) at launch -->
 <meta name="robots" content="noindex, nofollow">
@@ -12,8 +12,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Myntas">
 <meta property="og:locale" content="it_IT">
-<meta property="og:title" content="AUREA · Il marketplace di Myntas">
-<meta property="og:description" content="Gli immobili italiani a reddito su AUREA: numeri, documenti e prenotazione dei token.">
+<meta property="og:title" content="AUREA · In arrivo su Myntas">
+<meta property="og:description" content="Scopri come funzionerà AUREA, la piattaforma di Myntas per investire in immobili a reddito, e richiedi l'accesso anticipato.">
 <meta property="og:url" content="https://myntas.com/aurea/">
 <meta property="og:image" content="https://myntas.com/assets/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -49,42 +49,137 @@
       <div class="hero-inner">
         <div class="fallback" aria-hidden="true"><img src="/assets/img/logo.svg" alt=""></div>
         <div class="copy">
-          <div class="eyebrow">AUREA · Il marketplace di Myntas</div>
-          <h1>Un palazzo intero, <em>una quota alla volta.</em></h1>
-          <p>Scegli l'immobile, leggi i numeri e prenota i tuoi token. Ogni immobile ha i suoi documenti e i suoi affitti.</p>
-          <div class="stats" id="aureaStats"></div>
+          <div class="eyebrow">AUREA · In arrivo</div>
+          <h1>Il mattone, <em>a portata di clic.</em></h1>
+          <p>AUREA è la piattaforma di Myntas per investire in immobili a reddito, una quota alla volta. Stiamo preparando le prime offerte: ecco come funzionerà.</p>
           <div class="actions">
-            <button class="btn primary" type="button" data-scroll="listings">Vedi gli immobili</button>
-            <a class="btn ghost" href="https://myntas.com/Account">Accedi</a>
+            <button class="btn primary" type="button" data-scroll="accesso">Richiedi l'accesso anticipato</button>
+            <button class="btn ghost" type="button" data-scroll="come-funziona">Scopri come funziona</button>
           </div>
         </div>
       </div>
     </section>
   </div>
 </div>
-<div class="wrap solid" id="listings">
-  <div class="inner section">
-    <div class="notice"><b>Immobili di esempio.</b> Nomi, numeri e rendimenti in questa pagina servono a mostrare il design. Prima della pubblicazione vanno sostituiti con le offerte reali e i relativi documenti.</div>
-    <div class="toolbar">
-      <div class="filters">
-        <div class="field"><span class="lbl">Città</span><div class="chips" id="cityChips" role="group" aria-label="Filtra per città"></div></div>
+<div class="wrap solid">
+  <section class="inner demo" id="come-funziona" aria-labelledby="demoT">
+    <div class="sec-head">
+      <div class="eyebrow">Come funzionerà</div>
+      <h2 id="demoT">Dalla scelta <em>al primo affitto.</em></h2>
+      <p>Quattro passaggi, tutti online. Ecco un'anteprima di AUREA.</p>
+    </div>
+    <div class="demo-wrap">
+      <div class="demo-steps" role="tablist" aria-label="Passaggi" aria-orientation="vertical">
+        <button type="button" role="tab" id="dsTab0" aria-controls="dsView0" aria-selected="true"><i>I</i><b>Scopri</b><span>Sfoglia gli immobili disponibili, con le informazioni principali.</span><em class="timer" aria-hidden="true"></em></button>
+        <button type="button" role="tab" id="dsTab1" aria-controls="dsView1" aria-selected="false" tabindex="-1"><i>II</i><b>Analizza</b><span>Apri la scheda: dati dell'immobile, perizia e documenti d'offerta.</span><em class="timer" aria-hidden="true"></em></button>
+        <button type="button" role="tab" id="dsTab2" aria-controls="dsView2" aria-selected="false" tabindex="-1"><i>III</i><b>Investi</b><span>Scegli quanti token acquistare, da 100 € ciascuno, e conferma.</span><em class="timer" aria-hidden="true"></em></button>
+        <button type="button" role="tab" id="dsTab3" aria-controls="dsView3" aria-selected="false" tabindex="-1"><i>IV</i><b>Segui</b><span>Nel tuo portafoglio trovi token, affitti accreditati e report.</span><em class="timer" aria-hidden="true"></em></button>
       </div>
-      <div class="selects">
-        <div class="field"><label for="fType">Tipologia</label>
-          <select id="fType"><option value="">Tutte</option><option>Residenziale</option><option>Commerciale</option><option>Uso misto</option></select></div>
-        <div class="field"><label for="fStatus">Stato</label>
-          <select id="fStatus"><option value="">Tutti</option><option value="raccolta">In raccolta</option><option value="presto">Prossimamente</option><option value="chiuso">Completato</option></select></div>
-        <div class="field"><label for="fSort">Ordina</label>
-          <select id="fSort"><option value="stato">In evidenza</option><option value="yield">Rendimento stimato</option><option value="value">Valore immobile</option></select></div>
+      <div class="dash" data-nav="0">
+        <div class="dash-bar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="dash-url">AUREA</span><span class="dash-tag">Anteprima</span></div>
+        <div class="dash-body">
+          <div class="dash-side" aria-hidden="true">
+            <img src="/assets/img/logo.svg" alt="" width="28" height="28">
+            <span data-nav="0">Esplora</span><span data-nav="1">Portafoglio</span><span>Documenti</span><span>Profilo</span>
+          </div>
+          <div class="dash-main">
+            <div class="dash-view dv-explore" role="tabpanel" id="dsView0" aria-labelledby="dsTab0">
+              <div class="dv-head"><b>Esplora gli immobili</b><span class="dv-chips"><i class="on">Tutti</i><i>Residenziale</i><i>Uso misto</i></span></div>
+              <div class="tiles">
+                <div class="tile pick"><div class="tile-img" data-facade="belvedere"></div><div class="tile-body"><span class="ex">Esempio</span><b>Palazzo Belvedere</b><small>Residenziale · 100 € per token</small><div class="meter"><i style="width:68%"></i></div><span class="state live">In raccolta</span></div></div>
+                <div class="tile"><div class="tile-img" data-facade="tigli"></div><div class="tile-body"><span class="ex">Esempio</span><b>Corte dei Tigli</b><small>Uso misto · 100 € per token</small><div class="meter"><i style="width:41%"></i></div><span class="state live">In raccolta</span></div></div>
+                <div class="tile"><div class="tile-img" data-facade="ginestra"></div><div class="tile-body"><span class="ex">Esempio</span><b>Casa Ginestra</b><small>Residenziale · 100 € per token</small><div class="meter"><i style="width:0"></i></div><span class="state">Prossimamente</span></div></div>
+                <div class="tile"><div class="tile-img" data-facade="glicine"></div><div class="tile-body"><span class="ex">Esempio</span><b>Villa Glicine</b><small>Residenziale · 100 € per token</small><div class="meter"><i style="width:0"></i></div><span class="state">Prossimamente</span></div></div>
+              </div>
+            </div>
+            <div class="dash-view dv-sheet" role="tabpanel" id="dsView1" aria-labelledby="dsTab1" hidden>
+              <div class="dv-head"><b>Palazzo Belvedere</b><span class="ex">Esempio</span></div>
+              <div class="sheet-grid">
+                <div class="tile-img big" data-facade="belvedere" data-wide></div>
+                <div class="sheet-side">
+                  <dl class="dv-facts"><div><dt>Tipologia</dt><dd>Residenziale</dd></div><div><dt>Unità</dt><dd>8</dd></div><div><dt>Prezzo per token</dt><dd>100 €</dd></div><div><dt>Stato</dt><dd>In raccolta</dd></div></dl>
+                  <ul class="dv-docs">
+                    <li style="--i:0"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Documento d'offerta</li><li style="--i:1"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Perizia di stima</li><li style="--i:2"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Due diligence tecnica e legale</li><li style="--i:3"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Contratti di locazione</li>
+                  </ul>
+                  <span class="dv-btn">Investi</span>
+                </div>
+              </div>
+            </div>
+            <div class="dash-view dv-invest" role="tabpanel" id="dsView2" aria-labelledby="dsTab2" hidden>
+              <div class="dv-head"><b>Investi in Palazzo Belvedere</b><span class="ex">Esempio</span></div>
+              <div class="invest-card">
+                <div class="inv-row"><span>Token</span><span class="inv-step"><i>−</i><b id="dQty">10</b><i>+</i></span></div>
+                <div class="inv-row"><span>Prezzo per token</span><span>100 €</span></div>
+                <div class="inv-row total"><span>Totale</span><b id="dTot">1.000 €</b></div>
+                <span class="dv-btn press">Conferma acquisto</span>
+                <div class="inv-done" id="dDone" hidden><span class="ok"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg></span><b>Token assegnati</b><small>Li trovi nel tuo portafoglio.</small></div>
+              </div>
+            </div>
+            <div class="dash-view dv-folio" role="tabpanel" id="dsView3" aria-labelledby="dsTab3" hidden>
+              <div class="dv-head"><b>Il tuo portafoglio</b><span class="ex">Esempio</span></div>
+              <div class="kpis"><div><small>Token posseduti</small><b>24</b></div><div><small>Immobili</small><b>3</b></div><div><small>Prossimo accredito</small><b>Aprile</b></div></div>
+              <div class="folio-grid">
+                <div class="panel donut-panel">
+                  <svg class="donut" viewBox="0 0 42 42" aria-hidden="true"><circle class="d-bg" cx="21" cy="21" r="15.9" pathLength="100"/><circle class="d-s d1" cx="21" cy="21" r="15.9" pathLength="100" style="stroke-dasharray:41.67 58.33"/><circle class="d-s d2" cx="21" cy="21" r="15.9" pathLength="100" style="stroke-dasharray:33.33 66.67;stroke-dashoffset:-41.67"/><circle class="d-s d3" cx="21" cy="21" r="15.9" pathLength="100" style="stroke-dasharray:25 75;stroke-dashoffset:-75"/></svg>
+                  <ul class="legend"><li><i class="l1"></i>Palazzo Belvedere<b>10</b></li><li><i class="l2"></i>Corte dei Tigli<b>8</b></li><li><i class="l3"></i>Palazzo Fibonacci<b>6</b></li></ul>
+                </div>
+                <div class="panel">
+                  <small>Affitti accreditati, ultimi 6 mesi</small>
+                  <div class="bars" aria-hidden="true"><i style="--h:62%;--i:0"></i><i style="--h:70%;--i:1"></i><i style="--h:66%;--i:2"></i><i style="--h:74%;--i:3"></i><i style="--h:71%;--i:4"></i><i style="--h:78%;--i:5"></i></div>
+                  <ul class="feed"><li style="--i:0"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg><span>Affitto di marzo · Palazzo Belvedere</span></li><li style="--i:1"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg><span>Affitto di marzo · Corte dei Tigli</span></li><li style="--i:2"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg><span>Report trimestrale · Palazzo Fibonacci</span></li></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="count" id="resultCount" aria-live="polite"></div>
-    <div class="grid" id="grid"></div>
-    <p class="small">I rendimenti indicati sono stime al netto dei costi dell'immobile e non sono garantiti. Investire in strumenti finanziari comporta rischi, inclusa la perdita del capitale investito. Leggi i documenti d'offerta prima di investire.</p>
-  </div>
+    <p class="demo-note">Anteprima illustrativa con immobili e dati di esempio. AUREA è in sviluppo e può cambiare prima del lancio.</p>
+  </section>
+</div>
+<div class="wrap solid">
+  <section class="inner cycle-sec" aria-labelledby="cycleT">
+    <div class="sec-head">
+      <div class="eyebrow">La dinamica</div>
+      <h2 id="cycleT">Il ciclo <em>di un'offerta.</em></h2>
+      <p>Ogni immobile su AUREA segue lo stesso percorso, dalla pubblicazione all'uscita.</p>
+    </div>
+    <ol class="cycle">
+      <li style="--i:0"><i>01</i><b>Apertura</b><span>L'offerta viene pubblicata su AUREA con la scheda e i documenti.</span></li>
+      <li style="--i:1"><i>02</i><b>Raccolta</b><span>Gli investitori acquistano i token, da 100 € ciascuno, fino al totale previsto.</span></li>
+      <li style="--i:2"><i>03</i><b>Assegnazione</b><span>A raccolta chiusa, i token vengono assegnati ai portafogli.</span></li>
+      <li style="--i:3"><i>04</i><b>Affitti</b><span>Gli affitti vengono distribuiti periodicamente, in proporzione ai token posseduti.</span></li>
+      <li style="--i:4"><i>05</i><b>Uscita</b><span>Alla fine del periodo previsto l'immobile viene venduto e il ricavato ripartito tra i titolari dei token.</span></li>
+    </ol>
+  </section>
+</div>
+<div class="wrap solid">
+  <section class="inner early" id="accesso" aria-labelledby="earlyT">
+    <div class="early-card">
+      <div class="early-txt">
+        <div class="eyebrow">Accesso anticipato</div>
+        <h2 id="earlyT">Sii tra i primi <em>su AUREA.</em></h2>
+        <p>Registrati per ricevere l'invito appena apriamo le prime offerte.</p>
+        <ul class="early-list">
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Invito alle prime offerte, prima dell'apertura al pubblico</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Aggiornamenti sullo sviluppo di AUREA</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Nessun impegno: puoi cancellarti quando vuoi</li>
+        </ul>
+      </div>
+      <form class="early-form" data-signup="early-access" aria-labelledby="earlyT" novalidate>
+        <div class="field"><label for="eaName">Nome</label><input id="eaName" name="name" autocomplete="given-name"></div>
+        <div class="field"><label for="eaEmail">Email *</label><input id="eaEmail" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="eaProfile">Sono interessato come *</label>
+          <select id="eaProfile" name="profile" required><option value="">Scegli</option><option value="investitore">Investitore</option><option value="proprietario">Proprietario di un immobile</option><option value="entrambi">Entrambi</option></select></div>
+        <label class="check"><input type="checkbox" name="consent" required> <span>Acconsento a essere ricontattato da Myntas S.r.l. su AUREA, secondo l'<a href="/privacy/">informativa privacy</a>.</span></label>
+        <div class="count" aria-live="polite"></div>
+        <button class="btn primary" type="submit">Richiedi l'accesso</button>
+      </form>
+    </div>
+    <p class="small early-risk">Le informazioni su questa pagina descrivono il funzionamento previsto di AUREA e non costituiscono offerta di strumenti finanziari. Investire comporta rischi, inclusa la perdita del capitale investito.</p>
+  </section>
 </div>
 </main>
-<div id="modalRoot"></div>
 <div class="wrap solid site-foot">
   <footer class="inner foot-card">
     <div class="foot-brand">
