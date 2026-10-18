@@ -18,7 +18,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), AUREA logo (`aurea-wordmark.svg`: lowercase "aurea" wordmark only, Merriweather Bold as outlines to match the "myntas" wordmark, gold `#d0b677`; renamed from aurea-logo.svg so cached copies of the old circle logo are not reused. Images are cached for 7 days: give a changed image a new file name), skyline, partner logos, share image
 - `public/_headers` security headers (strict CSP) and cache rules; `_redirects`; `robots.txt`; `sitemap.xml`
 
-The header and footer are repeated in every HTML page: change them in all pages together. The footer is a rounded card with brand, quick links, newsletter sign-up, then the legal lines and risk notice.
+The header and footer are repeated in every HTML page: change them in all pages together. The footer is a dark (brown) rounded card in four sections divided by thin rules: brand with tagline and a "Contattaci"/"Contact us" mailto button, contacts (info@myntas.com, Myntas S.r.l., address), quick links, newsletter sign-up; then the legal lines and risk notice across the bottom.
 
 ## Languages
 
