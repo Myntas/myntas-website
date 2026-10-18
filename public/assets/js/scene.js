@@ -2,7 +2,6 @@
 // Each page sets <body data-page="..."> and the stage follows that page's story as the visitor scrolls:
 //   home        token -> building -> 55 tokens -> one token (scroll story across the [data-chapter] sections),
 //               then the token settles between the benefit cards and flips with the investor/owner switch
-//   aurea       investors: the building splits into tokens
 //   proprietari owners: the building is compressed into a single token
 import * as THREE from 'three';
 import { SVGLoader } from '/assets/vendor/three/addons/SVGLoader.js';
@@ -181,8 +180,7 @@ async function init() {
       // after the hero the object shrinks into the top corner so it never covers listings or forms
       const p = Math.max(0, window.scrollY / H), away = ramp(p, 0.9, 1.5);
       T = { x: lerp(1.7, halfW * 0.8, away), y: lerp(0, halfH * 0.66, away), s: lerp(1, 0.3, away), spin: p * Math.PI - 0.38, turn: -0.55 + p * 0.6, sky: clamp01(p / 2) };
-      if (PAGE === 'aurea') Object.assign(T, { build: 1, split: ramp(p, 0.1, 0.55), gather: ramp(p, 0.6, 1.0), coin: ramp(p, 0.85, 1.05) });
-      else Object.assign(T, { build: 1 - ramp(p, 0.12, 0.65), split: 0, gather: 0, coin: ramp(p, 0.4, 0.7) });
+      Object.assign(T, { build: 1 - ramp(p, 0.12, 0.65), split: 0, gather: 0, coin: ramp(p, 0.4, 0.7) });
     }
     if (mobile) { T.x = 0; T.y = halfH * 0.5; T.s *= 0.55; }
     T.flip = 0;
@@ -267,4 +265,4 @@ async function init() {
   requestAnimationFrame(frame);
 }
 
-if (!reduce && ['home', 'aurea', 'proprietari'].includes(PAGE)) init().catch(e => console.error(e));
+if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => console.error(e));
