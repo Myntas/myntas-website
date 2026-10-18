@@ -7,7 +7,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 ## Structure
 
 - `public/index.html` home (scroll story, "AUREA in tre passi" with illustrative phone screens, "Perché tokenizzare" investor/owner switch with six cards around the token (its own `.wrap` after the solid AUREA block; the 3D token moves to the slot as the section enters the viewport), "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
-- `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero, animated dashboard preview in four steps, offer lifecycle timeline, early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
+- `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero with key points, animated dashboard preview in four steps, "La scheda immobile" (six cards), offer lifecycle timeline, "Primi passi" (profile, ID check, questionnaire, invest), "Per chi è AUREA", FAQ (`<details>`), early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
@@ -40,7 +40,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 - Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
-- AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase of the lifecycle needs counsel to confirm.
+- AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase, the FAQ answers (token rights, resale, costs, who can invest) and the AML/questionnaire steps need counsel to confirm.
 - The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
 ## Launch checklist (before pointing myntas.com here)
