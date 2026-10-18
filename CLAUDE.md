@@ -39,7 +39,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 ## Open items
 
 - Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
-- "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
+- Navbar: AUREA, Tokenize (the Proprietari page, label "Tokenize" in both languages), "Accedi"/"Log in" (goes to the AUREA early-access form, `/aurea/#accesso` or `/en/aurea/#accesso`, in the navbar and the footer quick links), IT/EN switcher. The Base44 app at `https://myntas.com/Account` is no longer linked; when the AUREA app is live, point "Accedi" at its subdomain on every page.
 - AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase, the FAQ answers (token rights, resale, costs, who can invest) and the AML/questionnaire steps need counsel to confirm.
 - The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
@@ -50,5 +50,5 @@ The header and footer are repeated in every HTML page: change them in all pages 
 3. Counsel's sign-off on all regulatory wording.
 4. Written permission from each partner shown in "Trusted by"; high-resolution Nova Ventures logo.
 5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
-6. "Accedi" pointing at the app subdomain.
+6. "Accedi" pointing at the app subdomain once the app is live (today it opens the AUREA early-access form).
 7. Remove `<meta name="robots" content="noindex, nofollow">` from every page and replace `robots.txt` with the launch version noted inside it.
