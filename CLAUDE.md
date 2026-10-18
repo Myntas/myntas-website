@@ -30,7 +30,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 - Copy is in Italian (English on `/en/` pages). No em dashes. Short, plain sentences.
 - Myntas operates in Italy only: never describe it as Swiss or global.
-- Don't stress Italy or Italian in the copy, and say "immobile/immobili" rather than "edificio". Don't mention the vehicle (SPV, "veicolo") in marketing copy.
+- Don't stress Italy or Italian in the copy, and say "immobile/immobili" rather than "edificio", "affitti" rather than "canoni". Don't mention the vehicle (SPV, "veicolo") in marketing copy.
 - Never publish invented properties, yields or figures as real. Regulatory wording ("regolamentato", "strumento finanziario", etc.) needs counsel's sign-off before it goes live.
 - No third-party hosts: the CSP in `_headers` allows only the site itself. Fonts, scripts and images must be self-hosted. No tracking scripts without a cookie banner and consent.
 - If you change the inline import map in the page `<head>`, update its sha256 hash in `_headers`, or the 3D stops loading.

@@ -108,7 +108,7 @@ function openProp(id) {
           <div><dt>Unità</dt><dd>${p.units}</dd></div>
           <div><dt>Occupazione</dt><dd>${esc(p.occ)}</dd></div>
           <div><dt>Contratti</dt><dd>${esc(p.lease)}</dd></div>
-          <div><dt>Canone annuo lordo</dt><dd>${eur.format(p.rent)}</dd></div>
+          <div><dt>Affitto annuo lordo</dt><dd>${eur.format(p.rent)}</dd></div>
           <div><dt>Rendimento lordo</dt><dd>${pct(gross)}</dd></div>
           <div><dt>Classe energetica</dt><dd>${esc(p.energy)}</dd></div>
           <div><dt>Anno di costruzione</dt><dd>${p.year}</dd></div>
@@ -166,7 +166,7 @@ function openProp(id) {
 function updateCalc(p) {
   const q = Math.max(1, parseInt(document.getElementById('rQty').value, 10) || 1);
   const amt = q * p.price;
-  document.getElementById('calc').innerHTML = `<div class="big"><span>Importo</span><b>${eur.format(amt)}</b></div><div><span>Quota dell'immobile</span><b>${(q / p.supply * 100).toLocaleString('it-IT', { maximumFractionDigits: 3 })}%</b></div><div><span>Canoni annui stimati</span><b>${eur2.format(amt * p.yield / 100)}</b></div><div><span>Token disponibili</span><b>${nf.format(Math.round(p.supply * (1 - p.sold)))}</b></div>`;
+  document.getElementById('calc').innerHTML = `<div class="big"><span>Importo</span><b>${eur.format(amt)}</b></div><div><span>Quota dell'immobile</span><b>${(q / p.supply * 100).toLocaleString('it-IT', { maximumFractionDigits: 3 })}%</b></div><div><span>Affitti annui stimati</span><b>${eur2.format(amt * p.yield / 100)}</b></div><div><span>Token disponibili</span><b>${nf.format(Math.round(p.supply * (1 - p.sold)))}</b></div>`;
 }
 function closeModal() {
   const root = document.getElementById('modalRoot');
