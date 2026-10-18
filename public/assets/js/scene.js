@@ -187,8 +187,9 @@ async function init() {
     if (mobile) { T.x = 0; T.y = halfH * 0.5; T.s *= 0.55; }
     T.flip = 0;
     if (slot) {
-      // benefits chapter: follow .flip-slot on screen, face front, one full turn per switch
-      const f = ramp(t, 4.55, 5.05);
+      // benefits chapter: follow .flip-slot on screen, face front, one full turn per switch.
+      // The move starts when the section enters the viewport (a solid section sits between it and "processo").
+      const f = ramp(H - perks.getBoundingClientRect().top, 0, H * 0.65);
       if (f > 0) {
         const r = slot.getBoundingClientRect();
         T.x = lerp(T.x, ((r.left + r.width / 2) / W * 2 - 1) * halfW, f);

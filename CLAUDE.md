@@ -6,7 +6,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 
 ## Structure
 
-- `public/index.html` home (scroll story, "Perché tokenizzare" investor/owner switch with six cards around the token, "AUREA in tre passi" with illustrative phone screens, "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
+- `public/index.html` home (scroll story, "AUREA in tre passi" with illustrative phone screens, "Perché tokenizzare" investor/owner switch with six cards around the token (its own `.wrap` after the solid AUREA block; the 3D token moves to the slot as the section enters the viewport), "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
 - `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero, animated dashboard preview in four steps, offer lifecycle timeline, early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
 - `public/proprietari/index.html` owners page and property form
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
