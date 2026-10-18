@@ -1,7 +1,7 @@
 # Myntas website
 
 Static marketing site for Myntas S.r.l. (myntas.com). Plain HTML, CSS and JS, no build step.
-Cloudflare deploys the `public/` folder as-is from the `main` branch; other branches get preview URLs.
+Hosted as a Cloudflare Worker with static assets (`wrangler.jsonc`): every push to `main` runs `npx wrangler deploy`, which publishes the `public/` folder as-is. Other branches get preview URLs.
 Everything the website serves lives in `public/`; files outside it (this file, README, LICENSE) are never published.
 
 ## Structure

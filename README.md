@@ -4,10 +4,11 @@ Website for Myntas S.r.l. Static HTML, CSS and JS: no build step, no dependencie
 
 ## Deploy on Cloudflare
 
-Connect this repository to a Cloudflare project (Workers & Pages) with:
+The site runs as a Cloudflare Worker with static assets, configured in `wrangler.jsonc`
+(publishes `public/`, serves `404.html` for missing pages). In Cloudflare (Workers & Pages, Git integration):
 
 - Build command: none
-- Build output directory: `public`
+- Deploy command: `npx wrangler deploy`
 - Production branch: `main`
 
 Every push to `main` updates the site; other branches get their own preview address.

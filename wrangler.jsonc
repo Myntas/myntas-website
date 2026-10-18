@@ -1,0 +1,11 @@
+// Cloudflare Worker that serves the static site in public/ (no server code).
+// Cloudflare runs `npx wrangler deploy` on every push to main; this file tells it what to publish.
+{
+  "name": "myntas-website",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
