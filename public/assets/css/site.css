@@ -650,7 +650,7 @@ main a:not(.btn):hover { color: var(--brown); }
 @media (prefers-reduced-motion: reduce) { .fphone, .fp-pill, .fp-line, .fp-area, .fp-dot, .fp-a .fp-btn { animation: none; } }
 
 /* home: the AUREA phones after "Perché tokenizzare", with a centred button to the AUREA page; the chart draws once the section is in view */
-.showcase-wrap { z-index: 2; background: linear-gradient(180deg, rgba(247, 241, 229, 0), var(--cream) 10rem); } /* above the next block, so the phone shadows fade instead of being cut */
+.showcase-wrap { z-index: 2; } /* the skyline shows through, as in the sections above; above the next block, so the phone shadows are not cut */
 .showcase { padding-block: 2rem 1rem; display: grid; gap: 1rem; }
 .showcase-stage { position: relative; height: 32rem; overflow-x: clip; }
 .showcase .hero-phones { position: absolute; left: 50%; top: 50%; right: auto; width: 34rem; height: 36rem; margin: 0; transform: translate(-50%, -50%) scale(0.8); transform-origin: center; }
