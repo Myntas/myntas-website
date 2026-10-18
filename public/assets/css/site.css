@@ -552,3 +552,63 @@ main a:not(.btn):hover { color: var(--brown); }
 .early-form .count { font-family: var(--f-body); font-size: 0.875rem; font-weight: 600; color: #8a3324; }
 .early-form .count:empty { display: none; }
 .early-form .btn { justify-self: stretch; padding-block: 0.95rem; font-size: 1rem; }
+
+/* AUREA hero key points */
+.hero-points { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.hero-points li { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-edge); font-size: var(--step--1); font-weight: 500; color: var(--brown); }
+.hero-points svg, .who-card svg { width: 0.85rem; height: 0.85rem; flex: none; fill: none; stroke: var(--gold-dark); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* AUREA property page contents: six cards */
+.info-sec, .start-sec, .who-sec, .faq-sec { padding-block: 4.5rem; display: grid; gap: 2.75rem; }
+.info-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.icard { display: grid; gap: 0.6rem; align-content: start; padding: 1.5rem; border-radius: 1.1rem; background: var(--paper); border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 32px rgba(59, 45, 25, 0.06); }
+.icard .ico { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 0.8rem; background: linear-gradient(135deg, var(--gold-light), var(--gold-btn)); color: var(--cream); margin-bottom: 0.3rem; }
+.icard .ico svg { width: 1.3rem; height: 1.3rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.icard h3 { font-size: 1.2rem; }
+.icard p { font-size: 0.9375rem; line-height: 1.55; }
+
+/* AUREA getting started: four numbered steps */
+.start { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; counter-reset: none; }
+.start li { position: relative; display: grid; gap: 0.5rem; align-content: start; padding: 1.5rem 1.4rem; border-radius: 1.1rem; background: var(--paper); border: 1px solid var(--glass-edge); }
+.start i { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 50%; font-style: normal; font-weight: 700; font-size: 0.9375rem; color: var(--cream); background: var(--brown); margin-bottom: 0.4rem; }
+.start b { font-size: 1.1rem; font-weight: 600; color: var(--brown); }
+.start span { font-size: 0.9375rem; line-height: 1.55; }
+.start li:not(:last-child)::after { content: ""; position: absolute; top: 2.55rem; right: -1rem; width: 1rem; height: 1px; background: var(--gold); }
+
+/* AUREA who it is for: investors and owners */
+.who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.who-card { display: grid; gap: 1rem; align-content: start; padding: 2.25rem; border-radius: 1.5rem; background: var(--paper); border: 1px solid var(--glass-edge); }
+.who-card.own { background: var(--brown); border-color: var(--brown); }
+.who-card.own h3, .who-card.own li { color: var(--cream); }
+.who-card.own p { color: rgba(247, 241, 229, 0.8); }
+.who-card.own svg { stroke: var(--gold-light); }
+.who-card.own .btn.ghost { color: var(--cream); border-color: var(--gold-light); }
+.who-card h3 { font-size: 1.6rem; }
+.who-card p { font-size: var(--step-0); }
+.who-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.who-card li { display: flex; align-items: center; gap: 0.55rem; font-size: 0.9375rem; color: var(--brown); }
+.who-card .btn { justify-self: start; border-radius: 999px; margin-top: 0.5rem; }
+
+/* AUREA FAQ: native disclosure widgets */
+.faq { display: grid; gap: 0.6rem; max-width: 50rem; width: 100%; margin-inline: auto; }
+.faq details { border-radius: 1rem; background: var(--paper); border: 1px solid var(--glass-edge); transition: box-shadow 0.2s; }
+.faq details[open] { box-shadow: 0 12px 32px rgba(59, 45, 25, 0.07); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.1rem 1.4rem; cursor: pointer; list-style: none; font-weight: 600; color: var(--brown); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; border: 1px solid var(--line-strong); font-weight: 400; color: var(--gold-dark); transition: transform 0.25s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq summary:focus-visible { outline: 2px solid var(--brown); outline-offset: 2px; border-radius: 1rem; }
+.faq details p { padding: 0 1.4rem 1.25rem; font-size: 0.9375rem; max-width: none; }
+
+@media (max-width: 900px) {
+  .info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .start { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .start li::after { display: none; }
+  .who { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .info-grid, .start { grid-template-columns: minmax(0, 1fr); }
+  .who-card { padding: 1.6rem; }
+  .info-sec, .start-sec, .who-sec, .faq-sec { padding-block: 3.25rem; }
+}
+@media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
