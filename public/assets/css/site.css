@@ -320,3 +320,43 @@ main a:not(.btn):hover { color: var(--brown); }
   .nav a, .nav .lang a { padding: 0.5rem 0.3rem; }
   .nav .login { padding: 0.55rem 0.6rem; }
 }
+
+/* perks (home benefits): investor/owner switch, six glass cards around the token. scene.js parks the 3D token in .flip-slot and flips it on switch */
+.perks { align-content: center; gap: 2.5rem; }
+.perks-head { display: grid; justify-items: center; gap: 1rem; text-align: center; }
+.perks-head p { max-width: 30rem; }
+.switch { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; margin-top: 0.75rem; padding: 0.3rem; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--glass-edge); -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 10px 30px rgba(59, 45, 25, 0.08); }
+.switch::before { content: ""; position: absolute; inset: 0.3rem auto 0.3rem 0.3rem; width: calc(50% - 0.3rem); border-radius: 999px; background: linear-gradient(135deg, var(--gold-light), var(--gold-btn)); box-shadow: 0 4px 14px rgba(114, 89, 32, 0.25); transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1); }
+.perks[data-side="owner"] .switch::before { transform: translateX(100%); }
+.switch button { position: relative; border: 0; background: none; padding: 0.65rem 1.4rem; border-radius: 999px; font-size: var(--step--1); font-weight: 500; color: var(--text); cursor: pointer; white-space: nowrap; transition: color 0.3s; }
+.switch button[aria-selected="true"] { color: var(--cream); }
+.perks-stage { position: relative; }
+.flip-slot { position: absolute; left: 50%; top: 50%; width: clamp(9rem, 17vw, 15rem); aspect-ratio: 1; transform: translate(-50%, -50%); color: var(--gold); pointer-events: none; perspective: 800px; }
+.flip-slot img { width: 100%; height: 100%; display: block; transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.perks[data-side="owner"] .flip-slot img { transform: rotateY(360deg); }
+.webgl .flip-slot img { visibility: hidden; }
+.bpanel { display: grid; grid-template-columns: minmax(0, 1fr) clamp(11rem, 22vw, 19rem) minmax(0, 1fr); gap: 1.25rem; }
+.bpanel[hidden] { display: none; }
+.bcard { grid-column: 1; display: grid; grid-template-columns: auto 1fr; align-items: center; align-content: start; gap: 0.6rem 0.9rem; padding: 1.4rem 1.5rem; border-radius: 1rem;
+  background: var(--glass); border: 1px solid var(--glass-edge); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 32px rgba(59, 45, 25, 0.07); animation: card-in 0.5s both; }
+.bcard:nth-child(n+4) { grid-column: 3; }
+.bcard:nth-child(1), .bcard:nth-child(4) { grid-row: 1; }
+.bcard:nth-child(2), .bcard:nth-child(5) { grid-row: 2; }
+.bcard:nth-child(3), .bcard:nth-child(6) { grid-row: 3; }
+.bcard:nth-child(2), .bcard:nth-child(5) { animation-delay: 0.07s; }
+.bcard:nth-child(3), .bcard:nth-child(6) { animation-delay: 0.14s; }
+.bcard .ico { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 0.8rem; background: linear-gradient(135deg, var(--gold-light), var(--gold-btn)); color: var(--cream); box-shadow: 0 4px 12px rgba(114, 89, 32, 0.22); }
+.bcard .ico svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.bcard h3 { font-size: 1.375rem; }
+.bcard p { grid-column: 1 / -1; font-size: 0.9375rem; line-height: 1.5; }
+@keyframes card-in { from { opacity: 0; transform: translateY(10px); } }
+@media (max-width: 760px) {
+  .perks { align-items: start; align-content: start; }
+  .flip-slot { position: relative; left: auto; top: auto; transform: none; width: 44vw; margin: 0 auto 1.5rem; }
+  .bpanel { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  .bcard, .bcard:nth-child(n+4) { grid-column: 1; grid-row: auto; padding: 1.1rem 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) { .switch::before, .switch button, .flip-slot img { transition: none; } .bcard { animation: none; } }

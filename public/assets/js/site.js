@@ -1,4 +1,4 @@
-// Shared behaviour: in-page scroll buttons and lead forms (owner proposals, reservations, waitlist).
+// Shared behaviour: in-page scroll buttons, the home investor/owner switch and lead forms (owner proposals, reservations, waitlist).
 // Forms post JSON to /api/lead. Until that endpoint exists the visitor sees a message with the email address instead.
 
 export const CONTACT_EMAIL = 'info@myntas.com';
@@ -29,6 +29,29 @@ document.addEventListener('click', e => {
   const el = document.getElementById(b.dataset.scroll);
   if (el) el.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
 });
+
+// investor/owner switch (home benefits): swaps the card panels and sets data-side, which scene.js reads to flip the token
+for (const list of document.querySelectorAll('.switch[role="tablist"]')) {
+  const tabs = [...list.querySelectorAll('[role="tab"]')];
+  const host = list.closest('.perks');
+  const select = (tab, focus) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    }
+    if (host) host.dataset.side = tab.dataset.side;
+    if (focus) tab.focus();
+  };
+  list.addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) select(t); });
+  list.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key], i = tabs.indexOf(document.activeElement);
+    if (!d || i < 0) return;
+    e.preventDefault();
+    select(tabs[(i + d + tabs.length) % tabs.length], true);
+  });
+}
 
 // owner proposal form (/proprietari/)
 const owner = document.getElementById('ownerFormEl');
