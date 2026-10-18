@@ -172,7 +172,7 @@ async function init() {
   }
   const chapters = [...document.querySelectorAll('[data-chapter]')];
   const perks = document.querySelector('.perks'), slot = perks && perks.querySelector('.flip-slot');
-  const heroBox = document.querySelector('.hero .fallback');
+  const heroBox = document.querySelector('.hero .fallback'), intro = document.querySelector('.m-intro');
   let aim = false, locked = false; // aim: heading for the benefits slot; locked: arrived, and pinned there
   // the story's spin when the token reaches the benefits chapter, wound back to a front-facing angle so it lands face on
   const FRONT = -0.3, S5 = 4.5 * Math.PI - 0.38, SPIN_FRONT = S5 - ((((S5 - FRONT) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
@@ -204,7 +204,7 @@ async function init() {
     for (const el of [slot, heroBox]) {
       if (!el) continue;
       const r = el.getBoundingClientRect();
-      if (r.bottom < -r.height || r.top > H + r.height) continue;
+      if (!r.width || r.bottom < -r.height || r.top > H + r.height) continue;
       T.x = ((r.left + r.width / 2) / W * 2 - 1) * halfW;
       T.y = (1 - (r.top + r.height / 2) / H * 2) * halfH;
       T.s = (r.width / W) * halfW;
@@ -217,6 +217,15 @@ async function init() {
 
   function targets() {
     const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, halfW = halfH * camera.aspect;
+    if (mobile && intro && intro.offsetHeight) {
+      // home on phones: the whole story plays while the empty intro zone scrolls by, centred, before any text
+      const ir = intro.getBoundingClientRect();
+      if (ir.bottom > 0) {
+        const t = 0.5 + 4 * clamp01(-ir.top / Math.max(1, ir.height - H)), k = sample(t), fit = Math.min(0.8, (2 * halfW * 0.86) / 2.3);
+        return { x: 0, y: halfH * 0.06, s: k.s * fit, build: ramp(t, 0.75, 1.45), split: ramp(t, 1.75, 2.4), gather: ramp(t, 2.7, 3.35),
+          coin: clamp01(1 - ramp(t, 0.7, 1.15) + ramp(t, 3.0, 3.4)), spin: (t - 0.5) * Math.PI - 0.38, turn: -0.55 + (t - 1.5) * 0.5, sky: clamp01(t / 4.5), flip: 0 };
+      }
+    }
     if (mobile) return phoneTargets(halfW, halfH);
     let T, t = 0;
     if (PAGE === 'home') {

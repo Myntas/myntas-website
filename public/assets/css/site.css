@@ -173,7 +173,7 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .check input { margin-top: 0.2rem; accent-color: var(--gold-btn); }
 .count { font-family: var(--f-mono); font-size: var(--step--1); color: var(--muted); }
 
-.done-msg { display: grid; gap: 0.6rem; padding: 1rem; border: 1px solid var(--ok); border-radius: 2px; background: rgba(79, 107, 58, 0.06); }
+.done-msg { display: grid; gap: 0.6rem; padding: 1rem; border: 1px solid var(--ok); border-radius: 0.9rem; background: rgba(79, 107, 58, 0.06); }
 .done-msg b { color: var(--ok); }
 
 .formgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.25rem; }
@@ -188,7 +188,7 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
   .site-head { padding-block: 0.6rem; }
   .top { padding-left: 0.6rem; }
   .chapter { min-height: 0; align-items: start; padding-block: 0.75rem; } /* phones: no 3D story, so sections just stack */
-  .chapter .copy, .chapter.right .copy { margin-left: 0; background: var(--panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1.5rem 1.25rem; border: 1px solid var(--line); border-radius: 2px; }
+  .chapter .copy, .chapter.right .copy { margin-left: 0; background: var(--panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1.5rem 1.25rem; border: 1px solid var(--line); border-radius: 1.25rem; }
   .hero { min-height: 0; padding-top: 1.5rem; }
   .fallback { position: relative; right: auto; top: auto; transform: none; width: min(42vw, 11rem); margin: 0 auto 1.25rem; }
   .hero-inner { display: flex; flex-direction: column; }
@@ -208,7 +208,7 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 .fallback img { width: 100%; height: 100%; display: block; }
 .brand img { width: 34px; height: 34px; display: block; }
 .legal-page { padding-block: 3rem 6rem; display: grid; gap: 1.25rem; max-width: 44rem; }
-.fallback-msg { display: grid; gap: 0.5rem; padding: 1rem; border: 1px solid var(--gold-btn); border-radius: 2px; background: var(--paper); font-size: var(--step--1); }
+.fallback-msg { display: grid; gap: 0.5rem; padding: 1rem; border: 1px solid var(--gold-btn); border-radius: 0.9rem; background: var(--paper); font-size: var(--step--1); }
 .fallback-msg b { color: var(--brown); }
 main a:not(.btn) { color: var(--gold-dark); text-underline-offset: 0.15em; }
 main a:not(.btn):hover { color: var(--brown); }
@@ -680,3 +680,22 @@ main a:not(.btn):hover { color: var(--brown); }
 .legal-page ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.55rem; }
 .legal-page code { font-size: 0.875em; background: var(--cream-deep); padding: 0.05rem 0.35rem; border-radius: 4px; }
 .legal-note { padding: 0.85rem 1.1rem; border-radius: 0.9rem; background: var(--paper); border: 1px solid var(--glass-edge); font-size: var(--step--1) !important; }
+
+
+/* home on phones: the 3D story plays first, in an empty scroll zone (.m-intro), then the text sections follow in
+   alternating full-width bands (solid, so the canvas only shows in the intro, the benefits and the AUREA phones) */
+.m-intro { display: none; }
+@media (max-width: 760px) {
+  [data-page="home"] .m-intro { display: block; position: relative; height: 320svh; }
+  .m-hint { position: absolute; left: 50%; top: calc(100svh - 7.5rem); translate: -50% 0; display: grid; justify-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dark); transition: opacity 0.3s; }
+  .m-hint.gone { opacity: 0; }
+  .m-hint::after { content: ""; width: 0.6rem; height: 0.6rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; rotate: 45deg; animation: m-hint 1.6s ease-in-out infinite; }
+  .no3d .m-intro { display: none !important; }
+  .webgl [data-page="home"] .hero .fallback { display: none; }
+  [data-page="home"] main > .m-intro + .wrap .chapter { padding-block: 2.25rem; background: var(--cream); box-shadow: 0 0 0 100vmax var(--cream); clip-path: inset(0 -100vmax); }
+  [data-page="home"] main > .m-intro + .wrap .chapter:nth-child(even) { background: var(--cream-deep); box-shadow: 0 0 0 100vmax var(--cream-deep); }
+  [data-page="home"] main > .m-intro + .wrap .chapter:nth-child(even) .copy { background: var(--paper); }
+  [data-page="home"] .perks { padding-top: 2.5rem; }
+}
+@keyframes m-hint { 50% { translate: 0 5px; } }
+@media (prefers-reduced-motion: reduce) { .m-intro { display: none !important; } }
