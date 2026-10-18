@@ -53,6 +53,13 @@ for (const list of document.querySelectorAll('.switch[role="tablist"]')) {
   });
 }
 
+// home AUREA phones: the CSS chart animation waits until the section is on screen
+const showcase = document.querySelector('.showcase');
+if (showcase) {
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { showcase.classList.add('in'); io.disconnect(); } }, { threshold: 0.35 });
+  io.observe(showcase);
+}
+
 // email sign-ups: footer newsletter (every page), new-offer alerts (home band), AUREA early access. <form data-signup="kind">
 // Named fields other than the email and the consent box (name, profile) are sent along.
 const SIGNUP = {
