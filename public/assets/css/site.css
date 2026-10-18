@@ -538,3 +538,28 @@ main a:not(.btn):hover { color: var(--brown); }
   .dash-view, .tile, .tile.pick, .meter i, .dv-docs li, .dv-btn.press, .inv-done, .inv-done .ok, .d-s, .bars i, .feed li, .state.live::before { animation: none; }
   .cycle::after, .cycle li, .cycle li::before { transition: none; }
 }
+
+/* AUREA logo (mark + wordmark, assets/img/aurea-logo.svg) */
+.aurea-logo { display: block; height: auto; }
+.aurea-brand { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+.aurea-brand .soon { font-family: var(--f-mono); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--paper); }
+.dash-url img { display: inline-block; vertical-align: middle; }
+.how-head .aurea-logo { width: 143px; }
+
+/* early access: larger, higher-contrast labels and fields */
+.early-card { align-items: center; }
+.early-card .aurea-logo { width: 116px; margin-bottom: 1.25rem; }
+.early-card p { color: rgba(247, 241, 229, 0.88); }
+.early-list { color: var(--cream); font-size: 1rem; }
+.early-list svg { width: 1rem; height: 1rem; padding: 0.2rem; border-radius: 50%; background: rgba(183, 145, 68, 0.2); margin-top: 0.2rem; box-sizing: content-box; }
+.early-form { gap: 1.15rem; padding: 2rem; border-radius: 1.25rem; }
+.early-form .field { gap: 0.45rem; }
+.early-form .field label { font-family: var(--f-body); font-size: 0.9375rem; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--brown); }
+.early-form .field input, .early-form .field select { font-size: 1rem; padding: 0.85rem 1rem; border-radius: 0.75rem; border: 1px solid var(--line-strong); background: #fffdf8; color: var(--brown); transition: border-color 0.2s, box-shadow 0.2s; }
+.early-form .field input::placeholder { color: #9a9284; }
+.early-form .field input:focus, .early-form .field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(163, 126, 45, 0.18); }
+.early-form .check { font-size: 0.875rem; line-height: 1.5; color: var(--text); }
+.early-form .check input { width: 1.1rem; height: 1.1rem; flex: none; margin-top: 0.15rem; }
+.early-form .count { font-family: var(--f-body); font-size: 0.875rem; font-weight: 600; color: #8a3324; }
+.early-form .count:empty { display: none; }
+.early-form .btn { justify-self: stretch; padding-block: 0.95rem; font-size: 1rem; }
