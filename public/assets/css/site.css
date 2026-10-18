@@ -161,20 +161,15 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
 /* trusted by + powered by */
 .trust { padding-block: 4rem 3.5rem; display: grid; gap: 2rem; }
 .trust .head { display: flex; justify-content: center; }
-.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-.marquee .track { display: flex; width: max-content; animation: slide 32s linear infinite; }
-.marquee:hover .track { animation-play-state: paused; }
-.marquee ul { display: flex; align-items: center; gap: 5rem; padding: 0 2.5rem; margin: 0; list-style: none; }
-.marquee li { display: flex; align-items: center; height: 56px; }
-.marquee img { display: block; width: auto; opacity: 0.8; transition: opacity 0.2s; }
-.marquee li:hover img { opacity: 1; }
-@keyframes slide { to { transform: translateX(-50%); } }
+.logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem 5rem; margin: 0; padding: 0; list-style: none; }
+.logos li { display: flex; align-items: center; height: 56px; }
+.logos img { display: block; width: auto; opacity: 0.8; transition: opacity 0.2s; }
+.logos li:hover img { opacity: 1; }
 .powered { display: flex; flex-direction: column; align-items: center; gap: 1.1rem; border-top: 1px solid var(--line); padding-top: 2.25rem; }
 /* "Powered by" sits in a gold pill so it reads differently from the plain "Trusted by" label above */
 .powered .lbl { font-family: var(--f-mono); font-size: var(--step-0); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dark); padding: 0.55rem 1.4rem; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--paper); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 8px 22px rgba(59, 45, 25, 0.07); }
 .nova { display: block; width: 121px; height: auto; }
-@media (prefers-reduced-motion: reduce) { .marquee .track { animation: none; } .marquee { -webkit-mask-image: none; mask-image: none; } .marquee .track ul + ul { display: none; } .marquee ul { flex-wrap: wrap; justify-content: center; gap: 2rem 3rem; } }
-@media (max-width: 760px) { .marquee ul { gap: 3rem; padding: 0 1.5rem; } .marquee li { height: 44px; } .marquee img { transform: scale(0.8); } }
+@media (max-width: 760px) { .logos { gap: 1.25rem 1.75rem; } .logos li { height: 40px; } .logos img { max-height: 34px; } }
 
 .field { display: grid; gap: 0.35rem; min-width: 0; }
 .field label, .field .lbl { font-family: var(--f-mono); font-size: var(--step--2); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
