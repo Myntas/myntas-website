@@ -1,7 +1,7 @@
 # Myntas website
 
 Static marketing site for Myntas S.r.l. (myntas.com). Plain HTML, CSS and JS, no build step.
-Hosted as a Cloudflare Worker with static assets (`wrangler.jsonc`): every push to `main` runs `npx wrangler deploy`, which publishes the `public/` folder as-is. Other branches get preview URLs.
+Hosted on Cloudflare in two ways from the same repo: a Worker with static assets (`wrangler.jsonc`, test address `myntas-website.fragrant-waterfall-55f0.workers.dev`) and a Cloudflare Pages project (build output `public`, no build command) that serves **www.myntas.com**. Every push to `main` deploys both; other branches get preview URLs. The canonical address is `https://www.myntas.com/` (canonicals, hreflang, og:url, sitemap). `myntas.com` without www is redirected to www by the Hostinger Business hosting (hPanel → Websites → Redirects). DNS and email stay on Hostinger; the domain is registered at GoDaddy in an account Myntas no longer controls (recovery pending).
 Everything the website serves lives in `public/`; files outside it (this file, README, LICENSE) are never published.
 
 ## Structure
