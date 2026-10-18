@@ -172,6 +172,7 @@ async function init() {
   }
   const chapters = [...document.querySelectorAll('[data-chapter]')];
   const perks = document.querySelector('.perks'), slot = perks && perks.querySelector('.flip-slot');
+  const heroBox = document.querySelector('.hero .fallback');
   let aim = false, locked = false; // aim: heading for the benefits slot; locked: arrived, and pinned there
   // the story's spin when the token reaches the benefits chapter, wound back to a front-facing angle so it lands face on
   const FRONT = -0.3, S5 = 4.5 * Math.PI - 0.38, SPIN_FRONT = S5 - ((((S5 - FRONT) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
@@ -190,15 +191,33 @@ async function init() {
     W = window.innerWidth; H = window.innerHeight;
     renderer.setSize(W, H, false);
     camera.aspect = W / H; camera.updateProjectionMatrix();
-    fitSky(); mobile = W < 760;
+    fitSky(); mobile = W <= 760;
   }
   resize();
   window.addEventListener('resize', resize);
   let px = 0, py = 0, tpx = 0, tpy = 0;
   window.addEventListener('pointermove', e => { tpx = (e.clientX / W) * 2 - 1; tpy = (e.clientY / H) * 2 - 1; }, { passive: true });
 
+  // phones: no scroll story. The glass token sits in the hero logo box, or in the benefits slot, and scrolls with the page
+  function phoneTargets(halfW, halfH) {
+    const T = { x: 0, y: 0, s: 0.0001, build: 0, split: 0, gather: 0, coin: 0, spin: FRONT, turn: 0, sky: 0, flip: 0 };
+    for (const el of [slot, heroBox]) {
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -r.height || r.top > H + r.height) continue;
+      T.x = ((r.left + r.width / 2) / W * 2 - 1) * halfW;
+      T.y = (1 - (r.top + r.height / 2) / H * 2) * halfH;
+      T.s = (r.width / W) * halfW;
+      T.coin = 1;
+      if (el === slot && perks.dataset.side === 'owner') T.flip = 2 * Math.PI;
+      break;
+    }
+    return T;
+  }
+
   function targets() {
     const halfH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, halfW = halfH * camera.aspect;
+    if (mobile) return phoneTargets(halfW, halfH);
     let T, t = 0;
     if (PAGE === 'home') {
       t = storyT(); const k = sample(t);
@@ -210,7 +229,6 @@ async function init() {
       T = { x: lerp(1.7, halfW * 0.8, away), y: lerp(0, halfH * 0.66, away), s: lerp(1, 0.3, away), spin: p * Math.PI - 0.38, turn: -0.55 + p * 0.6, sky: clamp01(p / 2) };
       Object.assign(T, { build: 1 - ramp(p, 0.12, 0.65), split: 0, gather: 0, coin: ramp(p, 0.4, 0.7) });
     }
-    if (mobile) { T.x = 0; T.y = halfH * 0.52; T.s *= 0.48; }
     T.flip = 0;
     aim = false;
     if (slot) {
@@ -243,7 +261,7 @@ async function init() {
     const T = targets(), k = 1 - Math.exp(-dt * 4.5);
     for (const key in T) P[key] += (T[key] - P[key]) * k;
     if (aim && !locked && Math.abs(P.x - T.x) + Math.abs(P.y - T.y) < 0.02 && Math.abs(P.s - T.s) < 0.01 && Math.abs(P.spin - T.spin) < 0.03) locked = true;
-    if (locked) { P.x = T.x; P.y = T.y; P.s = T.s; P.spin = T.spin; } // pinned: no lag while the page scrolls
+    if (locked || mobile) { P.x = T.x; P.y = T.y; P.s = T.s; P.spin = T.spin; } // pinned: no lag while the page scrolls
     const pe = 1 - Math.exp(-dt * 3);
     px += (tpx - px) * pe; py += (tpy - py) * pe;
 
@@ -296,7 +314,4 @@ async function init() {
 
 // no WebGL or a failed start: show the flat logo straight away instead of waiting for the CSS timeout
 function noScene() { document.documentElement.classList.add('no3d'); }
-// phones get a plain scrolling page: the flat logo in the hero and the benefits slot, no 3D story
-const phone = matchMedia('(max-width: 760px)').matches;
-if (phone) noScene();
-else if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => { noScene(); console.error(e); });
+if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => { noScene(); console.error(e); });
