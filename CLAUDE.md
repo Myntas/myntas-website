@@ -17,7 +17,7 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 - `public/assets/img` logo, skyline, partner logos, share image
 - `public/_headers` security headers (strict CSP) and cache rules; `robots.txt`; `sitemap.xml`
 
-The header and footer are repeated in every HTML page: change them in all pages together.
+The header and footer are repeated in every HTML page: change them in all pages together. The footer is a rounded card with brand, quick links, newsletter sign-up, then the legal lines and risk notice.
 
 ## Languages
 
@@ -38,7 +38,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Open items
 
-- Forms post JSON to `/api/lead`, which does not exist yet. Until it does, visitors see a message with info@myntas.com.
+- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter with `kind: "newsletter"`), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - "Accedi" links to the current Base44 app at `https://myntas.com/Account`. Move the app to a subdomain (e.g. app.myntas.com) and update every page before switching the domain.
 - AUREA shows example properties marked "Esempio".
 - The Nova Ventures mark in "Powered by" is a placeholder.

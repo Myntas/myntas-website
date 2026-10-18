@@ -1,4 +1,4 @@
-// Shared behaviour: in-page scroll buttons, the home investor/owner switch and lead forms (owner proposals, reservations, waitlist).
+// Shared behaviour: in-page scroll buttons, the home investor/owner switch, the footer newsletter and lead forms (owner proposals, reservations, waitlist).
 // Forms post JSON to /api/lead. Until that endpoint exists the visitor sees a message with the email address instead.
 
 export const CONTACT_EMAIL = 'info@myntas.com';
@@ -50,6 +50,29 @@ for (const list of document.querySelectorAll('.switch[role="tablist"]')) {
     if (!d || i < 0) return;
     e.preventDefault();
     select(tabs[(i + d + tabs.length) % tabs.length], true);
+  });
+}
+
+// newsletter sign-up (footer, every page)
+const news = document.getElementById('newsForm');
+if (news) {
+  const en = document.documentElement.lang === 'en';
+  const T = en
+    ? { email: 'Enter a valid email address.', consent: 'Please tick the box to subscribe.', done: 'You are subscribed', doneSub: 'Thank you. We will write when there is news.',
+        fallback: `<div class="fallback-msg" role="status"><b>Online sign-up is not active yet.</b><span>Email us at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> and we will add you to the list.</span></div>` }
+    : { email: 'Inserisci un indirizzo email valido.', consent: 'Serve il consenso per iscriverti.', done: 'Iscrizione completata', doneSub: 'Grazie. Ti scriveremo quando ci sono novità.' };
+  news.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = document.getElementById('newsEmail').value.trim();
+    const err = document.getElementById('newsErr');
+    if (!EMAIL_RE.test(email)) { err.textContent = T.email; document.getElementById('newsEmail').focus(); return; }
+    if (!document.getElementById('newsConsent').checked) { err.textContent = T.consent; return; }
+    err.textContent = '';
+    news.querySelector('button[type="submit"]').disabled = true;
+    const ok = await submitLead('newsletter', { email, lang: en ? 'en' : 'it' });
+    news.innerHTML = ok
+      ? `<div class="done-msg" role="status"><b>${T.done}</b><span>${T.doneSub}</span></div>`
+      : T.fallback || fallbackHTML(`Iscrizione newsletter: ${email}`);
   });
 }
 
