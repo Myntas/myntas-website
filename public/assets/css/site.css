@@ -187,10 +187,10 @@ p { margin: 0; color: var(--text); font-size: var(--step-1); line-height: 1.55; 
   .nav .lang a { padding: 0.35rem 0.4rem; }
   .site-head { padding-block: 0.6rem; }
   .top { padding-left: 0.6rem; }
-  .chapter { align-items: end; padding-block: 2rem; }
+  .chapter { min-height: 0; align-items: start; padding-block: 0.75rem; } /* phones: no 3D story, so sections just stack */
   .chapter .copy, .chapter.right .copy { margin-left: 0; background: var(--panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1.5rem 1.25rem; border: 1px solid var(--line); border-radius: 2px; }
-  .hero { min-height: calc(100svh - 76px); }
-  .fallback { position: relative; right: auto; top: auto; transform: none; width: 60vw; margin: 0 auto 1.5rem; }
+  .hero { min-height: 0; padding-top: 1.5rem; }
+  .fallback { position: relative; right: auto; top: auto; transform: none; width: min(34vw, 9rem); margin: 0 auto 1.25rem; }
   .hero-inner { display: flex; flex-direction: column; }
   .steps, .steps.five { grid-template-columns: minmax(0, 1fr); }
   .step, .step:nth-child(even) { padding: 1rem 0; border-right: 0; }
@@ -260,7 +260,7 @@ main a:not(.btn):hover { color: var(--brown); }
 @keyframes card-in { from { opacity: 0; transform: translateY(10px); } }
 @media (max-width: 760px) {
   .perks { align-items: start; align-content: start; }
-  .flip-slot { position: relative; left: auto; top: auto; transform: none; width: 44vw; margin: 0 auto 1.5rem; }
+  .flip-slot { position: relative; left: auto; top: auto; transform: none; width: min(30vw, 8rem); margin: 0 auto 1.25rem; }
   .bpanel { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
   .bcard, .bcard:nth-child(n+4) { grid-column: 1; grid-row: auto; padding: 1.1rem 1.2rem; }
 }

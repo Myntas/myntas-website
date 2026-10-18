@@ -296,4 +296,7 @@ async function init() {
 
 // no WebGL or a failed start: show the flat logo straight away instead of waiting for the CSS timeout
 function noScene() { document.documentElement.classList.add('no3d'); }
-if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => { noScene(); console.error(e); });
+// phones get a plain scrolling page: the flat logo in the hero and the benefits slot, no 3D story
+const phone = matchMedia('(max-width: 760px)').matches;
+if (phone) noScene();
+else if (!reduce && ['home', 'proprietari'].includes(PAGE)) init().catch(e => { noScene(); console.error(e); });
