@@ -217,7 +217,8 @@ async function init() {
       // benefits chapter: once the slot is well into view the token travels from "processo" into .flip-slot,
       // facing front; when it arrives it locks there and scrolls with the page until the section leaves the screen.
       const pr = perks.getBoundingClientRect(), r = slot.getBoundingClientRect();
-      if (!(pr.top < H && pr.bottom > 0)) locked = false;
+      if (pr.bottom <= 0) { aim = locked = true; T.coin = 0; } // past the section: the token stays with the slot, hidden, so the phones below show no 3D
+      else if (pr.top >= H) locked = false;
       else aim = locked || r.top + r.height / 2 < H * 0.85;
       if (aim) {
         T.x = ((r.left + r.width / 2) / W * 2 - 1) * halfW;
