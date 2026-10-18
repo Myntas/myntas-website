@@ -145,6 +145,7 @@ async function init() {
   }
   const chapters = [...document.querySelectorAll('[data-chapter]')];
   const perks = document.querySelector('.perks'), slot = perks && perks.querySelector('.flip-slot');
+  let snap = false, wasSnap = false; // true while the token is pinned to the benefits slot
   // the story's spin when the token reaches the benefits chapter, wound back to a front-facing angle so it lands face on
   const FRONT = -0.3, S5 = 4.5 * Math.PI - 0.38, SPIN_FRONT = S5 - ((((S5 - FRONT) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
   function storyT() {
@@ -184,16 +185,18 @@ async function init() {
     }
     if (mobile) { T.x = 0; T.y = halfH * 0.5; T.s *= 0.55; }
     T.flip = 0;
+    snap = false;
     if (slot) {
-      // benefits chapter: follow .flip-slot on screen, face front, one full turn per switch.
-      // The move starts when the section enters the viewport (a solid section sits between it and "processo").
-      const f = ramp(H - perks.getBoundingClientRect().top, 0, H * 0.65);
-      if (f > 0) {
+      // benefits chapter: while the section is on screen the token sits in .flip-slot, facing front, and scrolls with
+      // the page (no travel from "processo": the story ends there, and the solid AUREA block hides the switch).
+      const pr = perks.getBoundingClientRect();
+      snap = pr.top < H && pr.bottom > 0;
+      if (snap) {
         const r = slot.getBoundingClientRect();
-        T.x = lerp(T.x, ((r.left + r.width / 2) / W * 2 - 1) * halfW, f);
-        T.y = lerp(T.y, (1 - (r.top + r.height / 2) / H * 2) * halfH, f);
-        T.s = lerp(T.s, (r.width / W) * halfW, f); // the token is 1.8 units wide at s = 1; fill ~90% of the slot
-        T.spin = lerp(T.spin, SPIN_FRONT, f);
+        T.x = ((r.left + r.width / 2) / W * 2 - 1) * halfW;
+        T.y = (1 - (r.top + r.height / 2) / H * 2) * halfH;
+        T.s = (r.width / W) * halfW; // the token is 1.8 units wide at s = 1; fill ~90% of the slot
+        T.spin = SPIN_FRONT;
       }
       if (perks.dataset.side === 'owner') T.flip = 2 * Math.PI;
     }
@@ -211,6 +214,9 @@ async function init() {
     const time = clock.getElapsedTime();
     const T = targets(), k = 1 - Math.exp(-dt * 4.5);
     for (const key in T) P[key] += (T[key] - P[key]) * k;
+    // pinned, or just released: jump straight to the target so the token never flies between the two sections
+    if (snap || wasSnap) { P.x = T.x; P.y = T.y; P.s = T.s; P.spin = T.spin; }
+    wasSnap = snap;
     const pe = 1 - Math.exp(-dt * 3);
     px += (tpx - px) * pe; py += (tpy - py) * pe;
 
