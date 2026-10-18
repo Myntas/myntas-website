@@ -7,11 +7,11 @@ Everything the website serves lives in `public/`; files outside it (this file, R
 ## Structure
 
 - `public/index.html` home (scroll story, "AUREA in tre passi" with illustrative phone screens, "Perché tokenizzare" investor/owner switch with six cards around the token (its own `.wrap` after the solid AUREA block; the 3D token moves to the slot as the section enters the viewport), "Trusted by", closing band with owner CTA and new-offer alerts); `public/en/index.html` its English version
-- `public/aurea/index.html` AUREA intro page ("in arrivo"): 3D hero with key points, animated dashboard preview in four steps, "La scheda immobile" (six cards), offer lifecycle timeline, "Primi passi" (profile, ID check, questionnaire, invest), "Per chi è AUREA", FAQ (`<details>`), early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
+- `public/aurea/index.html` AUREA intro page ("in arrivo"): hero with key points and two floating phones in HTML/CSS (listing and wallet, pills "Investi con solo 100 €" / "Basta un click"; no 3D on this page), animated dashboard preview in four steps, "La scheda immobile" (six cards), offer lifecycle timeline, "Primi passi" (profile, ID check, questionnaire, invest), "Per chi è AUREA", FAQ (`<details>`), early-access form (`kind: "early-access"`). Animations and facade drawings in `assets/js/aurea.js`
 - `public/proprietari/index.html` owners page, built around the tokenization request form (`#ownerFormEl`, `kind: "owner"`): hero with key points, nine benefits, five-step process, request card with requirements and next steps, owners FAQ
 - `public/privacy/`, `cookie/` legal pages (placeholders until the real texts exist), `404.html`
 - `public/assets/css/site.css` all styles; colour and type tokens are at the top in `:root`
-- `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`); it reads `<body data-page>`
+- `public/assets/js/scene.js` 3D stage (three.js r160, self-hosted in `assets/vendor/three`) on the home and Proprietari pages; it reads `<body data-page>`
 - `public/assets/js/site.js` scroll buttons, home switch, sign-up and lead forms; `assets/js/aurea.js` AUREA preview animations
 - `public/assets/fonts` self-hosted Montserrat (variable, OFL; every text on the site uses it: `--f-display`, `--f-body`, `--f-mono` all point to it, headings at `--w-display`). No requests to Google
 - `public/assets/img` logo mark (`logo.svg`, header), full logo with wordmark (`myntas-logo.png`, footer), AUREA logo (`aurea-logo.svg`: lowercase "aurea" wordmark only, Merriweather Bold as outlines to match the "myntas" wordmark, gold `#d0b677`), skyline, partner logos, share image
