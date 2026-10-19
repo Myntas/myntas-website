@@ -1,4 +1,4 @@
-// Home, after the footer: 55 glass tokens (the same token as the 3D story) drop into a heap when it scrolls into view,
+// Home, after the footer, across the full page width: 55 (89 on wide screens) glass tokens (the same token as the 3D story) drop into a heap when it scrolls into view,
 // and the pointer pushes them around. 2D physics (verlet circles with gravity, floor and side walls), drawn with three.js.
 import * as THREE from 'three';
 import { SVGLoader } from '/assets/vendor/three/addons/SVGLoader.js';
@@ -15,10 +15,9 @@ async function init() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.setClearColor(0xf7f1e5, 1);
+  renderer.setClearColor(0x000000, 0); // transparent: the page's skyline (scene.js) shows behind the tokens
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf7f1e5);
   scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
   const key = new THREE.DirectionalLight(0xfff0d2, 2.8); key.position.set(300, 400, 500); scene.add(key);
   const fill = new THREE.DirectionalLight(0xffe6b8, 1.0); fill.position.set(-200, 50, 800); scene.add(fill);
@@ -37,8 +36,9 @@ async function init() {
   const glass = new THREE.MeshPhysicalMaterial({ color: 0xfffaf0, metalness: 0, roughness: 0.24, transmission: 1, thickness: 0.9, ior: 1.5,
     attenuationColor: 0xc9a053, attenuationDistance: 1.6, specularIntensity: 0.8, envMapIntensity: 1.3 });
 
-  const N = 55, G = 2400, STEP = 1 / 120;
-  const mesh = new THREE.InstancedMesh(geo, glass, N);
+  const MAX = 89, G = 2400, STEP = 1 / 120;
+  let N = 55; // 89 on wide screens, so the heap still covers the full width (both Fibonacci numbers, like the mark)
+  const mesh = new THREE.InstancedMesh(geo, glass, MAX);
   mesh.frustumCulled = false;
   scene.add(mesh);
   const camera = new THREE.OrthographicCamera(0, 1, 0, -1, -2000, 2000);
@@ -123,6 +123,8 @@ async function init() {
   }
 
   layout();
+  N = W > 1000 ? 89 : 55;
+  mesh.count = N;
   drop();
   if (reduce) { for (let i = 0; i < 900; i++) step(); dropped = true; } // already settled, no falling
   draw();
