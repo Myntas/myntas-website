@@ -42,14 +42,13 @@ The header and footer are repeated in every HTML page: change them in all pages 
 - Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
 - Navbar: "aurea", "tokenize" (lowercase; tokenize is the Proprietari page, same label in both languages), "Accedi"/"Log in" (goes to the AUREA early-access form, `/aurea/#accesso` or `/en/aurea/#accesso`, in the navbar and the footer quick links), IT/EN switcher. The Base44 app is being retired: it now only redirects to www.myntas.com keeping the path, and `public/_redirects` maps its old pages: `/Home` and the content pages to the home, `/Partners` to `/proprietari/`, `/FAQ` to `/aurea/#faq`, and the app areas (`/Account`, `/MyntasTrade`, `/Portfolio`, `/Wallet`, ...) to the AUREA early-access form. When the AUREA app is live, point "Accedi" at its subdomain on every page.
 - AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase, the FAQ answers (token rights, resale, costs, who can invest) and the AML/questionnaire steps need counsel to confirm.
-- The Nova Ventures logo in "Powered by" is the real one but low resolution (121×43 PNG from a JPG): replace with an SVG or larger file.
 
 ## Launch checklist (before pointing myntas.com here)
 
 1. AUREA is now an intro + early-access page. Real offerings, with their documents, go live only on the AUREA app.
 2. Privacy and cookie drafts are live: counsel to confirm (see docs/lancio-myntas-com.md). Every footer shows "© 2026 Myntas S.r.l. · P.IVA 07577500486 · Dati societari" (the VAT number must stay on the site, art. 35 DPR 633/72); the full company data (address, REA FI-713175, capitale 100,00 € i.v., PEC) is in the privacy notice, section 1 (`#dati-societari`). Start-up innovativa disclosure page (art. 25 DL 179/2012) still to publish.
 3. Counsel's sign-off on all regulatory wording.
-4. "Trusted by" is removed; written permission from Nova Ventures ("Powered by") and its high-resolution logo.
+4. "Trusted by" is removed; written permission from Nova Ventures ("Powered by"; logo is the official SVG, `partners/nova-ventures-logo.svg`, cropped and with styles inlined as attributes for the CSP).
 5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
 6. "Accedi" pointing at the app subdomain once the app is live (today it opens the AUREA early-access form).
 7. Remove `<meta name="robots" content="noindex, nofollow">` from every page and replace `robots.txt` with the launch version noted inside it.
