@@ -42,7 +42,8 @@ body { background: var(--cream); color: var(--text); font-family: var(--f-body);
 #scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; opacity: 0; transition: opacity 0.7s ease; }
 .webgl #scene { opacity: 1; }
 .wrap { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.inner { max-width: 72rem; margin-inline: auto; }
+.inner { max-width: min(88rem, 100%); margin-inline: auto; } /* wide screens: less empty space at the sides */
+@media (min-width: 1600px) { .wrap { padding-left: max(3rem, env(safe-area-inset-left, 0px)); padding-right: max(3rem, env(safe-area-inset-right, 0px)); } .inner { max-width: 96rem; } }
 .solid { background: var(--cream); }
 button { font: inherit; color: inherit; }
 
@@ -726,4 +727,4 @@ main a:not(.btn):hover { color: var(--brown); }
 .pile-wrap { position: relative; z-index: 1; } /* edge to edge, not limited to the content width; the skyline shows through */
 .pile-sec { display: grid; padding-block: 0.5rem 0; }
 #pile { display: block; width: 100%; height: 18rem; touch-action: pan-y; cursor: grab; }
-@media (hover: none) { 
+@media (hover: none) { #ownerForm { scroll-margin-top: 5.5rem; } /* "Proponi un immobile" links land on the form, below the sticky header */

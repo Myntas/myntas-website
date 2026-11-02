@@ -39,7 +39,7 @@ The header and footer are repeated in every HTML page: change them in all pages 
 
 ## Open items
 
-- Forms post JSON to `/api/lead` (owner proposals, AUREA reservations and waitlist, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile), which does not exist yet. Until it does, visitors see a message with info@myntas.com.
+- Forms post JSON to `/api/lead` (owner proposals `kind: "owner"`, footer newsletter `kind: "newsletter"`, home offer alerts `kind: "alerts"`, AUREA `kind: "early-access"` with name and profile). `functions/api/lead.js` is a Cloudflare Pages Function (Pages only, not the Worker) that saves each one as a row in the Notion database "Richieste sito Myntas" (id `1aa6cfcc660c411e9b90ecb66a8d9b88`). It needs the encrypted variable `NOTION_TOKEN` in the Pages project (Settings → Variables and secrets), from a Notion internal integration that has access to that database. If the endpoint fails, visitors see a message with info@myntas.com.
 - Navbar: "aurea", "tokenize" (lowercase; tokenize is the Proprietari page, same label in both languages), "Accedi"/"Log in" (goes to the AUREA early-access form, `/aurea/#accesso` or `/en/aurea/#accesso`, in the navbar and the footer quick links), IT/EN switcher. The Base44 app is being retired: it now only redirects to www.myntas.com keeping the path, and `public/_redirects` maps its old pages: `/Home` and the content pages to the home, `/Partners` to `/proprietari/`, `/FAQ` to `/aurea/#faq`, and the app areas (`/Account`, `/MyntasTrade`, `/Portfolio`, `/Wallet`, ...) to the AUREA early-access form. When the AUREA app is live, point "Accedi" at its subdomain on every page.
 - AUREA is an intro page with no listings. Its preview uses invented example properties, always marked "Esempio" (Palazzo Belvedere, Corte dei Tigli, Casa Ginestra, Villa Glicine, Palazzo Fibonacci; "Residenza Aurora" on the home phone screens). Never real cities or addresses. The "Uscita" phase, the FAQ answers (token rights, resale, costs, who can invest) and the AML/questionnaire steps need counsel to confirm.
 
@@ -49,6 +49,6 @@ The header and footer are repeated in every HTML page: change them in all pages 
 2. Privacy and cookie drafts are live: counsel to confirm (see docs/lancio-myntas-com.md). Every footer shows "© 2026 Myntas S.r.l. · P.IVA 07577500486 · Dati societari" (the VAT number must stay on the site, art. 35 DPR 633/72); the full company data (address, REA FI-713175, capitale 100,00 € i.v., PEC) is in the privacy notice, section 1 (`#dati-societari`). Start-up innovativa disclosure page (art. 25 DL 179/2012) still to publish.
 3. Counsel's sign-off on all regulatory wording.
 4. "Trusted by" is removed; written permission from Nova Ventures ("Powered by"; logo is the official SVG, `partners/nova-ventures-logo.svg`, cropped and with styles inlined as attributes for the CSP).
-5. `/api/lead` endpoint live (destination: Notion CRM and/or email).
+5. `/api/lead` saving to Notion: set `NOTION_TOKEN` in the Pages project and connect the integration to the database.
 6. "Accedi" pointing at the app subdomain once the app is live (today it opens the AUREA early-access form).
 7. Remove `<meta name="robots" content="noindex, nofollow">` from every page and replace `robots.txt` with the launch version noted inside it.
