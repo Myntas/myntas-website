@@ -1,5 +1,5 @@
 // Shared behaviour: in-page scroll buttons, the home investor/owner switch, email sign-ups and lead forms (owner proposals, reservations, waitlist).
-// Forms post JSON to /api/lead. Until that endpoint exists the visitor sees a message with the email address instead.
+// Forms post JSON to /api/lead (functions/api/lead.js, which saves them in Notion). If that fails the visitor sees a message with the email address instead.
 
 export const CONTACT_EMAIL = 'info@myntas.com';
 export const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
