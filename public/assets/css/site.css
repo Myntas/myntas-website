@@ -41,9 +41,11 @@ html { background: var(--cream); }
 body { background: var(--cream); color: var(--text); font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 #scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; opacity: 0; transition: opacity 0.7s ease; }
 .webgl #scene { opacity: 1; }
-.wrap { position: relative; z-index: 1; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.inner { max-width: min(88rem, 100%); margin-inline: auto; } /* wide screens: less empty space at the sides */
-@media (min-width: 1600px) { .wrap { padding-left: max(3rem, env(safe-area-inset-left, 0px)); padding-right: max(3rem, env(safe-area-inset-right, 0px)); } .inner { max-width: 96rem; } }
+/* page gutter grows with the screen (16px on phones, up to 6rem), and the content column is centred, capped at 88rem
+   (100rem on very wide screens): nothing hugs the left edge, and large screens keep only modest margins */
+.wrap { position: relative; z-index: 1; --gut: clamp(16px, 5vw, 6rem); padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+.inner { max-width: min(88rem, 100%); margin-inline: auto; }
+@media (min-width: 2200px) { html { font-size: 112.5%; } .inner { max-width: 100rem; } } /* very large screens: everything a little larger */
 .solid { background: var(--cream); }
 button { font: inherit; color: inherit; }
 
