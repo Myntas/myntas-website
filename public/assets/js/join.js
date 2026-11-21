@@ -128,6 +128,7 @@ function renderForm() {
     else try {
       const res = await fetch('/api/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       ok = res.ok;
+      if (ok) data.confirmEmail = !!(await res.clone().json().catch(() => ({}))).email;
       if (!ok && (await res.json().catch(() => ({}))).error === 'captcha') { err.textContent = T.errCaptcha; window.turnstile?.reset(); captcha = ''; }
       else if (!ok) err.textContent = T.errServer;
     } catch (x) { err.textContent = T.errServer; }
@@ -141,7 +142,7 @@ function renderForm() {
 function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
-    <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
+    <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : data.confirmEmail ? T.thanksText : T.thanksTextSaved)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
     <div class="jcard-wrap sealed" id="cardWrap"><h3>${esc(T.cardTitle)}</h3>
       <button type="button" class="btn primary jreveal-btn" id="revealBtn">${esc(T.revealBtn)}</button>
       <div class="jstage">
