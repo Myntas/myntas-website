@@ -167,10 +167,7 @@ export const COPY = {
     roleMulti: '(pick one or more)',
     roles: {
       token_investor: 'I\'d like to invest in tokens',
-      property_owner: 'I\'d like to tokenize my property',
-      company_investor: 'I\'d like to invest in Myntas, the company',
-      partner: 'Partner or advisor',
-      follower: 'Just following'
+      property_owner: 'I\'d like to tokenize my property'
     },
     researchNote: 'Non-binding. This is market research, not an offer or a commitment to invest.',
     likelihood: 'When the first property opens, how likely are you to invest?',
