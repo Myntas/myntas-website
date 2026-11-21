@@ -791,7 +791,11 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .join-form .count { font-size: 0.875rem; font-weight: 600; color: #8a3324; }
 .join-form .count:empty { display: none; }
 .jsubmit { width: 100%; padding-block: 0.95rem; border-radius: 999px; font-weight: 600; font-size: 1rem; }
-.join-thanks { display: grid; gap: 0.75rem; outline: none; }
+.join-thanks { display: grid; gap: 0.75rem; outline: none; animation: jenter 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.join-form { transition: opacity 0.22s, transform 0.22s; }
+.join-form.leaving { opacity: 0; transform: translateY(-8px); }
+@keyframes jenter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.join-out { justify-content: center; }
 .join-thanks h2 { font-size: var(--step-3); color: var(--brown); }
 .join-thanks h3 { font-size: 1rem; color: var(--gold-dark); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.12em; }
 .join-thanks p { margin: 0; }
@@ -824,10 +828,12 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jreveal-btn { justify-self: center; border-radius: 999px; }
 .jtoken { align-self: center; width: min(80%, 18rem); padding: 0; border: 0; background: none; cursor: pointer; perspective: 900px; -webkit-tap-highlight-color: transparent; animation: jfloat 3.2s ease-in-out infinite; }
 .jtoken[hidden] { display: none; }
-.jtoken canvas { display: none; width: 100%; aspect-ratio: 1; }
-.jtoken.live canvas { display: block; }
-.jtoken.live img { display: none; }
-.jtoken img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 22px rgba(59, 45, 25, 0.28)); transition: transform 0.3s; }
+.jtoken { display: grid; }
+.jtoken > * { grid-area: 1 / 1; align-self: center; }
+.jtoken canvas { width: 100%; aspect-ratio: 1; opacity: 0; transition: opacity 0.5s; }
+.jtoken.live canvas { opacity: 1; }
+.jtoken.live img { opacity: 0; }
+.jtoken img { display: block; width: 100%; height: auto; filter: drop-shadow(0 22px 22px rgba(59, 45, 25, 0.28)); transition: opacity 0.5s, transform 0.3s; }
 .jtoken:hover img, .jtoken:focus-visible img { transform: scale(1.04); }
 .jtoken:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 50%; }
 .spinning .jtoken { animation: none; }
@@ -857,7 +863,7 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jb-geo { font-size: 0.75rem; opacity: 0.7; font-variant-numeric: tabular-nums; }
 .jcard-wrap .join-links { justify-content: center; }
 .jcard-wrap .btn { border-radius: 999px; }
-@media (prefers-reduced-motion: reduce) { .jcard-in, .jcard-tilt { transition: none; } .jtoken, .spinning .jtoken img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .join-thanks { animation: none; } .join-form { transition: none; } .jcard-in, .jcard-tilt { transition: none; } .jtoken, .spinning .jtoken img { animation: none; } }
 .jshares { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.4rem; font-size: 0.875rem; }
 .jshares span { width: 100%; text-align: center; color: var(--muted); }
 .jshare { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; flex: none; border-radius: 50%; background: var(--brown); color: var(--cream) !important; text-decoration: none; transition: background-color 0.15s, transform 0.15s; }
