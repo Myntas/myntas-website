@@ -33,7 +33,7 @@ for (const lm of CONFIG.landmarks) {
   fs.writeFileSync(path.join(imgDir, `${lm.id}-share.jpg`), Buffer.from(o.share.split(',')[1], 'base64'));
   fs.writeFileSync(path.join(imgDir, `${lm.id}-thumb.png`), Buffer.from(o.thumb.split(',')[1], 'base64'));
   const [cls, rar] = COPY.en.cardClass[lm.cls];
-  const t = esc(`Founding collector of ${lm.name} · Myntas`), d = esc(`${cls}, ${rar.toLowerCase()}. A Myntas collectible card, just for fun. Join the waitlist and get yours.`);
+  const t = esc(`Founding collector of ${lm.name} · Myntas`), d = esc(`${cls}, ${rar.toLowerCase()}. A Myntas collectible card. Join the waitlist and get yours.`);
   const img = `https://www.myntas.com/assets/img/cards/${lm.id}-share.jpg`, dir = path.join(root, 'join/card', lm.id);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), `<!doctype html>

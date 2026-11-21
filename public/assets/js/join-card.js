@@ -2,7 +2,7 @@ import { pick } from '/assets/js/join-pick.js';
 
 // /join reward: after signup the visitor gets a "founding collector" card with a famous landmark, drawn on a canvas
 // (gold line-and-fill art on the brand brown) so it can be saved or shared as a PNG. The landmark and the piece number
-// come from a hash of the email, so the same person always gets the same card. It is a collectible for fun: the card
+// come from a hash of the email, so the same person always gets the same card. It is a collectible with no intrinsic value: the card
 // says (in a note under it on the page) that it is not a share of any property, has no value and is not affiliated with any landmark.
 // Three classes with their own odds: real landmarks (public domain; no Italian or Greek monuments, whose images need
 // permission for commercial use), legendary places, and space.
@@ -522,7 +522,7 @@ export async function makeCard({ email, name, src, T, landmarks, odds = {}, logo
   g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif';
   g.fillText(src === 'web' ? T.cardOnline : src.split('-').map(w => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(' '), W - 100, 978);
 
-  // the card stays clean: the note that it is just for fun sits under it on the page (cardDisclaimer in copy.js)
+  // the card stays clean: the note that it has no intrinsic value sits under it on the page (cardDisclaimer in copy.js)
   return { canvas: c, landmark: lm, piece };
 }
 

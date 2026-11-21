@@ -213,10 +213,10 @@ export const COPY = {
     shareTelegram: 'Telegram',
     shareEmail: 'Email',
     // {name} {piece} {rarity} are filled in; the share page link is added at the end
-    shareText: 'I just got my Myntas founding card: {name}, piece #{piece} of 1,000 ({rarity}). It is just for fun, but Myntas is working on the real thing for real estate. Get yours:',
-    shareTextShort: 'My Myntas founding card: {name}, piece #{piece} ({rarity}). Just for fun. Get yours:',
+    shareText: 'I just got my Myntas founding card: {name}, piece #{piece} of 1,000 ({rarity}). Myntas is working on the real thing for real estate. Get yours:',
+    shareTextShort: 'My Myntas founding card: {name}, piece #{piece} ({rarity}). Get yours:',
     cardShare: 'Share',
-    cardDisclaimer: 'Just for fun: it does not make you the owner of the place and has no value. We have plans for it, more soon.',
+    cardDisclaimer: 'This collectible has no intrinsic value, but we have plans for it. Stay tuned.',
     videoPlay: 'Play the video',
     videoSoon: 'The video is coming soon. We will also email it to you.',
     followLinkedin: 'Follow us on LinkedIn',
