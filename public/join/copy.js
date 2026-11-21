@@ -7,9 +7,9 @@ export const CONFIG = {
   turnstileSiteKey: '',
   // Apple Wallet: set to true once the Pass Type ID certificate is in the Pages project (see functions/api/wallet.js)
   appleWallet: false,
-  // preview for friends: the form shows the card and the rest but saves nothing and sends no email.
-  // Set to false once Brevo is connected (README "Waitlist page /join").
-  testMode: true,
+  // true = preview: the form shows the card and the rest but saves nothing. With false, signups go to /api/join,
+  // which saves them in Notion (NOTION_TOKEN) and/or Brevo (README "Waitlist page /join").
+  testMode: false,
   video: {
     // self-hosted MP4 files under /assets/video/ (the site's CSP allows only its own files). null = not ready yet.
     full: '/assets/video/myntas-intro-v1.mp4', // the Myntas intro (with sound), next to the form, after signup and on the confirmation page
@@ -191,6 +191,7 @@ export const COPY = {
     thanksTitle: 'You\'re on the list.',
     thanksPerks: 'Your early access and founding member gift are saved. We will be in touch.',
     thanksText: 'Check your inbox and confirm your email to finish signing up.',
+    thanksTextSaved: 'Thanks for joining. We will write to you soon.',
     thanksTextTest: 'Thanks for trying it. This is a preview, so nothing was saved and no email will arrive.',
     thanksVideoTitle: 'How Myntas works',
     cardTitle: 'Your founding card',

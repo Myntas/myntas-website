@@ -25,12 +25,12 @@ See `CLAUDE.md` for the structure, editing rules and the launch checklist.
 
 ## Waitlist page `/join`
 
-A single page for events (link or QR code): sign-up form, Myntas intro video after signup, leads saved in Brevo with
-double opt-in and a lead score. English. Files:
+A single page for events (link or QR code): sign-up form, Myntas intro video after signup, leads saved in Notion ("Richieste sito Myntas", Tipo "Waitlist") and/or Brevo with
+double opt-in, with a lead score. English. Files:
 
 - `public/join/copy.js`: **all the copy and settings** (texts, Turnstile site key, video files, links). Edit here, and send this file to MFC / legal for review.
 - `public/join/index.html`, `public/join/confirmed/` (the page Brevo's confirmation link opens), `public/assets/js/join.js`, styles in `site.css` ("/join waitlist page").
-- `functions/api/join.js`: Cloudflare Pages Function that checks Turnstile and the honeypot, computes `LEAD_SCORE` / `HOT_LEAD` and writes the contact to Brevo (double opt-in for new emails, update for existing ones).
+- `functions/api/join.js`: Cloudflare Pages Function that checks Turnstile and the honeypot, computes `LEAD_SCORE` / `HOT_LEAD` and saves the signup to Notion (with `NOTION_TOKEN`) and to Brevo (double opt-in for new emails, update for existing ones) when each is set up. Without Brevo no confirmation email is sent and the thank-you text says so.
 
 ### Event links and QR codes
 
@@ -50,11 +50,12 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 
 ### One-time setup
 
+0. **Notion** (enough to start collecting): `NOTION_TOKEN` in the Pages project, from a Notion internal integration connected to the database "Richieste sito Myntas" (same as `/api/lead`).
 1. **Brevo** (free plan): create an API key (SMTP & API → API keys), then run `BREVO_API_KEY=... node tools/brevo-setup.mjs` once. It creates the contact attributes and the `Waitlist` list and prints the list id.
 2. In Brevo create the **double opt-in template** (Templates → new, with the confirmation button `{{ doubleoptin }}`) and note its id. Add an automation "contact added to list Waitlist" → welcome email with the intro video link (/assets/video/myntas-intro-v1.mp4). Segments by `ROLE` give the separate newsletter tracks (`ROLE` holds every role picked, comma separated, e.g. `token_investor,property_owner`: segment with "contains").
 3. **Turnstile** (Cloudflare → Turnstile → add site `www.myntas.com`): put the site key in `copy.js` (`turnstileSiteKey`).
 4. **Cloudflare Pages** project `myntas` → Settings → Variables and secrets: `BREVO_API_KEY` (secret), `BREVO_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `TURNSTILE_SECRET` (secret). Redeploy.
-5. Set `testMode: false` in `copy.js` (while it is `true` the form saves nothing: a preview for friends).
+5. `testMode` in `copy.js` is `false` (set it to `true` for a preview that saves nothing).
 6. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.full` (and `video.poster`) in `copy.js`. It plays next to the form, after signup and on the confirmation page, with sound and a big play button. With `full: null` the page shows the poster and a "coming soon" line.
 
 ### Collector cards (signup reward)
