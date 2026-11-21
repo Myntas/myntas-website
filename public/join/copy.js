@@ -152,7 +152,6 @@ export const COPY = {
     // waitlist perks: early access to the platform and a thank-you gift, never a financial benefit or priority to invest
     perksTitle: 'What you get',
     perks: '<li>Early access to Myntas</li><li>A first look at the first property</li><li>A gift for our founding members</li>',
-    perksNote: 'The gift has no financial value and does not affect any future investment.',
 
     formTitle: 'Join the waitlist',
     formIntro: 'It takes 20 seconds.',

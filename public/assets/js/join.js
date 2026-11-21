@@ -99,6 +99,8 @@ function renderForm() {
     }
   });
 
+  form.addEventListener('focusin', warmToken, { once: true });
+
   let captcha = '';
   if (CONFIG.turnstileSiteKey) {
     window.onTurnstile = () => window.turnstile.render('#turnstile', { sitekey: CONFIG.turnstileSiteKey, theme: 'light', callback: t => { captcha = t; }, 'expired-callback': () => { captcha = ''; } });
@@ -130,6 +132,8 @@ function renderForm() {
       else if (!ok) err.textContent = T.errServer;
     } catch (x) { err.textContent = T.errServer; }
     if (!ok) { btn.disabled = false; btn.textContent = T.submit; return; }
+    form.classList.add('leaving');
+    await new Promise(r => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 220));
     thanks(data);
   });
 }
@@ -149,12 +153,12 @@ function thanks(data) {
       </div>
       <p class="jcard-note">${esc(T.cardDisclaimer)}</p><div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
-    <div class="join-links">${links()}</div></div>`;
+    <div class="join-links join-out">${links()}</div></div>`;
   video(document.getElementById('fullVideo'), CONFIG.video.full, { title: T.thanksVideoTitle });
   const teaser = document.getElementById('teaser');
   if (teaser) teaser.hidden = true;
-  box.firstElementChild.focus();
-  box.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  box.firstElementChild.focus({ preventScroll: true });
+  box.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   sealed();
   showCard(data).catch(e => console.error(e));
 }
@@ -209,13 +213,17 @@ async function showCard(data) {
 
 // the reveal: the floating token waits with a "click here" button; a click spins it until it turns edge-on,
 // then the card carries on the same turn, back first, and lands on its front
+// loads three.js and the token module once (started on the first tap in the form)
+let tokenModule;
+function warmToken() { return (tokenModule ||= import('/assets/js/join-token.js')); }
+
 let ready;
 const cardReady = new Promise(r => { ready = r; });
 function sealed() {
   const wrap = document.getElementById('cardWrap'), token = document.getElementById('token'), card = document.getElementById('card');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // the live glass token (as on the home); the still image stays if WebGL or three.js are not available
-  const live = import('/assets/js/join-token.js').then(m => m.mountToken(token.querySelector('canvas'))).then(t => { token.classList.add('live'); return t; }).catch(() => null);
+  const live = warmToken().then(m => m.mountToken(token.querySelector('canvas'))).then(t => { token.classList.add('live'); return t; }).catch(() => null);
   let busy = false;
   const open = async () => {
     if (busy) return; busy = true;

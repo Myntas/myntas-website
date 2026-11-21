@@ -59,7 +59,7 @@ export async function mountToken(canvas) {
     }
     requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+  frame(performance.now()); // first frame drawn before the canvas is shown, so the still image hands over without a blank
   return {
     spin: () => new Promise(r => { if (still) return r(); spinFrom = coin.rotation.y; spinStart = performance.now(); done = r; })
   };
