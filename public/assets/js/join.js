@@ -132,16 +132,15 @@ function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
     <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
-    <div class="jcard-wrap sealed" id="cardWrap"><h3>${esc(T.cardTitle)}</h3><p id="cardText">${esc(T.revealText)}</p>
+    <div class="jcard-wrap sealed" id="cardWrap"><h3>${esc(T.cardTitle)}</h3>
       <button type="button" class="btn primary jreveal-btn" id="revealBtn">${esc(T.revealBtn)}</button>
       <div class="jstage">
-        <button type="button" class="jtoken" id="token" aria-label="${esc(T.revealBtn)}"><img src="/assets/img/join-token.webp" alt="" width="609" height="640"></button>
+        <button type="button" class="jtoken" id="token" aria-label="${esc(T.revealBtn)}"><img src="/assets/img/join-token-glass.webp" alt="" width="471" height="522"><canvas></canvas></button>
         <button type="button" class="jcard" id="card" aria-label="${esc(T.cardFlip)}" tabindex="-1"><span class="jcard-tilt"><span class="jcard-in">
           <span class="jcard-face jcard-front"><img id="cardImg" alt=""><span class="jcard-glare"></span></span>
           <span class="jcard-face jcard-back" id="cardBack"><img src="/assets/img/logo.svg" alt=""><span class="jcard-glare"></span></span>
         </span></span></button>
       </div>
-      <p class="jcard-hint">${esc(T.cardFlip)}</p>
       <p class="jcard-note">${esc(T.cardDisclaimer)}</p><div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
     <div class="join-links">${links()}</div></div>`;
@@ -203,15 +202,17 @@ let ready;
 const cardReady = new Promise(r => { ready = r; });
 function sealed() {
   const wrap = document.getElementById('cardWrap'), token = document.getElementById('token'), card = document.getElementById('card');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // the live glass token (as on the home); the still image stays if WebGL or three.js are not available
+  const live = import('/assets/js/join-token.js').then(m => m.mountToken(token.querySelector('canvas'))).then(t => { token.classList.add('live'); return t; }).catch(() => null);
   let busy = false;
   const open = async () => {
     if (busy) return; busy = true;
     document.getElementById('revealBtn').disabled = true;
+    const t = await live;
     wrap.classList.add('spinning');
-    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    await Promise.all([cardReady, new Promise(r => setTimeout(r, still ? 0 : 1100))]);
+    await Promise.all([cardReady, t ? t.spin() : new Promise(r => setTimeout(r, still ? 0 : 1100))]);
     wrap.classList.remove('sealed', 'spinning'); wrap.classList.add('pre');
-    document.getElementById('cardText').textContent = T.cardText;
     token.hidden = true; card.tabIndex = 0;
     card.getBoundingClientRect(); // commit the edge-on start before the turn
     requestAnimationFrame(() => { wrap.classList.remove('pre'); wrap.classList.add('flipped'); interactive(card, wrap); });

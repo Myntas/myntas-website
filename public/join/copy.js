@@ -14,7 +14,7 @@ export const CONFIG = {
     // self-hosted MP4 files under /assets/video/ (the site's CSP allows only its own files). null = not ready yet.
     teaser: null, // short muted loop shown in the hero
     full: null, // founder video, shown after signup and on the confirmation page
-    poster: '/assets/img/join-token.webp'
+    poster: '/assets/img/join-token-glass.webp'
   },
   links: {
     website: 'https://www.myntas.com/en/',
@@ -199,8 +199,6 @@ export const COPY = {
     thanksTextTest: 'Thanks for trying it out. This is a preview: nothing was saved and no email will arrive yet.',
     thanksVideoTitle: 'Meet the founders',
     cardTitle: 'Your founding collectible',
-    cardText: 'Thanks for joining early. Here is your collector card: a numbered piece of a famous place, real or legendary. Some are rarer than others.',
-    revealText: 'Thanks for joining early. Every founding member gets a collector card of a famous place, real or legendary. Find out which one is yours.',
     revealBtn: 'Click here to reveal',
     cardKicker: 'Founding collector',
     cardPiece: 'Piece',
@@ -221,7 +219,7 @@ export const COPY = {
     shareText: 'Big news: I am now the proud founding collector of {name}. Piece #{piece} of 1,000, {rarity} edition. Sadly it is not a real share of anything, but @Myntas is building the real thing for real estate. Get your own card:',
     shareTextShort: 'I just became the founding collector of {name} (piece #{piece}, {rarity}). Not a real share, sadly. Myntas is building the real thing for real estate. Get yours:',
     cardShare: 'Share',
-    cardDisclaimer: 'A collectible for fun. It is not a share of any property, has no value, is not an investment and is not on a blockchain. Not affiliated with any landmark or its owners.',
+    cardDisclaimer: 'Sadly, it does not make you the owner of the place and it has no value. But we have something more interesting planned for this card: more soon.',
     videoSoon: 'The founder video will be here soon. We will also send it to you by email.',
     followLinkedin: 'Follow us on LinkedIn',
     visitWebsite: 'Visit myntas.com',
