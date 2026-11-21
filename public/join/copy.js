@@ -209,6 +209,8 @@ export const COPY = {
     cardClass: { landmark: ['Landmark', 'Common'], legend: ['Legend', 'Rare'], frontier: ['Frontier', 'Legendary'] },
     cardSave: 'Save card',
     cardWallet: 'Add to Apple Wallet',
+    cardWalletSoon: 'Apple Wallet passes are coming soon. For now, save the card to your photos.',
+    cardFlip: 'Tap the card to flip it',
     shareTitle: 'Show it off',
     shareLinkedin: 'LinkedIn',
     shareX: 'X',
