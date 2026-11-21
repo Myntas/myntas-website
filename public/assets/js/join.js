@@ -3,6 +3,7 @@
 // for the thank-you state with the founder video. ?src=<event> tags the signup with the event it came from.
 import { COPY, CONFIG } from '/join/copy.js';
 import { makeCard } from '/assets/js/join-card.js';
+import { mapUrl } from '/assets/js/join-pick.js';
 
 const params = new URLSearchParams(location.search);
 const lang = COPY[params.get('lang')] ? params.get('lang') : 'en';
@@ -132,7 +133,7 @@ function thanks(data) {
     <h2>${esc(T.thanksTitle)}</h2><p>${esc(T.thanksText)}</p>
     <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
       <div class="jcard"><div class="jcard-in"><div class="jcard-back"><img src="/assets/img/logo.svg" alt=""></div><img class="jcard-front" id="cardImg" alt=""></div></div>
-      <div class="join-links" id="cardActions"></div></div>
+      <div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
     <div class="join-links">${links()}</div></div>`;
   video(document.getElementById('fullVideo'), CONFIG.video.full, { title: T.thanksVideoTitle });
@@ -150,15 +151,31 @@ async function showCard(data) {
   const url = URL.createObjectURL(blob), file = `myntas-collector-${lm.id}-${piece}.png`;
   const img = document.getElementById('cardImg');
   img.src = url; img.alt = `${T.cardKicker}: ${lm.name}, ${lm.city}, #${piece}`;
-  const map = lm.url || `https://www.google.com/maps/search/?api=1&query=${lm.lat},${lm.lng}`;
+  const map = mapUrl(lm);
   const actions = document.getElementById('cardActions');
   actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
+  // Apple Wallet (Apple devices, once the certificate is set up): a form POST, so the email stays out of the URL
+  if (CONFIG.appleWallet && /iPhone|iPad|Macintosh/.test(navigator.userAgent)) {
+    const w = document.createElement('form'); w.method = 'post'; w.action = '/api/wallet'; w.className = 'jwallet';
+    for (const [k, v] of Object.entries({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, lang })) { const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; w.append(i); }
+    w.insertAdjacentHTML('beforeend', `<button type="submit" class="btn jwallet-btn">${esc(T.cardWallet)}</button>`);
+    actions.append(w);
+  }
   const shareFile = new File([blob], file, { type: 'image/png' });
   if (navigator.canShare?.({ files: [shareFile] })) {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ghost'; b.textContent = T.cardShare;
     b.onclick = () => navigator.share({ files: [shareFile], title: `Myntas · ${lm.name}` }).catch(() => {});
     actions.append(b);
   }
+  // share: each place has its own page (/join/card/<id>/) whose preview shows the card, then sends people to /join
+  const page = `https://www.myntas.com/join/card/${lm.id}/`, rarity = T.cardClass[lm.cls][1].toLowerCase();
+  const fill = t => t.replace('{name}', lm.name).replace('{piece}', piece).replace('{rarity}', rarity);
+  const long = fill(T.shareText), short = fill(T.shareTextShort);
+  const enc = encodeURIComponent;
+  document.getElementById('cardShare').innerHTML = `<span>${esc(T.shareTitle)}</span>
+    <a class="jshare" href="https://www.linkedin.com/feed/?shareActive=true&text=${enc(long.replace('@Myntas', 'Myntas') + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareLinkedin)}</a>
+    <a class="jshare" href="https://twitter.com/intent/tweet?text=${enc(short)}&url=${enc(page)}" target="_blank" rel="noopener">${esc(T.shareX)}</a>
+    <a class="jshare" href="https://wa.me/?text=${enc(short + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareWhatsapp)}</a>`;
   const wrap = document.getElementById('cardWrap');
   wrap.hidden = false;
   await img.decode().catch(() => {});
