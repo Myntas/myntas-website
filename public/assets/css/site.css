@@ -749,6 +749,14 @@ main a:not(.btn):hover { color: var(--brown); }
 .join-media.is-poster:has(figcaption) { aspect-ratio: auto; padding: 1.25rem; gap: 0.75rem; }
 .join-media.is-poster:has(figcaption) img { max-height: 9rem; }
 .join-media[hidden] { display: none; }
+.join-media:has(.jplay) { position: relative; }
+.jplay { position: absolute; left: 50%; top: 50%; width: 4.5rem; height: 4.5rem; margin: -2.25rem 0 0 -2.25rem; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(59, 45, 25, 0.88); color: #f7f1e5; cursor: pointer; box-shadow: 0 10px 30px rgba(59, 45, 25, 0.35); transition: transform 0.2s, background-color 0.2s; }
+.jplay::before { content: ""; position: absolute; inset: -0.45rem; border-radius: 50%; border: 2px solid rgba(208, 182, 119, 0.7); animation: jpulse 2.2s ease-out infinite; }
+.jplay svg { width: 2rem; height: 2rem; margin-left: 0.25rem; fill: currentColor; }
+.jplay:hover { transform: scale(1.06); background: #725920; }
+.jplay[hidden] { display: none; }
+@keyframes jpulse { from { transform: scale(0.95); opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .jplay::before { animation: none; } }
 .join-media figcaption { font-size: 0.875rem; text-align: center; max-width: 26rem; }
 .join-card { grid-column: 2; grid-row: 1 / span 2; background: var(--paper); border: 1px solid var(--glass-edge); border-radius: 1.5rem; padding: 1.75rem; box-shadow: 0 24px 60px rgba(59, 45, 25, 0.1); }
 .join-form { display: grid; gap: 0.9rem; }

@@ -55,7 +55,7 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 3. **Turnstile** (Cloudflare → Turnstile → add site `www.myntas.com`): put the site key in `copy.js` (`turnstileSiteKey`).
 4. **Cloudflare Pages** project `myntas` → Settings → Variables and secrets: `BREVO_API_KEY` (secret), `BREVO_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `TURNSTILE_SECRET` (secret). Redeploy.
 5. Set `testMode: false` in `copy.js` (while it is `true` the form saves nothing: a preview for friends).
-6. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.teaser` / `video.full` in `copy.js`. Until then the page shows the Myntas token.
+6. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.full` (and `video.poster`) in `copy.js`. It plays next to the form, after signup and on the confirmation page, with sound and a big play button. With `full: null` the page shows the poster and a "coming soon" line.
 
 ### Collector cards (signup reward)
 

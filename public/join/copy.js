@@ -12,8 +12,7 @@ export const CONFIG = {
   testMode: true,
   video: {
     // self-hosted MP4 files under /assets/video/ (the site's CSP allows only its own files). null = not ready yet.
-    teaser: '/assets/video/myntas-intro-teaser-v1.mp4', // short muted loop shown next to the form (first 12 s of the intro)
-    full: '/assets/video/myntas-intro-v1.mp4', // the Myntas intro, shown after signup and on the confirmation page
+    full: '/assets/video/myntas-intro-v1.mp4', // the Myntas intro (with sound), next to the form, after signup and on the confirmation page
     poster: '/assets/img/myntas-intro-poster-v1.jpg'
   },
   links: {
@@ -154,7 +153,6 @@ export const COPY = {
     perksTitle: 'For waitlist members',
     perks: '<li>Early access to the Myntas platform</li><li>First to know when the first property opens</li><li>A special reward we are preparing for our founding members</li>',
     perksNote: 'The reward is a thank-you gift with no financial value. It does not affect any future investment.',
-    videoTeaserLabel: 'A short look at Myntas',
 
     formTitle: 'Join the waitlist',
     formIntro: 'Takes about 20 seconds.',
@@ -221,6 +219,7 @@ export const COPY = {
     shareTextShort: 'I just became the founding collector of {name} (piece #{piece}, {rarity}). Not a real share, sadly. Myntas is building the real thing for real estate. Get yours:',
     cardShare: 'Share',
     cardDisclaimer: 'Sadly, it does not make you the owner of the place and it has no value. But we have something more interesting planned for this card: more soon.',
+    videoPlay: 'Play the video',
     videoSoon: 'The video will be here soon. We will also send it to you by email.',
     followLinkedin: 'Follow us on LinkedIn',
     visitWebsite: 'Visit myntas.com',
