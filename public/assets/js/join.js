@@ -1,6 +1,6 @@
 // /join waitlist page and /join/confirmed: renders the copy from /join/copy.js, shows the fields for the chosen role,
 // posts to /api/join (functions/api/join.js, which writes the contact to Brevo with double opt-in) and swaps the form
-// for the thank-you state with the founder video. ?src=<event> tags the signup with the event it came from.
+// for the thank-you state with the Myntas intro video. ?src=<event> tags the signup with the event it came from.
 import { COPY, CONFIG } from '/join/copy.js';
 import { makeCard } from '/assets/js/join-card.js';
 import { mapUrl } from '/assets/js/join-pick.js';

@@ -16,6 +16,9 @@
 /assets/img/*
   Cache-Control: public, max-age=604800
 
+/assets/video/*
+  Cache-Control: public, max-age=604800
+
 # /join waitlist: the same policy plus Cloudflare Turnstile (anti-spam), the only third-party host on the site.
 # "!" removes the site-wide CSP first; two CSP headers would both apply and block Turnstile.
 /join/*

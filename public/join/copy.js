@@ -12,9 +12,9 @@ export const CONFIG = {
   testMode: true,
   video: {
     // self-hosted MP4 files under /assets/video/ (the site's CSP allows only its own files). null = not ready yet.
-    teaser: null, // short muted loop shown in the hero
-    full: null, // founder video, shown after signup and on the confirmation page
-    poster: '/assets/img/join-token-glass.webp'
+    teaser: '/assets/video/myntas-intro-teaser-v1.mp4', // short muted loop shown next to the form (first 12 s of the intro)
+    full: '/assets/video/myntas-intro-v1.mp4', // the Myntas intro, shown after signup and on the confirmation page
+    poster: '/assets/img/myntas-intro-poster-v1.jpg'
   },
   links: {
     website: 'https://www.myntas.com/en/',
@@ -146,7 +146,7 @@ export const CONFIG = {
 export const COPY = {
   en: {
     title: 'Join the waitlist · Myntas',
-    description: 'Join the Myntas waitlist and meet the founders.',
+    description: 'Join the Myntas waitlist and see how Myntas works.',
     eyebrow: 'Myntas waitlist',
     headline: 'Real estate, <em>in digital shares.</em>',
     lead: 'We are building a marketplace for income-producing property, one share at a time. Join the waitlist to hear from us first.',
@@ -195,7 +195,7 @@ export const COPY = {
     thanksPerks: 'You are in for early access and the founding member reward. We will be in touch.',
     thanksText: 'Check your inbox and confirm your email to complete your signup. The video is below.',
     thanksTextTest: 'Thanks for trying it out. This is a preview: nothing was saved and no email will arrive yet.',
-    thanksVideoTitle: 'Meet the founders',
+    thanksVideoTitle: 'How Myntas works',
     cardTitle: 'Your founding collectible',
     revealBtn: 'Click here to reveal',
     cardKicker: 'Founding collector',
@@ -221,7 +221,7 @@ export const COPY = {
     shareTextShort: 'I just became the founding collector of {name} (piece #{piece}, {rarity}). Not a real share, sadly. Myntas is building the real thing for real estate. Get yours:',
     cardShare: 'Share',
     cardDisclaimer: 'Sadly, it does not make you the owner of the place and it has no value. But we have something more interesting planned for this card: more soon.',
-    videoSoon: 'The founder video will be here soon. We will also send it to you by email.',
+    videoSoon: 'The video will be here soon. We will also send it to you by email.',
     followLinkedin: 'Follow us on LinkedIn',
     visitWebsite: 'Visit myntas.com',
 
