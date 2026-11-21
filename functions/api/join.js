@@ -5,7 +5,7 @@
 //   JOIN_CONFIRM_URL (optional, default https://www.myntas.com/join/confirmed/).
 // Answers { ok: true } or { ok: false, error: 'invalid' | 'captcha' | 'server' }.
 
-const ROLES = ['token_investor', 'property_owner', 'company_investor', 'partner', 'follower'];
+const ROLES = ['token_investor', 'property_owner'];
 const LIKELIHOOD = { very_likely: 3, maybe: 1, just_curious: 0 };
 const TICKET = { '25k_plus': 3, '5k_25k': 2, '1k_5k': 1, under_1k: 0 };
 const PRIORITY = ['income', 'growth', 'diversification'];
@@ -15,10 +15,10 @@ const SRC_RE = /^[a-z0-9][a-z0-9-]{0,39}$/;
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 const str = (v, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
-// LEAD_SCORE 0-8 and HOT_LEAD, as in the brief: likelihood 3/1/0, ticket 3/2/1/0, LinkedIn +1, met in person (src not web) +1
-export function score({ roles, likelihood, ticket, linkedin, src }) {
+// LEAD_SCORE 0-8 and HOT_LEAD (score 5 or more), from the brief: likelihood 3/1/0, ticket 3/2/1/0, LinkedIn +1, met in person (src not web) +1
+export function score({ likelihood, ticket, linkedin, src }) {
   const s = (LIKELIHOOD[likelihood] ?? 0) + (TICKET[ticket] ?? 0) + (linkedin ? 1 : 0) + (src !== 'web' ? 1 : 0);
-  return { LEAD_SCORE: s, HOT_LEAD: s >= 5 || (roles.includes('company_investor') && !!linkedin) };
+  return { LEAD_SCORE: s, HOT_LEAD: s >= 5 };
 }
 
 export function clean(d) {
@@ -26,7 +26,7 @@ export function clean(d) {
   const given = Array.isArray(d.role) ? d.role : [d.role];
   const roles = ROLES.filter(r => given.includes(r));
   const investor = roles.includes('token_investor');
-  let linkedin = investor || roles.includes('company_investor') ? str(d.linkedin, 200) : '';
+  let linkedin = investor ? str(d.linkedin, 200) : '';
   if (linkedin && !/^https?:\/\//i.test(linkedin)) linkedin = 'https://' + linkedin; // loose: keep what was typed
   const src = SRC_RE.test(str(d.src, 40).toLowerCase()) ? str(d.src, 40).toLowerCase() : 'web';
   return {

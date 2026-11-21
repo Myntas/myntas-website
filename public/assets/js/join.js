@@ -73,7 +73,7 @@ function renderForm() {
       <fieldset class="jset"><legend>${esc(T.ticket)} <i>${esc(T.optional)}</i></legend><div class="jchips">${choices('ticket', T.tickets)}</div></fieldset>
       <fieldset class="jset"><legend>${esc(T.priority)} <i>${esc(T.optional)}</i></legend><div class="jchips">${choices('priority', T.priorities)}</div></fieldset>
     </div>
-    <label class="jfield jmore" data-for="token_investor company_investor" hidden><span>${esc(T.linkedin)} <i>${esc(T.optional)}</i></span><input name="linkedin" type="url" inputmode="url" placeholder="${esc(T.linkedinPlaceholder)}" maxlength="200"></label>
+    <label class="jfield jmore" data-for="token_investor" hidden><span>${esc(T.linkedin)} <i>${esc(T.optional)}</i></span><input name="linkedin" type="url" inputmode="url" placeholder="${esc(T.linkedinPlaceholder)}" maxlength="200"></label>
     <label class="jhp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
     <label class="check"><input type="checkbox" name="consentUpdates" required> <span>${esc(T.consentUpdates)}</span></label>
     <label class="check"><input type="checkbox" name="consentNewsletter"> <span>${esc(T.consentNewsletter)}</span></label>
