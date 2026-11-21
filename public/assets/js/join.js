@@ -116,7 +116,8 @@ function renderForm() {
       likelihood: v('likelihood'), ticket: v('ticket'), priority: v('priority'), linkedin: v('linkedin'), website: v('website'),
       consentUpdates: true, consentNewsletter: !!f.get('consentNewsletter'), src, lang, signupAt: new Date().toISOString(), captcha };
     let ok = false;
-    try {
+    if (CONFIG.testMode) ok = true; // preview: nothing is sent
+    else try {
       const res = await fetch('/api/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       ok = res.ok;
       if (!ok && (await res.json().catch(() => ({}))).error === 'captcha') { err.textContent = T.errCaptcha; window.turnstile?.reset(); captcha = ''; }
@@ -130,7 +131,7 @@ function renderForm() {
 function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
-    <h2>${esc(T.thanksTitle)}</h2><p>${esc(T.thanksText)}</p>
+    <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p>
     <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
       <div class="jcard"><div class="jcard-in"><div class="jcard-back"><img src="/assets/img/logo.svg" alt=""></div><img class="jcard-front" id="cardImg" alt=""></div></div>
       <div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
