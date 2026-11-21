@@ -7,6 +7,9 @@
 // TURNSTILE_SECRET (secret) turns on the anti-spam check. The signup counts as saved when at least one of the two works.
 // Answers { ok: true, email } (email: true when Brevo sends the confirmation email) or { ok: false, error: 'invalid' | 'captcha' | 'server' }.
 
+import { pick } from '../../public/assets/js/join-pick.js';
+import { COPY, CONFIG } from '../../public/join/copy.js';
+
 const ROLES = ['token_investor', 'property_owner'];
 const LIKELIHOOD = { very_likely: 3, maybe: 1, just_curious: 0 };
 const TICKET = { '25k_plus': 3, '5k_25k': 2, '1k_5k': 1, under_1k: 0 };
@@ -56,12 +59,20 @@ const NOTION_DB = '1aa6cfcc660c411e9b90ecb66a8d9b88';
 const INTEREST = { token_investor: 'Investire in token', property_owner: 'Tokenizzare un immobile' };
 const txt = v => ({ rich_text: v ? [{ text: { content: v } }] : [] });
 
+// the collector card the visitor got: the same pick as the page (from the email), written out for the team
+export function cardText(email) {
+  const { lm, piece } = pick(email, CONFIG.landmarks, CONFIG.cardClasses);
+  const [cls, rarity] = COPY.en.cardClass[lm.cls];
+  return `${lm.name}, ${lm.city} · #${piece}/1000 · ${cls} (${rarity})`;
+}
+
 async function toNotion(env, c, sc) {
   const props = {
     Nome: { title: [{ text: { content: `${c.firstName} ${c.lastName}`.trim() || c.email } }] },
     Tipo: { select: { name: 'Waitlist' } },
     Email: { email: c.email },
     Interesse: { multi_select: c.roles.map(r => ({ name: INTEREST[r] })) },
+    Card: txt(cardText(c.email)),
     Paese: txt(c.country), Fonte: txt(c.src), Pagina: txt('/join/'),
     Probabilità: txt(c.likelihood), Ticket: txt(c.ticket), Priorità: txt(c.priority),
     Punteggio: { number: sc.LEAD_SCORE }, 'Hot lead': { checkbox: sc.HOT_LEAD }, 'Newsletter sì': { checkbox: c.newsletter },
