@@ -808,21 +808,37 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 /* /join reward card: a flip from the Myntas back to the landmark front (the card itself is a PNG drawn by join-card.js) */
 .jcard-wrap { display: grid; gap: 0.6rem; padding: 1rem; border-radius: 1.25rem; background: rgba(163, 126, 45, 0.08); }
 .jcard-wrap[hidden] { display: none; }
-.jcard { width: min(100%, 22rem); justify-self: center; aspect-ratio: 3 / 4; perspective: 1200px; margin-block: 0.5rem; }
-.jcard-in { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateY(180deg); transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s; }
+.jcard { --rx: 0deg; --ry: 0deg; --gx: 50%; --gy: 30%; display: block; width: min(100%, 22rem); justify-self: center; aspect-ratio: 3 / 4; perspective: 1100px; margin-block: 0.5rem 0; padding: 0; border: 0; background: none; cursor: pointer; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+.jcard:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; border-radius: 1.2rem; }
+.jcard-tilt { display: block; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.jcard.tilting .jcard-tilt { transition: transform 0.08s linear; }
+.jcard-in { display: block; position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateY(180deg); transition: transform 0.9s cubic-bezier(0.3, 0.7, 0.2, 1); }
 .flipped .jcard-in { transform: rotateY(0deg); }
-.jcard-front, .jcard-back { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 1.1rem; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 24px 50px rgba(59, 45, 25, 0.35); }
-.jcard-back { display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, #5a4527, #2a2012); border: 2px solid rgba(215, 186, 120, 0.6); transform: rotateY(180deg); }
-.jcard-back img { width: 45%; filter: brightness(1.4); }
+.jcard-wrap:not(.flipped) .jcard-in { transform: rotateY(180deg); }
+.jcard-face { position: absolute; inset: 0; display: block; overflow: hidden; border-radius: 1.1rem; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 24px 50px rgba(59, 45, 25, 0.35); }
+.jcard-front img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.jcard-glare { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 246, 220, 0.32), rgba(255, 246, 220, 0) 55%); mix-blend-mode: soft-light; opacity: 0.6; transition: opacity 0.4s; }
+.jcard.tilting .jcard-glare { opacity: 1; }
+.jcard-back { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; padding: 1.5rem; text-align: center; color: #f7f1e5; background: radial-gradient(circle at 50% 35%, #5a4527, #2a2012); border: 2px solid rgba(215, 186, 120, 0.6); transform: rotateY(180deg); }
+.jcard-back > img { width: 34%; margin-bottom: 0.6rem; filter: brightness(1.4); }
+.jb-kick { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #d0b677; }
+.jb-name { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+.jb-city { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: #d0b677; }
+.jb-row { margin-top: 0.8rem; font-size: 0.8125rem; opacity: 0.9; }
+.jb-geo { font-size: 0.75rem; opacity: 0.7; font-variant-numeric: tabular-nums; }
+.jcard-hint { margin: 0 !important; text-align: center; font-size: 0.8125rem; font-weight: 500; color: var(--gold-dark); }
 .jcard-wrap .join-links { justify-content: center; }
 .jcard-wrap .btn { border-radius: 999px; }
-@media (prefers-reduced-motion: reduce) { .jcard-in { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .jcard-in, .jcard-tilt { transition: none; } }
 .jshares { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.45rem; font-size: 0.875rem; }
 .jshares span { width: 100%; text-align: center; color: var(--muted); }
 .jshare { padding: 0.45rem 0.95rem; border-radius: 999px; background: var(--brown); color: var(--cream) !important; text-decoration: none; font-weight: 600; font-size: 0.875rem; }
 .jshare:hover { background: var(--gold-dark); }
 .jwallet { display: contents; }
-.jwallet-btn { border-radius: 999px; background: #000; border-color: #000; color: #fff; }
+.jwallet-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 999px; background: #000; border-color: #000; color: #fff; }
+.jwallet-btn svg { width: 1.2rem; height: 1.2rem; }
+.jwallet-soon { width: 100%; margin: 0 !important; text-align: center; font-size: 0.8125rem; color: var(--muted); }
+.jwallet-soon[hidden] { display: none; }
 .jwallet-btn:hover { background: #222; }
 .join-perks { display: grid; gap: 0.4rem; max-width: 34rem; padding: 1rem 1.15rem; border-radius: 1rem; background: rgba(163, 126, 45, 0.08); border: 1px solid var(--glass-edge); }
 .join-perks p { margin: 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); }
@@ -832,3 +848,18 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .join-perks small { font-size: 0.75rem; color: var(--muted); }
 .jperk-note { font-weight: 600; color: var(--gold-dark); }
 @media (max-width: 860px) { .join-perks { padding: 0.75rem 0.9rem; } .join-perks li { font-size: 0.875rem; } }
+.jcard-note { margin: 0; text-align: center; font-size: 0.75rem; line-height: 1.45; color: var(--muted); }
+@media (max-width: 860px) {
+  .join-thanks { gap: 0.6rem; }
+  .join-thanks h2 { font-size: 1.6rem; }
+  .join-thanks p { font-size: 0.9375rem; line-height: 1.5; }
+  .jcard-wrap { margin-inline: -0.5rem; padding: 0.9rem 0.75rem 1rem; }
+  .jcard-wrap h3 { margin-top: 0; }
+  .jcard { width: min(100%, 19rem); }
+  .jcard-wrap .join-links { gap: 0.5rem; }
+  .jcard-wrap .join-links .btn { box-sizing: border-box; flex: 1 1 40%; min-width: 0; padding-inline: 0.75rem; font-size: 0.875rem; text-align: center; justify-content: center; }
+  .jcard-wrap .join-links > .btn:first-child, .jcard-wrap .join-links .jwallet-btn { flex-basis: 100%; }
+  .jshares span { margin-bottom: 0.1rem; }
+  .jshare { flex: 1; text-align: center; padding-inline: 0.5rem; }
+}
+.jb-cls { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #d0b677; }

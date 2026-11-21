@@ -133,8 +133,12 @@ function thanks(data) {
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
     <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
     <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
-      <div class="jcard"><div class="jcard-in"><div class="jcard-back"><img src="/assets/img/logo.svg" alt=""></div><img class="jcard-front" id="cardImg" alt=""></div></div>
-      <div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
+      <button type="button" class="jcard" id="card" aria-label="${esc(T.cardFlip)}"><span class="jcard-tilt"><span class="jcard-in">
+        <span class="jcard-face jcard-front"><img id="cardImg" alt=""><span class="jcard-glare"></span></span>
+        <span class="jcard-face jcard-back" id="cardBack"><img src="/assets/img/logo.svg" alt=""><span class="jcard-glare"></span></span>
+      </span></span></button>
+      <p class="jcard-hint">${esc(T.cardFlip)}</p>
+      <p class="jcard-note">${esc(T.cardDisclaimer)}</p><div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
     <div class="join-links">${links()}</div></div>`;
   video(document.getElementById('fullVideo'), CONFIG.video.full, { title: T.thanksVideoTitle });
@@ -155,11 +159,13 @@ async function showCard(data) {
   const map = mapUrl(lm);
   const actions = document.getElementById('cardActions');
   actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
-  // Apple Wallet (Apple devices, once the certificate is set up): a form POST, so the email stays out of the URL
-  if (CONFIG.appleWallet && /iPhone|iPad|Macintosh/.test(navigator.userAgent)) {
+  // Apple Wallet (Apple devices): a form POST, so the email stays out of the URL. Until the pass certificate is set up
+  // (CONFIG.appleWallet false) the button explains that it is coming soon instead of posting
+  if (/iPhone|iPad|Macintosh/.test(navigator.userAgent)) {
     const w = document.createElement('form'); w.method = 'post'; w.action = '/api/wallet'; w.className = 'jwallet';
     for (const [k, v] of Object.entries({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, lang })) { const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; w.append(i); }
-    w.insertAdjacentHTML('beforeend', `<button type="submit" class="btn jwallet-btn">${esc(T.cardWallet)}</button>`);
+    w.insertAdjacentHTML('beforeend', `<button type="submit" class="btn jwallet-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M15 14h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>${esc(T.cardWallet)}</button><p class="jwallet-soon" hidden>${esc(T.cardWalletSoon)}</p>`);
+    if (!CONFIG.appleWallet) w.addEventListener('submit', e => { e.preventDefault(); w.querySelector('.jwallet-soon').hidden = false; });
     actions.append(w);
   }
   const shareFile = new File([blob], file, { type: 'image/png' });
@@ -177,8 +183,36 @@ async function showCard(data) {
     <a class="jshare" href="https://www.linkedin.com/feed/?shareActive=true&text=${enc(long.replace('@Myntas', 'Myntas') + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareLinkedin)}</a>
     <a class="jshare" href="https://twitter.com/intent/tweet?text=${enc(short)}&url=${enc(page)}" target="_blank" rel="noopener">${esc(T.shareX)}</a>
     <a class="jshare" href="https://wa.me/?text=${enc(short + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareWhatsapp)}</a>`;
+  const [cls, rarity2] = T.cardClass[lm.cls];
+  document.getElementById('cardBack').insertAdjacentHTML('beforeend', `<span class="jb-kick">${esc(T.cardKicker)}</span>
+    <span class="jb-name">${esc(lm.name)}</span><span class="jb-city">${esc(lm.city)}</span>
+    <span class="jb-row"><b>#${String(piece).padStart(4, '0')}</b> / 1000</span><span class="jb-cls">${esc(cls)} · ${esc(rarity2)}</span>
+    ${lm.lat != null ? `<span class="jb-geo">${coord(lm.lat, 'N', 'S')} · ${coord(lm.lng, 'E', 'W')}</span>` : ''}`);
   const wrap = document.getElementById('cardWrap');
   wrap.hidden = false;
   await img.decode().catch(() => {});
+  interactive(document.getElementById('card'), wrap);
   requestAnimationFrame(() => wrap.classList.add('flipped'));
+}
+
+const coord = (v, pos, neg) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
+
+// the card follows the finger or the pointer (tilt and a moving light), and a tap or click turns it over
+function interactive(card, wrap) {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let moved = false, sx = 0, sy = 0;
+  const tilt = e => {
+    if (still) return;
+    const r = card.getBoundingClientRect();
+    const x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+    card.style.setProperty('--ry', `${(x - 0.5) * 24}deg`); card.style.setProperty('--rx', `${(0.5 - y) * 24}deg`);
+    card.style.setProperty('--gx', `${x * 100}%`); card.style.setProperty('--gy', `${y * 100}%`);
+    card.classList.add('tilting');
+  };
+  const rest = () => { card.classList.remove('tilting'); card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); };
+  card.addEventListener('pointerdown', e => { moved = false; sx = e.clientX; sy = e.clientY; tilt(e); });
+  card.addEventListener('pointermove', e => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 8) moved = true; tilt(e); });
+  card.addEventListener('pointerleave', rest); card.addEventListener('pointercancel', rest);
+  card.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') rest(); });
+  card.addEventListener('click', () => { if (moved) { moved = false; return; } wrap.classList.toggle('flipped'); });
 }

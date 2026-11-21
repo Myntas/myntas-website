@@ -70,4 +70,4 @@ They can open it on Google Maps, save it, share it on LinkedIn, X or WhatsApp (e
 - **Apple Wallet** (`functions/api/wallet.js`): needs an Apple Developer account. Create a Pass Type ID
   (e.g. `pass.com.myntas.collector`) and its certificate, then set in the Pages project `PASS_TYPE_ID`, `APPLE_TEAM_ID`,
   `PASS_CERT` (PEM), `PASS_KEY` (PEM, secret), `PASS_KEY_PASSWORD` (if any) and `WWDR_CERT` (Apple WWDR G4, PEM),
-  and set `appleWallet: true` in `copy.js`. Use Apple's official "Add to Apple Wallet" badge before launch.
+  and set `appleWallet: true` in `copy.js` (until then the button on Apple devices only says the pass is coming soon). Use Apple's official "Add to Apple Wallet" badge before launch.
