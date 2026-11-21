@@ -19,16 +19,20 @@ document.title = document.body.dataset.view === 'confirmed' ? T.confirmedTitle.r
 for (const el of document.querySelectorAll('[data-c]')) el.innerHTML = T[el.dataset.c].replace('{privacy}', CONFIG.links.privacy);
 for (const el of document.querySelectorAll('[data-href]')) el.href = CONFIG.links[el.dataset.href];
 
-function video(fig, file, { teaser = false, title = '' } = {}) {
+// the intro video: a player with sound and controls, behind a big play button over the poster
+function video(fig, file, { title = '' } = {}) {
   if (!fig) return;
   if (!file) {
-    fig.innerHTML = `<img src="${CONFIG.video.poster}" alt="" width="640" height="640" loading="lazy">${teaser ? '' : `<figcaption>${esc(T.videoSoon)}</figcaption>`}`;
+    fig.innerHTML = `<img src="${CONFIG.video.poster}" alt="" width="640" height="640" loading="lazy"><figcaption>${esc(T.videoSoon)}</figcaption>`;
     fig.classList.add('is-poster');
     return;
   }
-  fig.innerHTML = teaser
-    ? `<video src="${file}" poster="${CONFIG.video.poster}" autoplay muted loop playsinline preload="metadata" aria-label="${esc(T.videoTeaserLabel)}"></video>`
-    : `<video src="${file}" poster="${CONFIG.video.poster}" controls playsinline preload="metadata" aria-label="${esc(title)}"></video>`;
+  fig.innerHTML = `<video src="${file}" poster="${CONFIG.video.poster}" playsinline preload="metadata" aria-label="${esc(title)}"></video>
+    <button type="button" class="jplay" aria-label="${esc(T.videoPlay)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button>`;
+  const v = fig.querySelector('video'), b = fig.querySelector('.jplay');
+  b.addEventListener('click', () => { v.controls = true; v.muted = false; v.play().catch(() => {}); });
+  v.addEventListener('play', () => { b.hidden = true; v.controls = true; });
+  v.addEventListener('ended', () => { b.hidden = false; });
 }
 function links() {
   return [CONFIG.links.linkedin && `<a class="btn ghost" href="${CONFIG.links.linkedin}" target="_blank" rel="noopener">${esc(T.followLinkedin)}</a>`,
@@ -39,7 +43,7 @@ if (document.body.dataset.view === 'confirmed') {
   document.getElementById('joinLinks').innerHTML = links();
   video(document.getElementById('fullVideo'), CONFIG.video.full, { title: T.thanksVideoTitle });
 } else {
-  video(document.getElementById('teaser'), CONFIG.video.teaser, { teaser: true });
+  video(document.getElementById('teaser'), CONFIG.video.full, { title: T.thanksVideoTitle });
   renderForm();
 }
 
