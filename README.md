@@ -51,7 +51,7 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 ### One-time setup
 
 1. **Brevo** (free plan): create an API key (SMTP & API → API keys), then run `BREVO_API_KEY=... node tools/brevo-setup.mjs` once. It creates the contact attributes and the `Waitlist` list and prints the list id.
-2. In Brevo create the **double opt-in template** (Templates → new, with the confirmation button `{{ doubleoptin }}`) and note its id. Add an automation "contact added to list Waitlist" → welcome email with the founder video link. Segments by `ROLE` give the separate newsletter tracks.
+2. In Brevo create the **double opt-in template** (Templates → new, with the confirmation button `{{ doubleoptin }}`) and note its id. Add an automation "contact added to list Waitlist" → welcome email with the founder video link. Segments by `ROLE` give the separate newsletter tracks (`ROLE` holds every role picked, comma separated, e.g. `token_investor,property_owner`: segment with "contains").
 3. **Turnstile** (Cloudflare → Turnstile → add site `www.myntas.com`): put the site key in `copy.js` (`turnstileSiteKey`).
 4. **Cloudflare Pages** project `myntas` → Settings → Variables and secrets: `BREVO_API_KEY` (secret), `BREVO_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `TURNSTILE_SECRET` (secret). Redeploy.
 5. Set `testMode: false` in `copy.js` (while it is `true` the form saves nothing: a preview for friends).

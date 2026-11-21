@@ -768,6 +768,9 @@ main a:not(.btn):hover { color: var(--brown); }
 .jchip span { display: block; padding: 0.55rem 0.9rem; border-radius: 0.75rem; border: 1px solid var(--line-strong); background: #fffdf8; font-size: 0.9375rem; color: var(--text); transition: background-color 0.15s, border-color 0.15s, color 0.15s; }
 .jchips:not(.jchips-col) .jchip span { border-radius: 999px; font-size: 0.875rem; padding: 0.45rem 0.85rem; }
 .jchip input:checked + span { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+.jchip input[type=checkbox] + span { position: relative; padding-right: 2.4rem; }
+.jchip input[type=checkbox] + span::after { content: ""; position: absolute; right: 0.9rem; top: 50%; width: 1rem; height: 1rem; margin-top: -0.5rem; box-sizing: border-box; border: 1.5px solid var(--line-strong); border-radius: 0.3rem; }
+.jchip input[type=checkbox]:checked + span::after { border-color: var(--gold-light, #d0b677); background: #d0b677 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%233b2d19' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.8rem no-repeat; }
 .jchip input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
 .jmore { display: grid; gap: 0.9rem; padding: 0.9rem; border-radius: 1rem; background: rgba(163, 126, 45, 0.07); }
 .jmore[hidden] { display: none; }
@@ -847,9 +850,11 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jcard-wrap .join-links { justify-content: center; }
 .jcard-wrap .btn { border-radius: 999px; }
 @media (prefers-reduced-motion: reduce) { .jcard-in, .jcard-tilt { transition: none; } .jtoken, .spinning .jtoken img { animation: none; } }
-.jshares { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.45rem; font-size: 0.875rem; }
+.jshares { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.4rem; font-size: 0.875rem; }
 .jshares span { width: 100%; text-align: center; color: var(--muted); }
-.jshare { padding: 0.45rem 0.95rem; border-radius: 999px; background: var(--brown); color: var(--cream) !important; text-decoration: none; font-weight: 600; font-size: 0.875rem; }
+.jshare { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; flex: none; border-radius: 50%; background: var(--brown); color: var(--cream) !important; text-decoration: none; transition: background-color 0.15s, transform 0.15s; }
+.jshare svg { width: 1.2rem; height: 1.2rem; fill: currentColor; }
+.jshare:active { transform: scale(0.94); }
 .jshare:hover { background: var(--gold-dark); }
 .jwallet { display: contents; }
 .jwallet-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 999px; background: #000; border-color: #000; color: #fff; }
@@ -877,6 +882,6 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
   .jcard-wrap .join-links .btn { box-sizing: border-box; flex: 1 1 40%; min-width: 0; padding-inline: 0.75rem; font-size: 0.875rem; text-align: center; justify-content: center; }
   .jcard-wrap .join-links > .btn:first-child, .jcard-wrap .join-links .jwallet-btn { flex-basis: 100%; }
   .jshares span { margin-bottom: 0.1rem; }
-  .jshare { flex: 1; text-align: center; padding-inline: 0.5rem; }
 }
 .jb-cls { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #d0b677; }
+.jreq { color: var(--gold-dark); font-weight: 600; }
