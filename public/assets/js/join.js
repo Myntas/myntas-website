@@ -51,8 +51,8 @@ function countryOptions() {
   const rest = all.filter(c => !CONFIG.topCountries.includes(c)).sort((a, b) => (names.of(a) || a).localeCompare(names.of(b) || b, lang));
   return CONFIG.topCountries.map(opt).join('') + '<option disabled>──────────</option>' + rest.map(opt).join('') + `<option value="OTHER">${lang === 'it' ? 'Altro' : 'Other'}</option>`;
 }
-function choices(name, map) {
-  return Object.entries(map).map(([v, label]) => `<label class="jchip"><input type="radio" name="${name}" value="${v}"><span>${esc(label)}</span></label>`).join('');
+function choices(name, map, type = 'radio') {
+  return Object.entries(map).map(([v, label]) => `<label class="jchip"><input type="${type}" name="${name}" value="${v}"><span>${esc(label)}</span></label>`).join('');
 }
 
 function renderForm() {
@@ -61,12 +61,12 @@ function renderForm() {
   <form id="joinForm" class="join-form" novalidate>
     <div class="join-form-head"><h2 id="formT">${esc(T.formTitle)}</h2><p>${esc(T.formIntro)}</p></div>
     <div class="jrow">
-      <label class="jfield"><span>${esc(T.firstName)}</span><input name="firstName" autocomplete="given-name" required maxlength="80"></label>
-      <label class="jfield"><span>${esc(T.lastName)}</span><input name="lastName" autocomplete="family-name" required maxlength="80"></label>
+      <label class="jfield"><span>${esc(T.firstName)} <b class="jreq" aria-hidden="true">*</b></span><input name="firstName" autocomplete="given-name" required maxlength="80"></label>
+      <label class="jfield"><span>${esc(T.lastName)} <b class="jreq" aria-hidden="true">*</b></span><input name="lastName" autocomplete="family-name" required maxlength="80"></label>
     </div>
-    <label class="jfield"><span>${esc(T.email)}</span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160"></label>
-    <label class="jfield"><span>${esc(T.country)}</span><select name="country" autocomplete="country" required><option value="">${esc(T.countryPlaceholder)}</option>${countryOptions()}</select></label>
-    <fieldset class="jset"><legend>${esc(T.role)}</legend><div class="jchips jchips-col">${choices('role', T.roles)}</div></fieldset>
+    <label class="jfield"><span>${esc(T.email)} <b class="jreq" aria-hidden="true">*</b></span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160"></label>
+    <label class="jfield"><span>${esc(T.country)} <b class="jreq" aria-hidden="true">*</b></span><select name="country" autocomplete="country" required><option value="">${esc(T.countryPlaceholder)}</option>${countryOptions()}</select></label>
+    <fieldset class="jset"><legend>${esc(T.role)} <b class="jreq" aria-hidden="true">*</b> <i>${esc(T.roleMulti)}</i></legend><div class="jchips jchips-col">${choices('role', T.roles, 'checkbox')}</div></fieldset>
     <div class="jmore" data-for="token_investor" hidden>
       <p class="jnote">${esc(T.researchNote)}</p>
       <fieldset class="jset"><legend>${esc(T.likelihood)} <i>${esc(T.optional)}</i></legend><div class="jchips">${choices('likelihood', T.likelihoods)}</div></fieldset>
@@ -84,10 +84,12 @@ function renderForm() {
   </form>`;
   const form = document.getElementById('joinForm'), err = document.getElementById('joinErr');
 
+  // more than one role can be picked: each extra block shows while any of its roles is ticked
   form.addEventListener('change', e => {
     if (e.target.name !== 'role') return;
+    const picked = new FormData(form).getAll('role');
     for (const el of form.querySelectorAll('.jmore')) {
-      const on = el.dataset.for.split(' ').includes(e.target.value);
+      const on = el.dataset.for.split(' ').some(r => picked.includes(r));
       el.hidden = !on;
       if (!on) for (const i of el.querySelectorAll('input')) { if (i.type === 'radio') i.checked = false; else i.value = ''; }
     }
@@ -112,7 +114,7 @@ function renderForm() {
     err.textContent = '';
     const btn = form.querySelector('.jsubmit');
     btn.disabled = true; btn.textContent = T.sending;
-    const data = { firstName: v('firstName'), lastName: v('lastName'), email: v('email'), country: v('country'), role: v('role'),
+    const data = { firstName: v('firstName'), lastName: v('lastName'), email: v('email'), country: v('country'), role: f.getAll('role'),
       likelihood: v('likelihood'), ticket: v('ticket'), priority: v('priority'), linkedin: v('linkedin'), website: v('website'),
       consentUpdates: true, consentNewsletter: !!f.get('consentNewsletter'), src, lang, signupAt: new Date().toISOString(), captcha };
     let ok = false;
@@ -183,10 +185,15 @@ async function showCard(data) {
   const fill = t => t.replace('{name}', lm.name).replace('{piece}', piece).replace('{rarity}', rarity);
   const long = fill(T.shareText), short = fill(T.shareTextShort);
   const enc = encodeURIComponent;
-  document.getElementById('cardShare').innerHTML = `<span>${esc(T.shareTitle)}</span>
-    <a class="jshare" href="https://www.linkedin.com/feed/?shareActive=true&text=${enc(long.replace('@Myntas', 'Myntas') + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareLinkedin)}</a>
-    <a class="jshare" href="https://twitter.com/intent/tweet?text=${enc(short)}&url=${enc(page)}" target="_blank" rel="noopener">${esc(T.shareX)}</a>
-    <a class="jshare" href="https://wa.me/?text=${enc(short + ' ' + page)}" target="_blank" rel="noopener">${esc(T.shareWhatsapp)}</a>`;
+  const icon = (href, label, path) => `<a class="jshare" href="${href}" target="_blank" rel="noopener" aria-label="${esc(label)}" title="${esc(label)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg></a>`;
+  document.getElementById('cardShare').innerHTML = `<span>${esc(T.shareTitle)}</span>` + [
+    icon(`https://www.linkedin.com/feed/?shareActive=true&text=${enc(long.replace('@Myntas', 'Myntas') + ' ' + page)}`, T.shareLinkedin, ICONS.linkedin),
+    icon(`https://wa.me/?text=${enc(short + ' ' + page)}`, T.shareWhatsapp, ICONS.whatsapp),
+    icon(`https://twitter.com/intent/tweet?text=${enc(short)}&url=${enc(page)}`, T.shareX, ICONS.x),
+    icon(`https://www.facebook.com/sharer/sharer.php?u=${enc(page)}`, T.shareFacebook, ICONS.facebook),
+    icon(`https://t.me/share/url?url=${enc(page)}&text=${enc(short)}`, T.shareTelegram, ICONS.telegram),
+    icon(`mailto:?subject=${enc(`Myntas · ${lm.name}`)}&body=${enc(short + ' ' + page)}`, T.shareEmail, ICONS.email)
+  ].join('');
   const [cls, rarity2] = T.cardClass[lm.cls];
   document.getElementById('cardBack').insertAdjacentHTML('beforeend', `<span class="jb-kick">${esc(T.cardKicker)}</span>
     <span class="jb-name">${esc(lm.name)}</span><span class="jb-city">${esc(lm.city)}</span>
@@ -220,6 +227,16 @@ function sealed() {
   token.addEventListener('click', open);
   document.getElementById('revealBtn').addEventListener('click', open);
 }
+
+// share icons (24px paths: Simple Icons, CC0; the envelope is ours). Plain links: nothing from these services loads
+const ICONS = {
+  linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452z',
+  whatsapp: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z',
+  x: 'M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z',
+  facebook: 'M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.026 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.971H15.83c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z',
+  telegram: 'M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z',
+  email: 'M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm.8 2v.3l8.2 5.6 8.2-5.6V7zm16.4 2.6-7.64 5.22a1 1 0 0 1-1.12 0L3.8 9.6V17h16.4z'
+};
 
 const coord = (v, pos, neg) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
 

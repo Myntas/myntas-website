@@ -16,21 +16,23 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), { status
 const str = (v, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 // LEAD_SCORE 0-8 and HOT_LEAD, as in the brief: likelihood 3/1/0, ticket 3/2/1/0, LinkedIn +1, met in person (src not web) +1
-export function score({ role, likelihood, ticket, linkedin, src }) {
+export function score({ roles, likelihood, ticket, linkedin, src }) {
   const s = (LIKELIHOOD[likelihood] ?? 0) + (TICKET[ticket] ?? 0) + (linkedin ? 1 : 0) + (src !== 'web' ? 1 : 0);
-  return { LEAD_SCORE: s, HOT_LEAD: s >= 5 || (role === 'company_investor' && !!linkedin) };
+  return { LEAD_SCORE: s, HOT_LEAD: s >= 5 || (roles.includes('company_investor') && !!linkedin) };
 }
 
 export function clean(d) {
-  const role = ROLES.includes(d.role) ? d.role : '';
-  const investor = role === 'token_investor';
-  let linkedin = role === 'token_investor' || role === 'company_investor' ? str(d.linkedin, 200) : '';
+  // one or more roles (an array; a single string is still accepted), kept in the order of ROLES
+  const given = Array.isArray(d.role) ? d.role : [d.role];
+  const roles = ROLES.filter(r => given.includes(r));
+  const investor = roles.includes('token_investor');
+  let linkedin = investor || roles.includes('company_investor') ? str(d.linkedin, 200) : '';
   if (linkedin && !/^https?:\/\//i.test(linkedin)) linkedin = 'https://' + linkedin; // loose: keep what was typed
   const src = SRC_RE.test(str(d.src, 40).toLowerCase()) ? str(d.src, 40).toLowerCase() : 'web';
   return {
     firstName: str(d.firstName, 80), lastName: str(d.lastName, 80), email: str(d.email, 160).toLowerCase(),
     country: /^[A-Z]{2}$|^OTHER$/.test(str(d.country, 5)) ? str(d.country, 5) : '',
-    role,
+    roles, role: roles.join(','),
     likelihood: investor && d.likelihood in LIKELIHOOD ? d.likelihood : '',
     ticket: investor && d.ticket in TICKET ? d.ticket : '',
     priority: investor && PRIORITY.includes(d.priority) ? d.priority : '',

@@ -164,6 +164,7 @@ export const COPY = {
     country: 'Country of residence',
     countryPlaceholder: 'Select',
     role: 'What brings you here?',
+    roleMulti: '(pick one or more)',
     roles: {
       token_investor: 'I\'d like to invest in tokens',
       property_owner: 'I\'d like to tokenize my property',
@@ -215,6 +216,9 @@ export const COPY = {
     shareLinkedin: 'LinkedIn',
     shareX: 'X',
     shareWhatsapp: 'WhatsApp',
+    shareFacebook: 'Facebook',
+    shareTelegram: 'Telegram',
+    shareEmail: 'Email',
     // {name} {piece} {rarity} are filled in; the share page link is added at the end
     shareText: 'Big news: I am now the proud founding collector of {name}. Piece #{piece} of 1,000, {rarity} edition. Sadly it is not a real share of anything, but @Myntas is building the real thing for real estate. Get your own card:',
     shareTextShort: 'I just became the founding collector of {name} (piece #{piece}, {rarity}). Not a real share, sadly. Myntas is building the real thing for real estate. Get yours:',
