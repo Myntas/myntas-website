@@ -824,3 +824,11 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jwallet { display: contents; }
 .jwallet-btn { border-radius: 999px; background: #000; border-color: #000; color: #fff; }
 .jwallet-btn:hover { background: #222; }
+.join-perks { display: grid; gap: 0.4rem; max-width: 34rem; padding: 1rem 1.15rem; border-radius: 1rem; background: rgba(163, 126, 45, 0.08); border: 1px solid var(--glass-edge); }
+.join-perks p { margin: 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); }
+.join-perks ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.3rem; }
+.join-perks li { position: relative; padding-left: 1.4rem; font-size: 0.9375rem; color: var(--brown); }
+.join-perks li::before { content: ""; position: absolute; left: 0.15rem; top: 0.35rem; width: 0.45rem; height: 0.75rem; border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold); transform: rotate(40deg); }
+.join-perks small { font-size: 0.75rem; color: var(--muted); }
+.jperk-note { font-weight: 600; color: var(--gold-dark); }
+@media (max-width: 860px) { .join-perks { padding: 0.75rem 0.9rem; } .join-perks li { font-size: 0.875rem; } }

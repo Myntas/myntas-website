@@ -150,6 +150,10 @@ export const COPY = {
     eyebrow: 'Myntas waitlist',
     headline: 'Real estate, <em>in digital shares.</em>',
     lead: 'We are building a marketplace for income-producing property, one share at a time. Join the waitlist to hear from us first.',
+    // waitlist perks: early access to the platform and a thank-you gift, never a financial benefit or priority to invest
+    perksTitle: 'For waitlist members',
+    perks: '<li>Early access to the Myntas platform</li><li>First to know when the first property opens</li><li>A special reward we are preparing for our founding members</li>',
+    perksNote: 'The reward is a thank-you gift with no financial value. It does not affect any future investment.',
     videoTeaserLabel: 'A short look at Myntas',
 
     formTitle: 'Join the waitlist',
@@ -190,6 +194,7 @@ export const COPY = {
     errServer: 'Something went wrong. Please try again, or write to us at info@myntas.com.',
 
     thanksTitle: 'You\'re on the list.',
+    thanksPerks: 'You are in for early access and the founding member reward. We will be in touch.',
     thanksText: 'Check your inbox and confirm your email to complete your signup. The video is below.',
     thanksTextTest: 'Thanks for trying it out. This is a preview: nothing was saved and no email will arrive yet.',
     thanksVideoTitle: 'Meet the founders',
