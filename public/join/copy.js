@@ -36,11 +36,12 @@ export const COPY = {
     email: 'Email',
     country: 'Country of residence',
     countryPlaceholder: 'Select',
-    role: 'I\'m interested as',
+    role: 'What brings you here?',
     roles: {
-      token_investor: 'Investing in properties (future token holder)',
-      company_investor: 'Investing in Myntas, the company',
-      partner: 'Property owner or partner',
+      token_investor: 'I\'d like to invest in tokens',
+      property_owner: 'I\'d like to tokenize my property',
+      company_investor: 'I\'d like to invest in Myntas, the company',
+      partner: 'Partner or advisor',
       follower: 'Just following'
     },
     researchNote: 'Non-binding. This is market research, not an offer or a commitment to invest.',

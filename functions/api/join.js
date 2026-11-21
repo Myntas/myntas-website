@@ -5,7 +5,7 @@
 //   JOIN_CONFIRM_URL (optional, default https://www.myntas.com/join/confirmed/).
 // Answers { ok: true } or { ok: false, error: 'invalid' | 'captcha' | 'server' }.
 
-const ROLES = ['token_investor', 'company_investor', 'partner', 'follower'];
+const ROLES = ['token_investor', 'property_owner', 'company_investor', 'partner', 'follower'];
 const LIKELIHOOD = { very_likely: 3, maybe: 1, just_curious: 0 };
 const TICKET = { '25k_plus': 3, '5k_25k': 2, '1k_5k': 1, under_1k: 0 };
 const PRIORITY = ['income', 'growth', 'diversification'];
