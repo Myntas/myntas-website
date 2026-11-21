@@ -3,7 +3,7 @@ import { pick } from '/assets/js/join-pick.js';
 // /join reward: after signup the visitor gets a "founding collector" card with a famous landmark, drawn on a canvas
 // (gold line-and-fill art on the brand brown) so it can be saved or shared as a PNG. The landmark and the piece number
 // come from a hash of the email, so the same person always gets the same card. It is a collectible for fun: the card
-// itself says it is not a share of any property, has no value and is not affiliated with any landmark.
+// says (in a note under it on the page) that it is not a share of any property, has no value and is not affiliated with any landmark.
 // Three classes with their own odds: real landmarks (public domain; no Italian or Greek monuments, whose images need
 // permission for commercial use), legendary places, and space.
 
@@ -515,23 +515,14 @@ export async function makeCard({ email, name, src, T, landmarks, odds = {}, logo
     g.fillStyle = 'rgba(208, 182, 119, 0.8)'; g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(label.toUpperCase(), 100, y);
     g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif'; g.fillText(value, 100, y + 38);
   };
-  row(T.cardPiece, `#${piece} / 1000`, 900);
-  row(T.cardHolder, name.slice(0, 26), 990);
+  row(T.cardPiece, `#${piece} / 1000`, 940);
+  row(T.cardHolder, name.slice(0, 26), 1040);
   g.textAlign = 'right';
-  g.fillStyle = 'rgba(208, 182, 119, 0.8)'; g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(T.cardEdition.toUpperCase(), W - 100, 900);
+  g.fillStyle = 'rgba(208, 182, 119, 0.8)'; g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(T.cardEdition.toUpperCase(), W - 100, 940);
   g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif';
-  g.fillText(src === 'web' ? T.cardOnline : src.split('-').map(w => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(' '), W - 100, 938);
+  g.fillText(src === 'web' ? T.cardOnline : src.split('-').map(w => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(' '), W - 100, 978);
 
-  g.textAlign = 'center'; g.fillStyle = 'rgba(208, 182, 119, 0.7)'; g.font = '400 17px Montserrat, system-ui, sans-serif';
-  wrap(g, T.cardDisclaimer, W / 2, 1092, W - 200, 24);
+  // the card stays clean: the note that it is just for fun sits under it on the page (cardDisclaimer in copy.js)
   return { canvas: c, landmark: lm, piece };
 }
 
-function wrap(g, text, x, y, max, lh) {
-  const words = text.split(' '); let line = '';
-  for (const w of words) {
-    const t = line ? line + ' ' + w : w;
-    if (g.measureText(t).width > max && line) { g.fillText(line, x, y); y += lh; line = w; } else line = t;
-  }
-  if (line) g.fillText(line, x, y);
-}

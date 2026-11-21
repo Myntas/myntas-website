@@ -832,3 +832,4 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .join-perks small { font-size: 0.75rem; color: var(--muted); }
 .jperk-note { font-weight: 600; color: var(--gold-dark); }
 @media (max-width: 860px) { .join-perks { padding: 0.75rem 0.9rem; } .join-perks li { font-size: 0.875rem; } }
+.jcard-note { margin: 0; text-align: center; font-size: 0.75rem; line-height: 1.45; color: var(--muted); }
