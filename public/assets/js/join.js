@@ -2,6 +2,7 @@
 // posts to /api/join (functions/api/join.js, which writes the contact to Brevo with double opt-in) and swaps the form
 // for the thank-you state with the founder video. ?src=<event> tags the signup with the event it came from.
 import { COPY, CONFIG } from '/join/copy.js';
+import { makeCard } from '/assets/js/join-card.js';
 
 const params = new URLSearchParams(location.search);
 const lang = COPY[params.get('lang')] ? params.get('lang') : 'en';
@@ -121,14 +122,17 @@ function renderForm() {
       else if (!ok) err.textContent = T.errServer;
     } catch (x) { err.textContent = T.errServer; }
     if (!ok) { btn.disabled = false; btn.textContent = T.submit; return; }
-    thanks();
+    thanks(data);
   });
 }
 
-function thanks() {
+function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
     <h2>${esc(T.thanksTitle)}</h2><p>${esc(T.thanksText)}</p>
+    <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
+      <div class="jcard"><div class="jcard-in"><div class="jcard-back"><img src="/assets/img/logo.svg" alt=""></div><img class="jcard-front" id="cardImg" alt=""></div></div>
+      <div class="join-links" id="cardActions"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
     <div class="join-links">${links()}</div></div>`;
   video(document.getElementById('fullVideo'), CONFIG.video.full, { title: T.thanksVideoTitle });
@@ -136,4 +140,27 @@ function thanks() {
   if (teaser) teaser.hidden = true;
   box.firstElementChild.focus();
   box.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  showCard(data).catch(e => console.error(e));
+}
+
+// the reward: a founding collector card with a famous landmark, revealed with a flip, then saved or shared as a PNG
+async function showCard(data) {
+  const { canvas, landmark: lm, piece } = await makeCard({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, T, landmarks: CONFIG.landmarks });
+  const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+  const url = URL.createObjectURL(blob), file = `myntas-collector-${lm.id}-${piece}.png`;
+  const img = document.getElementById('cardImg');
+  img.src = url; img.alt = `${T.cardKicker}: ${lm.name}, ${lm.city}, #${piece}`;
+  const map = `https://www.google.com/maps/search/?api=1&query=${lm.lat},${lm.lng}`;
+  const actions = document.getElementById('cardActions');
+  actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
+  const shareFile = new File([blob], file, { type: 'image/png' });
+  if (navigator.canShare?.({ files: [shareFile] })) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ghost'; b.textContent = T.cardShare;
+    b.onclick = () => navigator.share({ files: [shareFile], title: `Myntas · ${lm.name}` }).catch(() => {});
+    actions.append(b);
+  }
+  const wrap = document.getElementById('cardWrap');
+  wrap.hidden = false;
+  await img.decode().catch(() => {});
+  requestAnimationFrame(() => wrap.classList.add('flipped'));
 }
