@@ -200,6 +200,8 @@ export const COPY = {
     thanksVideoTitle: 'Meet the founders',
     cardTitle: 'Your founding collectible',
     cardText: 'Thanks for joining early. Here is your collector card: a numbered piece of a famous place, real or legendary. Some are rarer than others.',
+    revealText: 'Thanks for joining early. Every founding member gets a collector card of a famous place, real or legendary. Find out which one is yours.',
+    revealBtn: 'Click here to reveal',
     cardKicker: 'Founding collector',
     cardPiece: 'Piece',
     cardHolder: 'Collector',

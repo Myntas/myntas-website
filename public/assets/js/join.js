@@ -132,11 +132,15 @@ function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
     <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
-    <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
-      <button type="button" class="jcard" id="card" aria-label="${esc(T.cardFlip)}"><span class="jcard-tilt"><span class="jcard-in">
-        <span class="jcard-face jcard-front"><img id="cardImg" alt=""><span class="jcard-glare"></span></span>
-        <span class="jcard-face jcard-back" id="cardBack"><img src="/assets/img/logo.svg" alt=""><span class="jcard-glare"></span></span>
-      </span></span></button>
+    <div class="jcard-wrap sealed" id="cardWrap"><h3>${esc(T.cardTitle)}</h3><p id="cardText">${esc(T.revealText)}</p>
+      <button type="button" class="btn primary jreveal-btn" id="revealBtn">${esc(T.revealBtn)}</button>
+      <div class="jstage">
+        <button type="button" class="jtoken" id="token" aria-label="${esc(T.revealBtn)}"><img src="/assets/img/join-token.webp" alt="" width="609" height="640"></button>
+        <button type="button" class="jcard" id="card" aria-label="${esc(T.cardFlip)}" tabindex="-1"><span class="jcard-tilt"><span class="jcard-in">
+          <span class="jcard-face jcard-front"><img id="cardImg" alt=""><span class="jcard-glare"></span></span>
+          <span class="jcard-face jcard-back" id="cardBack"><img src="/assets/img/logo.svg" alt=""><span class="jcard-glare"></span></span>
+        </span></span></button>
+      </div>
       <p class="jcard-hint">${esc(T.cardFlip)}</p>
       <p class="jcard-note">${esc(T.cardDisclaimer)}</p><div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
     <h3>${esc(T.thanksVideoTitle)}</h3><figure class="join-media" id="fullVideo"></figure>
@@ -146,6 +150,7 @@ function thanks(data) {
   if (teaser) teaser.hidden = true;
   box.firstElementChild.focus();
   box.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  sealed();
   showCard(data).catch(e => console.error(e));
 }
 
@@ -188,11 +193,31 @@ async function showCard(data) {
     <span class="jb-name">${esc(lm.name)}</span><span class="jb-city">${esc(lm.city)}</span>
     <span class="jb-row"><b>#${String(piece).padStart(4, '0')}</b> / 1000</span><span class="jb-cls">${esc(cls)} · ${esc(rarity2)}</span>
     ${lm.lat != null ? `<span class="jb-geo">${coord(lm.lat, 'N', 'S')} · ${coord(lm.lng, 'E', 'W')}</span>` : ''}`);
-  const wrap = document.getElementById('cardWrap');
-  wrap.hidden = false;
   await img.decode().catch(() => {});
-  interactive(document.getElementById('card'), wrap);
-  requestAnimationFrame(() => wrap.classList.add('flipped'));
+  ready();
+}
+
+// the reveal: the floating token waits with a "click here" button; a click spins it until it turns edge-on,
+// then the card carries on the same turn, back first, and lands on its front
+let ready;
+const cardReady = new Promise(r => { ready = r; });
+function sealed() {
+  const wrap = document.getElementById('cardWrap'), token = document.getElementById('token'), card = document.getElementById('card');
+  let busy = false;
+  const open = async () => {
+    if (busy) return; busy = true;
+    document.getElementById('revealBtn').disabled = true;
+    wrap.classList.add('spinning');
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    await Promise.all([cardReady, new Promise(r => setTimeout(r, still ? 0 : 1100))]);
+    wrap.classList.remove('sealed', 'spinning'); wrap.classList.add('pre');
+    document.getElementById('cardText').textContent = T.cardText;
+    token.hidden = true; card.tabIndex = 0;
+    card.getBoundingClientRect(); // commit the edge-on start before the turn
+    requestAnimationFrame(() => { wrap.classList.remove('pre'); wrap.classList.add('flipped'); interactive(card, wrap); });
+  };
+  token.addEventListener('click', open);
+  document.getElementById('revealBtn').addEventListener('click', open);
 }
 
 const coord = (v, pos, neg) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
