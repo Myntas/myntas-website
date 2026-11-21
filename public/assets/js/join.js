@@ -145,12 +145,12 @@ function thanks(data) {
 
 // the reward: a founding collector card with a famous landmark, revealed with a flip, then saved or shared as a PNG
 async function showCard(data) {
-  const { canvas, landmark: lm, piece } = await makeCard({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, T, landmarks: CONFIG.landmarks });
+  const { canvas, landmark: lm, piece } = await makeCard({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, T, landmarks: CONFIG.landmarks, odds: CONFIG.cardClasses });
   const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
   const url = URL.createObjectURL(blob), file = `myntas-collector-${lm.id}-${piece}.png`;
   const img = document.getElementById('cardImg');
   img.src = url; img.alt = `${T.cardKicker}: ${lm.name}, ${lm.city}, #${piece}`;
-  const map = `https://www.google.com/maps/search/?api=1&query=${lm.lat},${lm.lng}`;
+  const map = lm.url || `https://www.google.com/maps/search/?api=1&query=${lm.lat},${lm.lng}`;
   const actions = document.getElementById('cardActions');
   actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
   const shareFile = new File([blob], file, { type: 'image/png' });

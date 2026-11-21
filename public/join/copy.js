@@ -16,19 +16,33 @@ export const CONFIG = {
     linkedin: null, // company LinkedIn page URL, e.g. 'https://www.linkedin.com/company/...'
     privacy: '/en/privacy/'
   },
-  // the signup reward: a founding collector card with one of these landmarks (picked from a hash of the email).
-  // Public-domain monuments only; no Italian ones (commercial use of their images needs permission) and none whose
-  // image is trademarked or copyrighted (Empire State Building, Sydney Opera House, Eiffel Tower lit at night...).
-  // lat/lng open Google Maps in a new tab (a plain link: nothing from Google loads on the page).
+  // the signup reward: a founding collector card picked from a hash of the email, in three classes:
+  //   landmark (common): real public-domain monuments; no Italian or Greek ones (commercial use of their images needs
+  //     permission) and none whose image is trademarked or copyrighted (Empire State Building, Sydney Opera House...)
+  //   legend (rare): mythical places; frontier (legendary): space. `odds` is the % chance of each class.
+  // lat/lng (or url) open Google Maps in a new tab: a plain link, nothing from Google loads on the page.
+  cardClasses: { frontier: 10, legend: 25, landmark: 65 },
   landmarks: [
-    { id: 'liberty', name: 'Statue of Liberty', city: 'New York', lat: 40.68925, lng: -74.0445 },
-    { id: 'eiffel', name: 'Eiffel Tower', city: 'Paris', lat: 48.85837, lng: 2.294481 },
-    { id: 'bigben', name: 'Big Ben', city: 'London', lat: 51.500729, lng: -0.124625 },
-    { id: 'towerbridge', name: 'Tower Bridge', city: 'London', lat: 51.505456, lng: -0.075356 },
-    { id: 'arc', name: 'Arc de Triomphe', city: 'Paris', lat: 48.873792, lng: 2.295028 },
-    { id: 'brandenburg', name: 'Brandenburg Gate', city: 'Berlin', lat: 52.516275, lng: 13.377704 },
-    { id: 'tajmahal', name: 'Taj Mahal', city: 'Agra', lat: 27.175015, lng: 78.042155 },
-    { id: 'giza', name: 'Pyramids of Giza', city: 'Giza', lat: 29.979235, lng: 31.134202 }
+    { id: 'liberty', cls: 'landmark', name: 'Statue of Liberty', city: 'New York', lat: 40.68925, lng: -74.0445 },
+    { id: 'eiffel', cls: 'landmark', name: 'Eiffel Tower', city: 'Paris', lat: 48.85837, lng: 2.294481 },
+    { id: 'bigben', cls: 'landmark', name: 'Big Ben', city: 'London', lat: 51.500729, lng: -0.124625 },
+    { id: 'towerbridge', cls: 'landmark', name: 'Tower Bridge', city: 'London', lat: 51.505456, lng: -0.075356 },
+    { id: 'arc', cls: 'landmark', name: 'Arc de Triomphe', city: 'Paris', lat: 48.873792, lng: 2.295028 },
+    { id: 'brandenburg', cls: 'landmark', name: 'Brandenburg Gate', city: 'Berlin', lat: 52.516275, lng: 13.377704 },
+    { id: 'tajmahal', cls: 'landmark', name: 'Taj Mahal', city: 'Agra', lat: 27.175015, lng: 78.042155 },
+    { id: 'giza', cls: 'landmark', name: 'Pyramids of Giza', city: 'Giza', lat: 29.979235, lng: 31.134202 },
+    { id: 'stonehenge', cls: 'landmark', name: 'Stonehenge', city: 'Wiltshire', lat: 51.178882, lng: -1.826215 },
+    { id: 'greatwall', cls: 'landmark', name: 'Great Wall', city: 'Mutianyu, China', lat: 40.431908, lng: 116.570374 },
+    { id: 'fuji', cls: 'landmark', name: 'Mount Fuji', city: 'Japan', lat: 35.360638, lng: 138.727363 },
+    { id: 'moai', cls: 'landmark', name: 'Moai', city: 'Easter Island', lat: -27.125833, lng: -109.276944 },
+    { id: 'windmill', cls: 'landmark', name: 'Kinderdijk Windmills', city: 'Netherlands', lat: 51.884722, lng: 4.639722 },
+    { id: 'angkor', cls: 'landmark', name: 'Angkor Wat', city: 'Cambodia', lat: 13.412469, lng: 103.866986 },
+    { id: 'atlantis', cls: 'legend', name: 'Atlantis', city: 'Beyond the Pillars of Hercules', lat: 36.0, lng: -9.5 },
+    { id: 'eldorado', cls: 'legend', name: 'El Dorado', city: 'Lake Guatavita, Colombia', lat: 4.978333, lng: -73.776389 },
+    { id: 'camelot', cls: 'legend', name: 'Camelot', city: 'Somerset, England', lat: 51.024167, lng: -2.531389 },
+    { id: 'olympus', cls: 'legend', name: 'Home of the Gods', city: 'Mount Olympus', lat: 40.085556, lng: 22.358611 },
+    { id: 'mars', cls: 'frontier', name: 'First House on Mars', city: 'Jezero Crater, Mars', url: 'https://www.google.com/maps/space/mars/' },
+    { id: 'moon', cls: 'frontier', name: 'Moon Base One', city: 'Sea of Tranquility, Moon', url: 'https://www.google.com/maps/space/moon/' }
   ],
   // shown first in the country list (ISO codes); the full list follows
   topCountries: ['US', 'IT', 'GB', 'DE', 'CH', 'FR', 'ES', 'NL']
@@ -84,16 +98,17 @@ export const COPY = {
     thanksText: 'Check your inbox and confirm your email to complete your signup. The video is below.',
     thanksVideoTitle: 'Meet the founders',
     cardTitle: 'Your founding collectible',
-    cardText: 'Thanks for joining early. Here is your collector card: a numbered piece of a famous landmark.',
+    cardText: 'Thanks for joining early. Here is your collector card: a numbered piece of a famous place, real or legendary. Some are rarer than others.',
     cardKicker: 'Founding collector',
     cardPiece: 'Piece',
     cardHolder: 'Collector',
     cardEdition: 'Edition',
     cardOnline: 'Online',
     cardMap: 'See it on Google Maps',
+    cardClass: { landmark: ['Landmark', 'Common'], legend: ['Legend', 'Rare'], frontier: ['Frontier', 'Legendary'] },
     cardSave: 'Save card',
     cardShare: 'Share',
-    cardDisclaimer: 'A collectible for fun. It is not a share of any property, has no value, is not an investment and is not on a blockchain. Not affiliated with the landmark or its owners.',
+    cardDisclaimer: 'A collectible for fun. It is not a share of any property, has no value, is not an investment and is not on a blockchain. Not affiliated with any landmark or its owners.',
     videoSoon: 'The founder video will be here soon. We will also send it to you by email.',
     followLinkedin: 'Follow us on LinkedIn',
     visitWebsite: 'Visit myntas.com',
