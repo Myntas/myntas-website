@@ -7,6 +7,9 @@ export const CONFIG = {
   turnstileSiteKey: '',
   // Apple Wallet: set to true once the Pass Type ID certificate is in the Pages project (see functions/api/wallet.js)
   appleWallet: false,
+  // preview for friends: the form shows the card and the rest but saves nothing and sends no email.
+  // Set to false once Brevo is connected (README "Waitlist page /join").
+  testMode: true,
   video: {
     // self-hosted MP4 files under /assets/video/ (the site's CSP allows only its own files). null = not ready yet.
     teaser: null, // short muted loop shown in the hero
@@ -188,6 +191,7 @@ export const COPY = {
 
     thanksTitle: 'You\'re on the list.',
     thanksText: 'Check your inbox and confirm your email to complete your signup. The video is below.',
+    thanksTextTest: 'Thanks for trying it out. This is a preview: nothing was saved and no email will arrive yet.',
     thanksVideoTitle: 'Meet the founders',
     cardTitle: 'Your founding collectible',
     cardText: 'Thanks for joining early. Here is your collector card: a numbered piece of a famous place, real or legendary. Some are rarer than others.',

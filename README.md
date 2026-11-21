@@ -54,7 +54,8 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 2. In Brevo create the **double opt-in template** (Templates → new, with the confirmation button `{{ doubleoptin }}`) and note its id. Add an automation "contact added to list Waitlist" → welcome email with the founder video link. Segments by `ROLE` give the separate newsletter tracks.
 3. **Turnstile** (Cloudflare → Turnstile → add site `www.myntas.com`): put the site key in `copy.js` (`turnstileSiteKey`).
 4. **Cloudflare Pages** project `myntas` → Settings → Variables and secrets: `BREVO_API_KEY` (secret), `BREVO_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `TURNSTILE_SECRET` (secret). Redeploy.
-5. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.teaser` / `video.full` in `copy.js`. Until then the page shows the Myntas token.
+5. Set `testMode: false` in `copy.js` (while it is `true` the form saves nothing: a preview for friends).
+6. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.teaser` / `video.full` in `copy.js`. Until then the page shows the Myntas token.
 
 ### Collector cards (signup reward)
 
