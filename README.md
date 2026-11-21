@@ -55,3 +55,18 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 3. **Turnstile** (Cloudflare → Turnstile → add site `www.myntas.com`): put the site key in `copy.js` (`turnstileSiteKey`).
 4. **Cloudflare Pages** project `myntas` → Settings → Variables and secrets: `BREVO_API_KEY` (secret), `BREVO_LIST_ID`, `BREVO_DOI_TEMPLATE_ID`, `TURNSTILE_SECRET` (secret). Redeploy.
 5. **Videos**: put the MP4 files in `public/assets/video/` (Cloudflare Pages: max 25 MB per file) and set `video.teaser` / `video.full` in `copy.js`. Until then the page shows the Myntas token.
+
+### Collector cards (signup reward)
+
+After signup each person gets a collector card: one of the 109 places in `public/join/copy.js` (`CONFIG.landmarks`,
+in three classes with the odds in `cardClasses`), picked from their email, so the same person always gets the same card.
+They can open it on Google Maps, save it, share it on LinkedIn, X or WhatsApp (each place has a share page,
+`/join/card/<id>/`, whose preview shows the card), and add it to Apple Wallet.
+
+- **Adding a place**: add a line to `CONFIG.landmarks` (`art` + `v` pick one of the drawing families in
+  `assets/js/join-card.js`), then regenerate its share image, Wallet thumbnail and share page:
+  `npm i --no-save playwright && npx playwright install chromium && node tools/cards/generate.mjs`.
+- **Apple Wallet** (`functions/api/wallet.js`): needs an Apple Developer account. Create a Pass Type ID
+  (e.g. `pass.com.myntas.collector`) and its certificate, then set in the Pages project `PASS_TYPE_ID`, `APPLE_TEAM_ID`,
+  `PASS_CERT` (PEM), `PASS_KEY` (PEM, secret), `PASS_KEY_PASSWORD` (if any) and `WWDR_CERT` (Apple WWDR G4, PEM),
+  and set `appleWallet: true` in `copy.js`. Use Apple's official "Add to Apple Wallet" badge before launch.

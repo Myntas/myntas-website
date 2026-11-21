@@ -817,3 +817,10 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jcard-wrap .join-links { justify-content: center; }
 .jcard-wrap .btn { border-radius: 999px; }
 @media (prefers-reduced-motion: reduce) { .jcard-in { transition: none; } }
+.jshares { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.45rem; font-size: 0.875rem; }
+.jshares span { width: 100%; text-align: center; color: var(--muted); }
+.jshare { padding: 0.45rem 0.95rem; border-radius: 999px; background: var(--brown); color: var(--cream) !important; text-decoration: none; font-weight: 600; font-size: 0.875rem; }
+.jshare:hover { background: var(--gold-dark); }
+.jwallet { display: contents; }
+.jwallet-btn { border-radius: 999px; background: #000; border-color: #000; color: #fff; }
+.jwallet-btn:hover { background: #222; }
