@@ -174,15 +174,7 @@ async function showCard(data) {
   const map = mapUrl(lm);
   const actions = document.getElementById('cardActions');
   actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
-  // Apple Wallet (Apple devices): a form POST, so the email stays out of the URL. Until the pass certificate is set up
-  // (CONFIG.appleWallet false) the button explains that it is coming soon instead of posting
-  if (/iPhone|iPad|Macintosh/.test(navigator.userAgent)) {
-    const w = document.createElement('form'); w.method = 'post'; w.action = '/api/wallet'; w.className = 'jwallet';
-    for (const [k, v] of Object.entries({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, lang })) { const i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = v; w.append(i); }
-    w.insertAdjacentHTML('beforeend', `<button type="submit" class="btn jwallet-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 9.5h18M15 14h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>${esc(T.cardWallet)}</button><p class="jwallet-soon" hidden>${esc(T.cardWalletSoon)}</p>`);
-    if (!CONFIG.appleWallet) w.addEventListener('submit', e => { e.preventDefault(); w.querySelector('.jwallet-soon').hidden = false; });
-    actions.append(w);
-  }
+  // Apple Wallet: off for now (functions/api/wallet.js is ready; the button needs the pass certificate or a pass service)
   const shareFile = new File([blob], file, { type: 'image/png' });
   if (navigator.canShare?.({ files: [shareFile] })) {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ghost'; b.textContent = T.cardShare;

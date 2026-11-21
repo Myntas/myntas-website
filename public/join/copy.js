@@ -204,8 +204,6 @@ export const COPY = {
     cardMap: 'See it on Google Maps',
     cardClass: { landmark: ['Landmark', 'Common'], legend: ['Legend', 'Rare'], frontier: ['Frontier', 'Legendary'] },
     cardSave: 'Save card',
-    cardWallet: 'Add to Apple Wallet',
-    cardWalletSoon: 'Apple Wallet is coming soon. For now, save the card to your photos.',
     cardFlip: 'Tap the card to flip it',
     shareTitle: 'Share it',
     shareLinkedin: 'LinkedIn',
