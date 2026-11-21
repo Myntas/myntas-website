@@ -131,7 +131,7 @@ function renderForm() {
 function thanks(data) {
   const box = document.getElementById('joinBox');
   box.innerHTML = `<div class="join-thanks" role="status" tabindex="-1">
-    <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p>
+    <h2>${esc(T.thanksTitle)}</h2><p>${esc(CONFIG.testMode ? T.thanksTextTest : T.thanksText)}</p><p class="jperk-note">${esc(T.thanksPerks)}</p>
     <div class="jcard-wrap" id="cardWrap" hidden><h3>${esc(T.cardTitle)}</h3><p>${esc(T.cardText)}</p>
       <div class="jcard"><div class="jcard-in"><div class="jcard-back"><img src="/assets/img/logo.svg" alt=""></div><img class="jcard-front" id="cardImg" alt=""></div></div>
       <div class="join-links" id="cardActions"></div><div class="jshares" id="cardShare"></div></div>
