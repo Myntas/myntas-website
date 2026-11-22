@@ -17,6 +17,7 @@ const server = http.createServer((req, res) => {
 const port = server.address().port;
 
 const { COPY, CONFIG } = await import(path.resolve('public/join/copy.js'));
+const { tierOf } = await import(path.resolve('public/assets/js/join-pick.js'));
 const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(`http://localhost:${port}/gen.html`);
@@ -32,8 +33,8 @@ for (const lm of CONFIG.landmarks) {
   const o = out[lm.id];
   fs.writeFileSync(path.join(imgDir, `${lm.id}-share.jpg`), Buffer.from(o.share.split(',')[1], 'base64'));
   fs.writeFileSync(path.join(imgDir, `${lm.id}-thumb.png`), Buffer.from(o.thumb.split(',')[1], 'base64'));
-  const [cls, rar] = COPY.en.cardClass[lm.cls];
-  const t = esc(`Founding collector of ${lm.name} · Myntas`), d = esc(`${cls}, ${rar.toLowerCase()}. A Myntas collectible card. Join the waitlist and get yours.`);
+  const cls = COPY.en.cardType[lm.cls], rar = COPY.en.cardRarity[tierOf(lm)], of = CONFIG.rarities[tierOf(lm)].pieces;
+  const t = esc(`Founding collector of ${lm.name} · Myntas`), d = esc(`${rar} ${cls.toLowerCase()}, one of ${of} pieces. A Myntas collectible card. Join the waitlist and get yours.`);
   const img = `https://www.myntas.com/assets/img/cards/${lm.id}-share.jpg`, dir = path.join(root, 'join/card', lm.id);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), `<!doctype html>

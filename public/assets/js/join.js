@@ -166,11 +166,11 @@ function thanks(data) {
 
 // the reward: a founding collector card with a famous landmark, revealed with a flip, then saved or shared as a PNG
 async function showCard(data) {
-  const { canvas, landmark: lm, piece } = await makeCard({ email: data.email, name: `${data.firstName} ${data.lastName}`, src: data.src, T, landmarks: CONFIG.landmarks, odds: CONFIG.cardClasses });
+  const { canvas, landmark: lm, tier, piece, of } = await makeCard({ email: data.email, name: `${data.firstName} ${data.lastName}`, T, landmarks: CONFIG.landmarks, rarities: CONFIG.rarities });
   const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
   const url = URL.createObjectURL(blob), file = `myntas-collector-${lm.id}-${piece}.png`;
   const img = document.getElementById('cardImg');
-  img.src = url; img.alt = `${T.cardKicker}: ${lm.name}, ${lm.city}, #${piece}`;
+  img.src = url; img.alt = `${T.cardKicker}: ${lm.name}, ${lm.city}, ${T.cardRarity[tier]}, #${piece} of ${of}`;
   const map = mapUrl(lm);
   const actions = document.getElementById('cardActions');
   actions.innerHTML = `<a class="btn primary" href="${map}" target="_blank" rel="noopener">${esc(T.cardMap)}</a><a class="btn ghost" href="${url}" download="${file}">${esc(T.cardSave)}</a>`;
@@ -182,8 +182,8 @@ async function showCard(data) {
     actions.append(b);
   }
   // share: each place has its own page (/join/card/<id>/) whose preview shows the card, then sends people to /join
-  const page = `https://www.myntas.com/join/card/${lm.id}/`, rarity = T.cardClass[lm.cls][1].toLowerCase();
-  const fill = t => t.replace('{name}', lm.name).replace('{piece}', piece).replace('{rarity}', rarity);
+  const page = `https://www.myntas.com/join/card/${lm.id}/`, rarity = T.cardRarity[tier].toLowerCase();
+  const fill = t => t.replace('{name}', lm.name).replace('{piece}', piece).replace('{of}', of.toLocaleString('en')).replace('{rarity}', rarity);
   const long = fill(T.shareText), short = fill(T.shareTextShort);
   const enc = encodeURIComponent;
   const icon = (href, label, path) => `<a class="jshare" href="${href}" target="_blank" rel="noopener" aria-label="${esc(label)}" title="${esc(label)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg></a>`;
@@ -195,11 +195,10 @@ async function showCard(data) {
     icon(`https://t.me/share/url?url=${enc(page)}&text=${enc(short)}`, T.shareTelegram, ICONS.telegram),
     icon(`mailto:?subject=${enc(`Myntas · ${lm.name}`)}&body=${enc(short + ' ' + page)}`, T.shareEmail, ICONS.email)
   ].join('');
-  const [cls, rarity2] = T.cardClass[lm.cls];
-  document.getElementById('card').dataset.cls = lm.cls; // the back takes the colours of the rarity
+  document.getElementById('card').dataset.tier = tier; // the back takes the colours of the rarity
   document.getElementById('cardBack').insertAdjacentHTML('beforeend', `<span class="jb-kick">${esc(T.cardKicker)}</span>
     <span class="jb-name">${esc(lm.name)}</span><span class="jb-city">${esc(lm.city)}</span>
-    <span class="jb-row"><b>#${String(piece).padStart(4, '0')}</b> / 1000</span><span class="jb-cls">${esc(cls)} · ${esc(rarity2)}</span>
+    <span class="jb-row"><b>#${piece}</b> / ${of}</span><span class="jb-cls">${esc(T.cardType[lm.cls])} · ${esc(T.cardRarity[tier])}</span>
     ${lm.lat != null ? `<span class="jb-geo">${coord(lm.lat, 'N', 'S')} · ${coord(lm.lng, 'E', 'W')}</span>` : ''}`);
   await img.decode().catch(() => {});
   ready();

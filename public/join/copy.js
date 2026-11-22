@@ -26,7 +26,9 @@ export const CONFIG = {
   //   `art` + `v` draw a place with one of the drawing families in join-card.js (FAMILY); without `art` it has its own drawing
   //   legend (rare): mythical places; frontier (legendary): space. `odds` is the % chance of each class.
   // lat/lng (or url) open Google Maps in a new tab: a plain link, nothing from Google loads on the page.
-  cardClasses: { frontier: 10, legend: 25, landmark: 65 },
+  // five rarities: odds (% of signups, in this order) and each one's own numbered run of pieces.
+  // Myths, mysteries and space have a fixed rarity (tier below); real landmarks are common or uncommon (join-pick.js tierOf)
+  rarities: { common: { odds: 50, pieces: 1000 }, uncommon: { odds: 25, pieces: 500 }, rare: { odds: 14, pieces: 250 }, epic: { odds: 8, pieces: 100 }, legendary: { odds: 3, pieces: 25 } },
   landmarks: [
     { id: 'liberty', cls: 'landmark', name: 'Statue of Liberty', city: 'New York', lat: 40.68925, lng: -74.0445 },
     { id: 'eiffel', cls: 'landmark', name: 'Eiffel Tower', city: 'Paris', lat: 48.85837, lng: 2.294481 },
@@ -53,17 +55,17 @@ export const CONFIG = {
     { id: 'machupicchu', cls: 'landmark', name: 'Machu Picchu', city: 'Peru', lat: -13.163141, lng: -72.544963 },
     { id: 'neuschwanstein', cls: 'landmark', name: 'Neuschwanstein Castle', city: 'Bavaria', lat: 47.557574, lng: 10.749800 },
     { id: 'chichen', cls: 'landmark', name: 'Chichén Itzá', city: 'Yucatán', lat: 20.684285, lng: -88.567783 },
-    { id: 'atlantis', cls: 'legend', name: 'Atlantis', city: 'Beyond the Pillars of Hercules', lat: 36.0, lng: -9.5 },
-    { id: 'eldorado', cls: 'legend', name: 'El Dorado', city: 'Lake Guatavita, Colombia', lat: 4.978333, lng: -73.776389 },
-    { id: 'camelot', cls: 'legend', name: 'Camelot', city: 'Somerset, England', lat: 51.024167, lng: -2.531389 },
-    { id: 'olympus', cls: 'legend', name: 'Home of the Gods', city: 'Mount Olympus', lat: 40.085556, lng: 22.358611 },
-    { id: 'valhalla', cls: 'legend', name: 'Valhalla', city: 'Asgard, Norse myth', lat: 63.9, lng: -19.0 },
-    { id: 'avalon', cls: 'legend', name: 'Avalon', city: 'Glastonbury Tor, England', lat: 51.144267, lng: -2.698717 },
-    { id: 'cityz', cls: 'legend', name: 'Lost City of Z', city: 'Mato Grosso, Brazil', lat: -12.0, lng: -53.0 },
-    { id: 'mars', cls: 'frontier', name: 'First House on Mars', city: 'Jezero Crater, Mars', url: 'https://www.google.com/maps/space/mars/' },
-    { id: 'moon', cls: 'frontier', name: 'Moon Base One', city: 'Sea of Tranquility, Moon', url: 'https://www.google.com/maps/space/moon/' },
-    { id: 'olympusmons', cls: 'frontier', name: 'Olympus Mons Lodge', city: 'Tallest volcano, Mars', url: 'https://www.google.com/maps/space/mars/' },
-    { id: 'europa', cls: 'frontier', name: 'Europa Ice Station', city: 'Moon of Jupiter', url: 'https://www.google.com/maps/space/europa/' },
+    { id: 'atlantis', cls: 'legend', tier: 'rare', name: 'Atlantis', city: 'Beyond the Pillars of Hercules', lat: 36.0, lng: -9.5 },
+    { id: 'eldorado', cls: 'legend', tier: 'rare', name: 'El Dorado', city: 'Lake Guatavita, Colombia', lat: 4.978333, lng: -73.776389 },
+    { id: 'camelot', cls: 'legend', tier: 'rare', name: 'Camelot', city: 'Somerset, England', lat: 51.024167, lng: -2.531389 },
+    { id: 'olympus', cls: 'legend', tier: 'rare', name: 'Home of the Gods', city: 'Mount Olympus', lat: 40.085556, lng: 22.358611 },
+    { id: 'valhalla', cls: 'legend', tier: 'rare', name: 'Valhalla', city: 'Asgard, Norse myth', lat: 63.9, lng: -19.0 },
+    { id: 'avalon', cls: 'legend', tier: 'rare', name: 'Avalon', city: 'Glastonbury Tor, England', lat: 51.144267, lng: -2.698717 },
+    { id: 'cityz', cls: 'legend', tier: 'rare', name: 'Lost City of Z', city: 'Mato Grosso, Brazil', lat: -12.0, lng: -53.0 },
+    { id: 'mars', cls: 'frontier', tier: 'legendary', name: 'First House on Mars', city: 'Jezero Crater, Mars', url: 'https://www.google.com/maps/space/mars/' },
+    { id: 'moon', cls: 'frontier', tier: 'epic', name: 'Moon Base One', city: 'Sea of Tranquility, Moon', url: 'https://www.google.com/maps/space/moon/' },
+    { id: 'olympusmons', cls: 'frontier', tier: 'legendary', name: 'Olympus Mons Lodge', city: 'Tallest volcano, Mars', url: 'https://www.google.com/maps/space/mars/' },
+    { id: 'europa', cls: 'frontier', tier: 'legendary', name: 'Europa Ice Station', city: 'Moon of Jupiter', url: 'https://www.google.com/maps/space/europa/' },
     { id: 'goldengate', cls: 'landmark', name: "Golden Gate Bridge", city: "San Francisco", lat: 37.819929, lng: -122.478255, art: 'bridge', v: {"tower": "art"} },
     { id: 'brooklyn', cls: 'landmark', name: "Brooklyn Bridge", city: "New York", lat: 40.706086, lng: -73.996864, art: 'bridge', v: {"tower": "gothic"} },
     { id: 'akashi', cls: 'landmark', name: "Akashi Kaiky\u014d Bridge", city: "Kobe", lat: 34.616667, lng: 135.021111, art: 'bridge', v: {"tower": "modern"} },
@@ -129,14 +131,14 @@ export const CONFIG = {
     { id: 'gateway', cls: 'landmark', name: "Gateway Arch", city: "St. Louis", lat: 38.624691, lng: -90.184776, art: 'arch', v: {"kind": "gateway"} },
     { id: 'indiagate', cls: 'landmark', name: "India Gate", city: "New Delhi", lat: 28.612894, lng: 77.229446, art: 'arch', v: {} },
     { id: 'santorini', cls: 'landmark', name: "Oia", city: "Santorini", lat: 36.461528, lng: 25.375551, art: 'whitehouses', v: {} },
-    { id: 'lochness', cls: 'legend', name: "Loch Ness", city: "Scottish Highlands", lat: 57.322857, lng: -4.424382, art: 'lake', v: {} },
-    { id: 'santa', cls: 'legend', name: "Santa's Workshop", city: "North Pole", lat: 90.0, lng: 0.0, art: 'workshop', v: {} },
-    { id: 'yeti', cls: 'legend', name: "Yeti's Cave", city: "Himalaya", lat: 27.9, lng: 86.9, art: 'cave', v: {} },
-    { id: 'cloudcastle', cls: 'legend', name: "Castle in the Clouds", city: "Somewhere above you", lat: 45.0, lng: 7.0, art: 'castle', v: {"clouds": true} },
-    { id: 'area51', cls: 'legend', name: "Area 51", city: "Nevada", lat: 37.235, lng: -115.811111, art: 'dunes', v: {"ufo": true} },
-    { id: 'bermuda', cls: 'legend', name: "Bermuda Triangle", city: "Atlantic Ocean", lat: 25.0, lng: -71.0, art: 'sea', v: {} },
-    { id: 'saturnhotel', cls: 'frontier', name: "Saturn Ring Hotel", city: "Rings of Saturn", url: 'https://www.google.com/maps/space/titan/', art: 'saturn', v: {} },
-    { id: 'orbitalhotel', cls: 'frontier', name: "Orbital Hotel", city: "400 km above the Earth", url: 'https://www.google.com/maps/@20,0,3z/data=!3m1!1e3', art: 'saturn', v: {"earth": true} }
+    { id: 'lochness', cls: 'legend', tier: 'epic', name: "Loch Ness", city: "Scottish Highlands", lat: 57.322857, lng: -4.424382, art: 'lake', v: {} },
+    { id: 'santa', cls: 'legend', tier: 'epic', name: "Santa's Workshop", city: "North Pole", lat: 90.0, lng: 0.0, art: 'workshop', v: {} },
+    { id: 'yeti', cls: 'legend', tier: 'epic', name: "Yeti's Cave", city: "Himalaya", lat: 27.9, lng: 86.9, art: 'cave', v: {} },
+    { id: 'cloudcastle', cls: 'legend', tier: 'epic', name: "Castle in the Clouds", city: "Somewhere above you", lat: 45.0, lng: 7.0, art: 'castle', v: {"clouds": true} },
+    { id: 'area51', cls: 'legend', tier: 'epic', name: "Area 51", city: "Nevada", lat: 37.235, lng: -115.811111, art: 'dunes', v: {"ufo": true} },
+    { id: 'bermuda', cls: 'legend', tier: 'epic', name: "Bermuda Triangle", city: "Atlantic Ocean", lat: 25.0, lng: -71.0, art: 'sea', v: {} },
+    { id: 'saturnhotel', cls: 'frontier', tier: 'legendary', name: "Saturn Ring Hotel", city: "Rings of Saturn", url: 'https://www.google.com/maps/space/titan/', art: 'saturn', v: {} },
+    { id: 'orbitalhotel', cls: 'frontier', tier: 'epic', name: "Orbital Hotel", city: "400 km above the Earth", url: 'https://www.google.com/maps/@20,0,3z/data=!3m1!1e3', art: 'saturn', v: {"earth": true} }
   ],
   // shown first in the country list (ISO codes); the full list follows
   topCountries: ['US', 'IT', 'GB', 'DE', 'CH', 'FR', 'ES', 'NL']
@@ -200,7 +202,8 @@ export const COPY = {
     cardPiece: 'Piece',
     cardHolder: 'Collector',
     cardMap: 'See it on Google Maps',
-    cardClass: { landmark: ['Landmark', 'Common'], legend: ['Legend', 'Rare'], frontier: ['Frontier', 'Legendary'] },
+    cardType: { landmark: 'Landmark', legend: 'Legend', frontier: 'Frontier' },
+    cardRarity: { common: 'Common', uncommon: 'Uncommon', rare: 'Rare', epic: 'Epic', legendary: 'Legendary' },
     cardSave: 'Save card',
     cardFlip: 'Tap the card to flip it',
     shareTitle: 'Share it',
@@ -210,9 +213,9 @@ export const COPY = {
     shareFacebook: 'Facebook',
     shareTelegram: 'Telegram',
     shareEmail: 'Email',
-    // {name} {piece} {rarity} are filled in; the share page link is added at the end
-    shareText: 'I just got my Myntas founding card: {name}, piece #{piece} of 1,000 ({rarity}). Myntas is working on the real thing for real estate. Get yours:',
-    shareTextShort: 'My Myntas founding card: {name}, piece #{piece} ({rarity}). Get yours:',
+    // {name} {piece} {of} {rarity} are filled in; the share page link is added at the end
+    shareText: 'I just got my Myntas founding card: {name}, piece #{piece} of {of} ({rarity}). Myntas is working on the real thing for real estate. Get yours:',
+    shareTextShort: 'My Myntas founding card: {name}, #{piece} of {of}, {rarity}. Get yours:',
     cardShare: 'Share',
     cardDisclaimer: 'This collectible has no intrinsic value, but we have plans for it. Stay tuned.',
     videoPlay: 'Play the video',
