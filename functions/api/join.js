@@ -61,9 +61,8 @@ const txt = v => ({ rich_text: v ? [{ text: { content: v } }] : [] });
 
 // the collector card the visitor got: the same pick as the page (from the email), written out for the team
 export function cardText(email) {
-  const { lm, piece } = pick(email, CONFIG.landmarks, CONFIG.cardClasses);
-  const [cls, rarity] = COPY.en.cardClass[lm.cls];
-  return `${lm.name}, ${lm.city} · #${piece}/1000 · ${cls} (${rarity})`;
+  const { lm, tier, piece, of } = pick(email, CONFIG.landmarks, CONFIG.rarities);
+  return `${lm.name}, ${lm.city} · #${piece}/${of} · ${COPY.en.cardRarity[tier]} (${COPY.en.cardType[lm.cls]})`;
 }
 
 async function toNotion(env, c, sc) {

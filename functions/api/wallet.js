@@ -15,8 +15,8 @@ const SRC_RE = /^[a-z0-9][a-z0-9-]{0,39}$/;
 const enc = new TextEncoder();
 const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 
-export function passJson({ lm, piece, h }, { name, src, env, T }) {
-  const [cls, rarity] = T.cardClass[lm.cls];
+export function passJson({ lm, tier, piece, of, h }, { name, src, env, T }) {
+  const cls = T.cardType[lm.cls], rarity = T.cardRarity[tier];
   return {
     formatVersion: 1, passTypeIdentifier: env.PASS_TYPE_ID, teamIdentifier: env.APPLE_TEAM_ID,
     serialNumber: `${h.toString(16)}-${piece}`, organizationName: 'Myntas', description: `Myntas ${T.cardKicker}: ${lm.name}`,
@@ -24,7 +24,7 @@ export function passJson({ lm, piece, h }, { name, src, env, T }) {
     generic: {
       headerFields: [{ key: 'class', label: cls, value: rarity }],
       primaryFields: [{ key: 'place', label: T.cardKicker, value: lm.name }],
-      secondaryFields: [{ key: 'where', label: 'Location', value: lm.city }, { key: 'piece', label: T.cardPiece, value: `#${piece} / 1000` }],
+      secondaryFields: [{ key: 'where', label: 'Location', value: lm.city }, { key: 'piece', label: T.cardPiece, value: `#${piece} / ${of}` }],
       auxiliaryFields: [{ key: 'holder', label: T.cardHolder, value: name }],
       backFields: [
         { key: 'map', label: T.cardMap, value: mapUrl(lm) },
@@ -63,7 +63,7 @@ export async function onRequestPost({ request, env }) {
   const src = SRC_RE.test(String(f.get('src') || '')) ? String(f.get('src')) : 'web';
   const T = COPY[f.get('lang')] || COPY.en;
 
-  const card = pick(email, CONFIG.landmarks, CONFIG.cardClasses);
+  const card = pick(email, CONFIG.landmarks, CONFIG.rarities);
   const asset = async p => new Uint8Array(await (await env.ASSETS.fetch(new URL(p, request.url))).arrayBuffer());
   const thumb = await asset(`/assets/img/cards/${card.lm.id}-thumb.png`);
   const files = {

@@ -855,10 +855,12 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jcard-glare { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 246, 220, 0.32), rgba(255, 246, 220, 0) 55%); mix-blend-mode: soft-light; opacity: 0.6; transition: opacity 0.4s; }
 .jcard.tilting .jcard-glare { opacity: 1; }
 .jcard-back { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; padding: 1.5rem; text-align: center; color: #f7f1e5; background: radial-gradient(circle at 50% 35%, #5a4527, #2a2012); border: 2px solid rgba(215, 186, 120, 0.6); transform: rotateY(180deg); }
-.jcard[data-cls="legend"] .jcard-back { background: radial-gradient(circle at 50% 35%, #34557d, #0b1424); border-color: rgba(205, 220, 238, 0.7); }
-.jcard[data-cls="legend"] :is(.jb-kick, .jb-city, .jb-cls) { color: #d9e3ef; }
-.jcard[data-cls="frontier"] .jcard-back { background: radial-gradient(circle at 50% 35%, #5b3a86, #0c0619); border-color: rgba(241, 210, 140, 0.8); }
-.jcard[data-cls="frontier"] :is(.jb-kick, .jb-city, .jb-cls) { color: #f1d28c; }
+.jcard[data-tier="uncommon"] .jcard-back { background: radial-gradient(circle at 50% 35%, #5a4527, #1c150b); border: 3px double rgba(208, 182, 119, 0.85); }
+.jcard[data-tier="rare"] .jcard-back { background: radial-gradient(circle at 50% 35%, #fffaf0, #e6d7b8); color: #3b2d19; border-color: #b79144; }
+.jcard[data-tier="rare"] :is(.jb-kick, .jb-city, .jb-cls) { color: #8a6a2b; }
+.jcard[data-tier="epic"] .jcard-back { background: radial-gradient(circle at 50% 35%, #dcc387, #8a6a2b); color: #3b2d19; border-color: #3b2d19; }
+.jcard[data-tier="epic"] :is(.jb-kick, .jb-city, .jb-cls) { color: #3b2d19; }
+.jcard[data-tier="legendary"] .jcard-back { background: radial-gradient(circle at 50% 35%, #3b2d19, #0e0a05); border: 4px solid #d0b677; box-shadow: inset 0 0 0 2px #725920, 0 24px 50px rgba(59, 45, 25, 0.45); }
 .jcard-back > img { width: 34%; margin-bottom: 0.6rem; filter: brightness(1.4); }
 .jb-kick { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #d0b677; }
 .jb-name { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
@@ -903,3 +905,4 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 }
 .jb-cls { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #d0b677; }
 .jreq { color: var(--gold-dark); font-weight: 600; }
+.jcard[data-tier="epic"] .jcard-back > img { filter: brightness(0.35) sepia(0.6); }

@@ -8,19 +8,30 @@ import { pick } from '/assets/js/join-pick.js';
 // permission for commercial use), legendary places, and space.
 
 const W = 900, H = 1200;
-// one look per rarity: common in the brand gold on brown, rare in silver on sapphire, legendary in gold on deep violet
-// with a holographic frame. GOLD / DEEP are the art colours of the theme in use (setTheme), read by every drawing below.
+// one look per rarity, all in the brand colours (cream, browns, golds):
+// common gold on brown; uncommon bright gold on dark brown with a double frame; rare brown on cream;
+// epic cream on gold; legendary gold foil on deep brown, with rays and sparkles.
+// GOLD / DEEP are the art colours of the theme in use (setTheme), read by every drawing below.
 export const THEMES = {
-  landmark: { bg: ['#5a4527', '#3b2d19', '#221a0e'], accent: '#d0b677', deep: '#8a6a2b', rgb: '208, 182, 119', glow: '240, 214, 150' },
-  legend: { bg: ['#34557d', '#1b2e4a', '#0b1424'], accent: '#d9e3ef', deep: '#7d93b0', rgb: '205, 220, 238', glow: '190, 215, 245' },
-  frontier: { bg: ['#5b3a86', '#2a1748', '#0c0619'], accent: '#f1d28c', deep: '#b07fc4', rgb: '241, 210, 140', glow: '230, 190, 255', holo: true }
+  common: { bg: ['#4f3c22', '#3b2d19', '#2a2012'], accent: '#b79144', deep: '#725920', ink: '#f7f1e5', rgb: '183, 145, 68', glow: '240, 214, 150', badge: 'soft' },
+  uncommon: { bg: ['#5a4527', '#33261a', '#1c150b'], accent: '#d0b677', deep: '#8a6a2b', ink: '#f7f1e5', rgb: '208, 182, 119', glow: '245, 222, 165', badge: 'gold', double: true },
+  rare: { bg: ['#fffaf0', '#f7f1e5', '#e6d7b8'], accent: '#3b2d19', deep: '#b79144', ink: '#3b2d19', rgb: '138, 106, 43', glow: '255, 255, 255', badge: 'brown', light: true },
+  epic: { bg: ['#dcc387', '#b79144', '#8a6a2b'], accent: '#f7f1e5', deep: '#8a6a2b', ink: '#3b2d19', rgb: '59, 45, 25', glow: '255, 244, 214', badge: 'brown', light: true },
+  legendary: { bg: ['#3b2d19', '#1f170c', '#0e0a05'], accent: '#d0b677', deep: '#725920', ink: '#f7f1e5', rgb: '208, 182, 119', glow: '240, 214, 150', badge: 'foil', foil: true }
 };
-let GOLD = THEMES.landmark.accent, DEEP = THEMES.landmark.deep;
-export function setTheme(cls) { const t = THEMES[cls] || THEMES.landmark; GOLD = t.accent; DEEP = t.deep; return t; }
-export function holoGradient(g, x0, y0, x1, y1) {
+let GOLD = THEMES.common.accent, DEEP = THEMES.common.deep;
+export function setTheme(tier) { const t = THEMES[tier] || THEMES.common; GOLD = t.accent; DEEP = t.deep; return t; }
+// gold foil: the brand golds in a band, for the legendary frame, badge and rule
+export function foil(g, x0, y0, x1, y1) {
   const h = g.createLinearGradient(x0, y0, x1, y1);
-  [['#f1d28c', 0], ['#f5a8d8', 0.25], ['#9fd8f5', 0.5], ['#c7a8ff', 0.75], ['#f1d28c', 1]].forEach(([c, o]) => h.addColorStop(o, c));
+  [['#f3dea4', 0], ['#b79144', 0.3], ['#725920', 0.5], ['#d0b677', 0.7], ['#a37e2d', 1]].forEach(([c, o]) => h.addColorStop(o, c));
   return h;
+}
+// the logo mark in any colour (the SVG is gold, which would vanish on the epic gold)
+function tinted(img, color, size) {
+  const c = document.createElement('canvas'); c.width = c.height = size; const x = c.getContext('2d');
+  x.drawImage(img, 0, 0, size, size); x.globalCompositeOperation = 'source-in'; x.fillStyle = color; x.fillRect(0, 0, size, size);
+  return c;
 }
 
 // each landmark draws in a 200 x 240 box, base on y = 236
@@ -481,66 +492,70 @@ function line(g, x1, y1, x2, y2, w, c) { g.save(); g.strokeStyle = c; g.lineWidt
 
 function round(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
 
-export async function makeCard({ email, name, src, T, landmarks, odds = {}, logoSrc = '/assets/img/logo.svg' }) {
-  const { lm, piece } = pick(email, landmarks, odds);
+export async function makeCard({ email, name, T, landmarks, rarities, logoSrc = '/assets/img/logo.svg' }) {
+  const { lm, tier, piece, of } = pick(email, landmarks, rarities);
   await document.fonts.load('600 40px Montserrat').catch(() => {});
   const logo = new Image(); logo.src = logoSrc; await logo.decode().catch(() => {});
 
-  const th = setTheme(lm.cls), A = a => `rgba(${th.rgb}, ${a})`;
+  const th = setTheme(tier), A = a => `rgba(${th.rgb}, ${a})`;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const g = c.getContext('2d');
   const bg = g.createRadialGradient(W / 2, 470, 60, W / 2, 600, 820);
   bg.addColorStop(0, th.bg[0]); bg.addColorStop(0.55, th.bg[1]); bg.addColorStop(1, th.bg[2]);
   round(g, 0, 0, W, H, 48); g.fillStyle = bg; g.fill();
-  if (th.holo) { // legendary: a field of small stars behind everything
-    let seed = piece * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    for (let i = 0; i < 90; i++) { g.fillStyle = `rgba(255, 245, 230, ${0.15 + rnd() * 0.5})`; g.beginPath(); g.arc(40 + rnd() * (W - 80), 40 + rnd() * (H - 80), rnd() * 2.2 + 0.4, 0, Math.PI * 2); g.fill(); }
+  if (th.foil) { // legendary: gold rays behind the art and a few sparkles
+    g.save(); g.translate(W / 2, 470);
+    for (let i = 0; i < 24; i++) { g.rotate(Math.PI / 12); g.fillStyle = 'rgba(208, 182, 119, 0.07)'; g.beginPath(); g.moveTo(0, 0); g.lineTo(-30, -720); g.lineTo(30, -720); g.closePath(); g.fill(); }
+    g.restore();
+    let seed = Number(piece) * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 40; i++) { g.fillStyle = `rgba(243, 222, 164, ${0.25 + rnd() * 0.6})`; const x = 60 + rnd() * (W - 120), y = 160 + rnd() * 560, r = 1 + rnd() * 3; g.beginPath(); g.moveTo(x, y - r * 3); g.lineTo(x + r, y); g.lineTo(x, y + r * 3); g.lineTo(x - r, y); g.closePath(); g.fill(); }
   }
-  g.strokeStyle = th.holo ? holoGradient(g, 0, 0, W, H) : A(0.75); g.lineWidth = th.holo ? 5 : 3; round(g, 26, 26, W - 52, H - 52, 30); g.stroke();
-  g.strokeStyle = A(0.25); g.lineWidth = 1.5; round(g, 40, 40, W - 80, H - 80, 22); g.stroke();
+  g.strokeStyle = th.foil ? foil(g, 0, 0, W, H) : A(0.75); g.lineWidth = th.foil ? 8 : 3; round(g, 26, 26, W - 52, H - 52, 30); g.stroke();
+  g.strokeStyle = th.foil ? foil(g, W, 0, 0, H) : A(th.double ? 0.75 : 0.25); g.lineWidth = th.double || th.foil ? 2.5 : 1.5; round(g, 42, 42, W - 84, H - 84, 22); g.stroke();
+  if (th.double || th.foil) for (const [x, y] of [[42, 42], [W - 42, 42], [42, H - 42], [W - 42, H - 42]]) { // corner diamonds
+    g.fillStyle = th.foil ? '#d0b677' : GOLD; g.beginPath(); g.moveTo(x, y - 12); g.lineTo(x + 12, y); g.lineTo(x, y + 12); g.lineTo(x - 12, y); g.closePath(); g.fill();
+  }
 
-  g.textBaseline = 'alphabetic'; g.fillStyle = GOLD;
-  if (logo.naturalWidth) g.drawImage(logo, 76, 74, 64, 64);
-  g.font = '600 22px Montserrat, system-ui, sans-serif'; g.letterSpacing = '6px';
+  g.textBaseline = 'alphabetic';
+  const mark = th.light ? th.ink : GOLD;
+  if (logo.naturalWidth) g.drawImage(tinted(logo, mark, 128), 76, 74, 64, 64);
+  g.fillStyle = mark; g.font = '600 22px Montserrat, system-ui, sans-serif'; g.letterSpacing = '6px';
   g.fillText('MYNTAS', 156, 104);
-  g.font = '500 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '4px'; g.fillStyle = A(0.75);
+  g.font = '500 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '4px'; g.fillStyle = A(0.8);
   g.fillText(T.cardKicker.toUpperCase(), 156, 132);
-  const [clsName, rarity] = (T.cardClass && T.cardClass[lm.cls]) || ['', ''];
-  if (rarity) {
-    g.font = '600 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '3px';
-    const label = `${clsName} · ${rarity}`.toUpperCase(), tw = g.measureText(label).width + 36;
-    round(g, W - 76 - tw, 80, tw, 44, 22);
-    g.fillStyle = th.holo ? holoGradient(g, W - 76 - tw, 80, W - 76, 124) : lm.cls === 'legend' ? GOLD : A(0.14); g.fill();
-    g.strokeStyle = A(0.7); g.lineWidth = 1.5; g.stroke();
-    g.fillStyle = lm.cls === 'landmark' ? GOLD : th.bg[2]; g.textAlign = 'center'; g.fillText(label, W - 76 - tw / 2, 109); g.textAlign = 'left';
-  }
+  g.font = '600 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '3px';
+  const label = `${T.cardType[lm.cls]} · ${T.cardRarity[tier]}`.toUpperCase(), tw = g.measureText(label).width + 36;
+  round(g, W - 76 - tw, 80, tw, 44, 22);
+  g.fillStyle = th.badge === 'foil' ? foil(g, W - 76 - tw, 80, W - 76, 124) : th.badge === 'gold' ? GOLD : th.badge === 'brown' ? '#3b2d19' : A(0.16); g.fill();
+  g.strokeStyle = th.badge === 'brown' ? '#3b2d19' : A(0.7); g.lineWidth = 1.5; g.stroke();
+  g.fillStyle = th.badge === 'soft' ? GOLD : th.badge === 'brown' ? '#f7f1e5' : '#2a2012'; g.textAlign = 'center'; g.fillText(label, W - 76 - tw / 2, 109); g.textAlign = 'left';
 
   const glow = g.createRadialGradient(W / 2, 470, 10, W / 2, 470, 300);
-  glow.addColorStop(0, `rgba(${th.glow}, 0.32)`); glow.addColorStop(1, `rgba(${th.glow}, 0)`);
+  glow.addColorStop(0, `rgba(${th.glow}, ${th.light ? 0.6 : 0.32})`); glow.addColorStop(1, `rgba(${th.glow}, 0)`);
   g.fillStyle = glow; g.fillRect(0, 160, W, 640);
   g.save(); g.translate(W / 2 - 200 * 1.9 / 2, 250); g.scale(1.9, 1.9); g.fillStyle = GOLD; drawArt(g, lm); g.restore();
-  g.fillStyle = th.holo ? holoGradient(g, 150, 0, W - 150, 0) : A(0.5); g.fillRect(150, 702, W - 300, 2);
+  g.fillStyle = th.foil ? foil(g, 150, 0, W - 150, 0) : A(0.55); g.fillRect(150, 702, W - 300, th.foil ? 3 : 2);
 
   g.textAlign = 'center'; g.letterSpacing = '0px';
-  g.fillStyle = '#f7f1e5'; let fs = 56; g.font = `600 ${fs}px Montserrat, system-ui, sans-serif`;
+  g.fillStyle = th.ink; let fs = 56; g.font = `600 ${fs}px Montserrat, system-ui, sans-serif`;
   while (g.measureText(lm.name).width > W - 170 && fs > 30) { fs -= 2; g.font = `600 ${fs}px Montserrat, system-ui, sans-serif`; }
   g.fillText(lm.name, W / 2, 790);
-  g.fillStyle = GOLD; let cs = 26; g.letterSpacing = '5px'; g.font = `500 ${cs}px Montserrat, system-ui, sans-serif`;
+  g.fillStyle = th.light ? A(0.95) : GOLD; let cs = 26; g.letterSpacing = '5px'; g.font = `500 ${cs}px Montserrat, system-ui, sans-serif`;
   while (g.measureText(lm.city.toUpperCase()).width > W - 170 && cs > 16) { cs -= 2; g.font = `500 ${cs}px Montserrat, system-ui, sans-serif`; }
   g.fillText(lm.city.toUpperCase(), W / 2, 834);
 
   g.letterSpacing = '0px';
   const row = (label, value, x, align) => {
     g.textAlign = align;
-    g.fillStyle = A(0.8); g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(label.toUpperCase(), x, 960);
-    g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif'; g.fillText(value, x, 998);
+    g.fillStyle = A(0.85); g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(label.toUpperCase(), x, 960);
+    g.fillStyle = th.ink; g.font = '600 30px Montserrat, system-ui, sans-serif'; g.fillText(value, x, 998);
   };
-  row(T.cardPiece, `#${piece} / 1000`, 100, 'left');
+  row(T.cardPiece, `#${piece} / ${of}`, 100, 'left');
   row(T.cardHolder, name.slice(0, 24), W - 100, 'right');
   g.textAlign = 'left';
-  setTheme('landmark');
+  setTheme('common');
 
-  // the card stays clean: the note that it has no intrinsic value sits under it on the page (cardDisclaimer in copy.js)
-  return { canvas: c, landmark: lm, piece };
+  return { canvas: c, landmark: lm, tier, piece, of };
 }
+
 

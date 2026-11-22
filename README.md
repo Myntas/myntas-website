@@ -61,9 +61,12 @@ Ready-made codes are in `docs/join-qr/` (`web`, `sf-fellowship`, `nova-demo-day`
 ### Collector cards (signup reward)
 
 After signup each person gets a collector card: one of the 109 places in `public/join/copy.js` (`CONFIG.landmarks`,
-in three classes with the odds in `cardClasses`), picked from their email, so the same person always gets the same card.
-They can open it on Google Maps, save it, share it on LinkedIn, X or WhatsApp (each place has a share page,
-`/join/card/<id>/`, whose preview shows the card), and add it to Apple Wallet.
+of three types: landmarks, legends, frontier), picked from their email, so the same person always gets the same card.
+Five rarities, each with its odds and its own numbered run (`CONFIG.rarities`): Common 50% (1000 pieces), Uncommon 25% (500),
+Rare 14% (250), Epic 8% (100), Legendary 3% (25). Myths, mysteries and space have a fixed `tier`; landmarks are common or
+uncommon (`tierOf` in `join-pick.js`). Each rarity has its own look in brand colours (`THEMES` in `join-card.js`).
+They can open it on Google Maps, save it, share it on LinkedIn, X, WhatsApp and more (each place has a share page,
+`/join/card/<id>/`, whose preview shows the card). Apple Wallet is ready but not shown yet.
 
 - **Adding a place**: add a line to `CONFIG.landmarks` (`art` + `v` pick one of the drawing families in
   `assets/js/join-card.js`), then regenerate its share image, Wallet thumbnail and share page:
