@@ -92,7 +92,7 @@ async function toBrevo(env, c, sc) {
   const attributes = {
     FIRSTNAME: c.firstName, LASTNAME: c.lastName, COUNTRY: c.country, ROLE: c.role,
     LIKELIHOOD: c.likelihood, TICKET: c.ticket, PRIORITY: c.priority, LINKEDIN: c.linkedin, SRC: c.src,
-    NEWSLETTER_OPTIN: c.newsletter, SIGNUP_AT: new Date().toISOString().slice(0, 10), LANG: c.lang, ...sc
+    NEWSLETTER_OPTIN: c.newsletter, SIGNUP_AT: new Date().toISOString().slice(0, 10), LANG: c.lang, CARD: cardText(c.email), ...sc
   };
   // an email already in Brevo has confirmed before (double opt-in contacts exist only once confirmed): update it
   const found = await brevo(env, `/contacts/${encodeURIComponent(c.email)}`, 'GET');
