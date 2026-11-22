@@ -9,7 +9,7 @@ const api = (path, method = 'GET', body) => fetch(`https://api.brevo.com/v3${pat
 });
 // FIRSTNAME and LASTNAME exist in every Brevo account
 const ATTRS = { COUNTRY: 'text', ROLE: 'text', LIKELIHOOD: 'text', TICKET: 'text', PRIORITY: 'text', LINKEDIN: 'text', SRC: 'text',
-  LANG: 'text', LEAD_SCORE: 'float', HOT_LEAD: 'boolean', NEWSLETTER_OPTIN: 'boolean', SIGNUP_AT: 'date' };
+  LANG: 'text', CARD: 'text', LEAD_SCORE: 'float', HOT_LEAD: 'boolean', NEWSLETTER_OPTIN: 'boolean', SIGNUP_AT: 'date' };
 for (const [name, type] of Object.entries(ATTRS)) {
   const r = await api(`/contacts/attributes/normal/${name}`, 'POST', { type });
   console.log(name, r.ok ? 'created' : `skipped (${r.status} ${(await r.json().catch(() => ({}))).message || ''})`);
