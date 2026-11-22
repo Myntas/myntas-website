@@ -199,8 +199,6 @@ export const COPY = {
     cardKicker: 'Founding collector',
     cardPiece: 'Piece',
     cardHolder: 'Collector',
-    cardEdition: 'Edition',
-    cardOnline: 'Online',
     cardMap: 'See it on Google Maps',
     cardClass: { landmark: ['Landmark', 'Common'], legend: ['Legend', 'Rare'], frontier: ['Frontier', 'Legendary'] },
     cardSave: 'Save card',

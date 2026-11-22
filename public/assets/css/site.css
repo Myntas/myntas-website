@@ -855,6 +855,10 @@ label.jmore { padding: 0; background: none; gap: 0.35rem; }
 .jcard-glare { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 246, 220, 0.32), rgba(255, 246, 220, 0) 55%); mix-blend-mode: soft-light; opacity: 0.6; transition: opacity 0.4s; }
 .jcard.tilting .jcard-glare { opacity: 1; }
 .jcard-back { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; padding: 1.5rem; text-align: center; color: #f7f1e5; background: radial-gradient(circle at 50% 35%, #5a4527, #2a2012); border: 2px solid rgba(215, 186, 120, 0.6); transform: rotateY(180deg); }
+.jcard[data-cls="legend"] .jcard-back { background: radial-gradient(circle at 50% 35%, #34557d, #0b1424); border-color: rgba(205, 220, 238, 0.7); }
+.jcard[data-cls="legend"] :is(.jb-kick, .jb-city, .jb-cls) { color: #d9e3ef; }
+.jcard[data-cls="frontier"] .jcard-back { background: radial-gradient(circle at 50% 35%, #5b3a86, #0c0619); border-color: rgba(241, 210, 140, 0.8); }
+.jcard[data-cls="frontier"] :is(.jb-kick, .jb-city, .jb-cls) { color: #f1d28c; }
 .jcard-back > img { width: 34%; margin-bottom: 0.6rem; filter: brightness(1.4); }
 .jb-kick { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #d0b677; }
 .jb-name { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }

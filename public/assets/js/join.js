@@ -196,6 +196,7 @@ async function showCard(data) {
     icon(`mailto:?subject=${enc(`Myntas · ${lm.name}`)}&body=${enc(short + ' ' + page)}`, T.shareEmail, ICONS.email)
   ].join('');
   const [cls, rarity2] = T.cardClass[lm.cls];
+  document.getElementById('card').dataset.cls = lm.cls; // the back takes the colours of the rarity
   document.getElementById('cardBack').insertAdjacentHTML('beforeend', `<span class="jb-kick">${esc(T.cardKicker)}</span>
     <span class="jb-name">${esc(lm.name)}</span><span class="jb-city">${esc(lm.city)}</span>
     <span class="jb-row"><b>#${String(piece).padStart(4, '0')}</b> / 1000</span><span class="jb-cls">${esc(cls)} · ${esc(rarity2)}</span>

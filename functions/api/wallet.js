@@ -17,7 +17,6 @@ const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, 
 
 export function passJson({ lm, piece, h }, { name, src, env, T }) {
   const [cls, rarity] = T.cardClass[lm.cls];
-  const edition = src === 'web' ? T.cardOnline : src.split('-').map(w => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(' ');
   return {
     formatVersion: 1, passTypeIdentifier: env.PASS_TYPE_ID, teamIdentifier: env.APPLE_TEAM_ID,
     serialNumber: `${h.toString(16)}-${piece}`, organizationName: 'Myntas', description: `Myntas ${T.cardKicker}: ${lm.name}`,
@@ -26,7 +25,7 @@ export function passJson({ lm, piece, h }, { name, src, env, T }) {
       headerFields: [{ key: 'class', label: cls, value: rarity }],
       primaryFields: [{ key: 'place', label: T.cardKicker, value: lm.name }],
       secondaryFields: [{ key: 'where', label: 'Location', value: lm.city }, { key: 'piece', label: T.cardPiece, value: `#${piece} / 1000` }],
-      auxiliaryFields: [{ key: 'holder', label: T.cardHolder, value: name }, { key: 'edition', label: T.cardEdition, value: edition }],
+      auxiliaryFields: [{ key: 'holder', label: T.cardHolder, value: name }],
       backFields: [
         { key: 'map', label: T.cardMap, value: mapUrl(lm) },
         { key: 'join', label: 'Myntas', value: 'https://www.myntas.com/join/' },
