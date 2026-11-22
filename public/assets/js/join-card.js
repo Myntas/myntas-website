@@ -7,7 +7,21 @@ import { pick } from '/assets/js/join-pick.js';
 // Three classes with their own odds: real landmarks (public domain; no Italian or Greek monuments, whose images need
 // permission for commercial use), legendary places, and space.
 
-const GOLD = '#d0b677', DEEP = '#8a6a2b', W = 900, H = 1200;
+const W = 900, H = 1200;
+// one look per rarity: common in the brand gold on brown, rare in silver on sapphire, legendary in gold on deep violet
+// with a holographic frame. GOLD / DEEP are the art colours of the theme in use (setTheme), read by every drawing below.
+export const THEMES = {
+  landmark: { bg: ['#5a4527', '#3b2d19', '#221a0e'], accent: '#d0b677', deep: '#8a6a2b', rgb: '208, 182, 119', glow: '240, 214, 150' },
+  legend: { bg: ['#34557d', '#1b2e4a', '#0b1424'], accent: '#d9e3ef', deep: '#7d93b0', rgb: '205, 220, 238', glow: '190, 215, 245' },
+  frontier: { bg: ['#5b3a86', '#2a1748', '#0c0619'], accent: '#f1d28c', deep: '#b07fc4', rgb: '241, 210, 140', glow: '230, 190, 255', holo: true }
+};
+let GOLD = THEMES.landmark.accent, DEEP = THEMES.landmark.deep;
+export function setTheme(cls) { const t = THEMES[cls] || THEMES.landmark; GOLD = t.accent; DEEP = t.deep; return t; }
+export function holoGradient(g, x0, y0, x1, y1) {
+  const h = g.createLinearGradient(x0, y0, x1, y1);
+  [['#f1d28c', 0], ['#f5a8d8', 0.25], ['#9fd8f5', 0.5], ['#c7a8ff', 0.75], ['#f1d28c', 1]].forEach(([c, o]) => h.addColorStop(o, c));
+  return h;
+}
 
 // each landmark draws in a 200 x 240 box, base on y = 236
 export const ART = {
@@ -472,35 +486,40 @@ export async function makeCard({ email, name, src, T, landmarks, odds = {}, logo
   await document.fonts.load('600 40px Montserrat').catch(() => {});
   const logo = new Image(); logo.src = logoSrc; await logo.decode().catch(() => {});
 
+  const th = setTheme(lm.cls), A = a => `rgba(${th.rgb}, ${a})`;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const g = c.getContext('2d');
   const bg = g.createRadialGradient(W / 2, 470, 60, W / 2, 600, 820);
-  bg.addColorStop(0, '#5a4527'); bg.addColorStop(0.55, '#3b2d19'); bg.addColorStop(1, '#221a0e');
+  bg.addColorStop(0, th.bg[0]); bg.addColorStop(0.55, th.bg[1]); bg.addColorStop(1, th.bg[2]);
   round(g, 0, 0, W, H, 48); g.fillStyle = bg; g.fill();
-  g.strokeStyle = 'rgba(215, 186, 120, 0.7)'; g.lineWidth = 3; round(g, 26, 26, W - 52, H - 52, 30); g.stroke();
-  g.strokeStyle = 'rgba(215, 186, 120, 0.25)'; g.lineWidth = 1.5; round(g, 40, 40, W - 80, H - 80, 22); g.stroke();
+  if (th.holo) { // legendary: a field of small stars behind everything
+    let seed = piece * 7 + 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 90; i++) { g.fillStyle = `rgba(255, 245, 230, ${0.15 + rnd() * 0.5})`; g.beginPath(); g.arc(40 + rnd() * (W - 80), 40 + rnd() * (H - 80), rnd() * 2.2 + 0.4, 0, Math.PI * 2); g.fill(); }
+  }
+  g.strokeStyle = th.holo ? holoGradient(g, 0, 0, W, H) : A(0.75); g.lineWidth = th.holo ? 5 : 3; round(g, 26, 26, W - 52, H - 52, 30); g.stroke();
+  g.strokeStyle = A(0.25); g.lineWidth = 1.5; round(g, 40, 40, W - 80, H - 80, 22); g.stroke();
 
   g.textBaseline = 'alphabetic'; g.fillStyle = GOLD;
   if (logo.naturalWidth) g.drawImage(logo, 76, 74, 64, 64);
   g.font = '600 22px Montserrat, system-ui, sans-serif'; g.letterSpacing = '6px';
   g.fillText('MYNTAS', 156, 104);
-  g.font = '500 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '4px'; g.fillStyle = 'rgba(208, 182, 119, 0.75)';
+  g.font = '500 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '4px'; g.fillStyle = A(0.75);
   g.fillText(T.cardKicker.toUpperCase(), 156, 132);
   const [clsName, rarity] = (T.cardClass && T.cardClass[lm.cls]) || ['', ''];
   if (rarity) {
     g.font = '600 18px Montserrat, system-ui, sans-serif'; g.letterSpacing = '3px';
     const label = `${clsName} · ${rarity}`.toUpperCase(), tw = g.measureText(label).width + 36;
     round(g, W - 76 - tw, 80, tw, 44, 22);
-    g.fillStyle = lm.cls === 'frontier' ? GOLD : lm.cls === 'legend' ? 'rgba(208, 182, 119, 0.35)' : 'rgba(208, 182, 119, 0.14)'; g.fill();
-    g.strokeStyle = 'rgba(215, 186, 120, 0.7)'; g.lineWidth = 1.5; g.stroke();
-    g.fillStyle = lm.cls === 'frontier' ? '#2a2012' : GOLD; g.textAlign = 'center'; g.fillText(label, W - 76 - tw / 2, 109); g.textAlign = 'left';
+    g.fillStyle = th.holo ? holoGradient(g, W - 76 - tw, 80, W - 76, 124) : lm.cls === 'legend' ? GOLD : A(0.14); g.fill();
+    g.strokeStyle = A(0.7); g.lineWidth = 1.5; g.stroke();
+    g.fillStyle = lm.cls === 'landmark' ? GOLD : th.bg[2]; g.textAlign = 'center'; g.fillText(label, W - 76 - tw / 2, 109); g.textAlign = 'left';
   }
 
   const glow = g.createRadialGradient(W / 2, 470, 10, W / 2, 470, 300);
-  glow.addColorStop(0, 'rgba(240, 214, 150, 0.32)'); glow.addColorStop(1, 'rgba(240, 214, 150, 0)');
+  glow.addColorStop(0, `rgba(${th.glow}, 0.32)`); glow.addColorStop(1, `rgba(${th.glow}, 0)`);
   g.fillStyle = glow; g.fillRect(0, 160, W, 640);
   g.save(); g.translate(W / 2 - 200 * 1.9 / 2, 250); g.scale(1.9, 1.9); g.fillStyle = GOLD; drawArt(g, lm); g.restore();
-  g.fillStyle = 'rgba(208, 182, 119, 0.5)'; g.fillRect(150, 702, W - 300, 2);
+  g.fillStyle = th.holo ? holoGradient(g, 150, 0, W - 150, 0) : A(0.5); g.fillRect(150, 702, W - 300, 2);
 
   g.textAlign = 'center'; g.letterSpacing = '0px';
   g.fillStyle = '#f7f1e5'; let fs = 56; g.font = `600 ${fs}px Montserrat, system-ui, sans-serif`;
@@ -510,17 +529,16 @@ export async function makeCard({ email, name, src, T, landmarks, odds = {}, logo
   while (g.measureText(lm.city.toUpperCase()).width > W - 170 && cs > 16) { cs -= 2; g.font = `500 ${cs}px Montserrat, system-ui, sans-serif`; }
   g.fillText(lm.city.toUpperCase(), W / 2, 834);
 
-  g.letterSpacing = '0px'; g.textAlign = 'left';
-  const row = (label, value, y) => {
-    g.fillStyle = 'rgba(208, 182, 119, 0.8)'; g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(label.toUpperCase(), 100, y);
-    g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif'; g.fillText(value, 100, y + 38);
+  g.letterSpacing = '0px';
+  const row = (label, value, x, align) => {
+    g.textAlign = align;
+    g.fillStyle = A(0.8); g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(label.toUpperCase(), x, 960);
+    g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif'; g.fillText(value, x, 998);
   };
-  row(T.cardPiece, `#${piece} / 1000`, 940);
-  row(T.cardHolder, name.slice(0, 26), 1040);
-  g.textAlign = 'right';
-  g.fillStyle = 'rgba(208, 182, 119, 0.8)'; g.font = '500 20px Montserrat, system-ui, sans-serif'; g.fillText(T.cardEdition.toUpperCase(), W - 100, 940);
-  g.fillStyle = '#f7f1e5'; g.font = '600 30px Montserrat, system-ui, sans-serif';
-  g.fillText(src === 'web' ? T.cardOnline : src.split('-').map(w => (w.length <= 2 ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1))).join(' '), W - 100, 978);
+  row(T.cardPiece, `#${piece} / 1000`, 100, 'left');
+  row(T.cardHolder, name.slice(0, 24), W - 100, 'right');
+  g.textAlign = 'left';
+  setTheme('landmark');
 
   // the card stays clean: the note that it has no intrinsic value sits under it on the page (cardDisclaimer in copy.js)
   return { canvas: c, landmark: lm, piece };
